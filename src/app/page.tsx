@@ -24,6 +24,9 @@ export default function Home() {
               height={24}
               priority
             />
+      <h1 className="text-3xl font-bold underline pt-2 pb-2 ">
+      Hello world!
+    </h1>
           </a>
         </div>
       </div>
