@@ -1,5 +1,7 @@
+import LoginContent from '@/components/login'
+
 const LoginPage = () => {
-  return <></>
+  return <LoginContent />
 }
 
 export default LoginPage
