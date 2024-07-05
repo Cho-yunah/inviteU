@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./global.css";
+import Logo from "../../public/logo.png"
+import Image from 'next/image';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,10 +17,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en"> 
       <body className={inter.className}>
-        {/* 루트 레이아웃 */}
-        {children}</body>
+        {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
+        <div className='container'>
+        <header className='flex justify-between border-b py-3 px-5'>
+          <div className='flex'>
+          <Image src={Logo} alt='logo' width='28' />
+          <p className='px-3'>Invite U</p>
+          </div>
+          <div>
+            <button className='btn text-sm'>로그인</button>
+          </div>
+        </header>
+          {children}
+        </div>
+      </body>
     </html>
   );
 }
