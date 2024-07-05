@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./global.css";
 import Logo from "../../public/logo.png"
 import Image from 'next/image';
+import styles from "./page.module.css";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
         <div className='container'>
-        <header className='flex justify-between border-b py-3 px-5'>
+        <header className='flex justify-between border-b py-3 px-5 shadow-sm'>
           <div className='flex'>
           <Image src={Logo} alt='logo' width='28' />
           <p className='px-3'>Invite U</p>
@@ -30,7 +32,11 @@ export default function RootLayout({
             <button className='btn text-sm'>로그인</button>
           </div>
         </header>
-          {children}
+        <main className={styles.main}>
+          <div className={styles.description}>
+              {children}
+          </div>
+        </main>
         </div>
       </body>
     </html>
