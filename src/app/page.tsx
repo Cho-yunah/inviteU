@@ -1,5 +1,5 @@
 
-import Slider from './(beforeLogin)/compose/Slider';
+import Slider from './(beforeLogin)/_components/Slider';
 import Link from 'next/link';
 
 export default function Home() {
