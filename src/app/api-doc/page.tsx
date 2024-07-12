@@ -1,32 +1,30 @@
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
+// src/app/api-doc/page.tsx
+import SwaggerUIComponent from '@/components/swagger/SwaggerUiComponent'
 import { createSwaggerSpec } from 'next-swagger-doc'
-import dynamic from 'next/dynamic'
-import 'swagger-ui-react/swagger-ui.css'
 
-const SwaggerUI = dynamic<{
-  spec: any
-}>(import('swagger-ui-react'), { ssr: false })
+const ApiDocPage = async () => {
+  // Swagger spec 생성
 
-function ApiDoc({ spec }: InferGetStaticPropsType<typeof getStaticProps>) {
-  return <SwaggerUI spec={spec} />
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  const spec: Record<string, any> = createSwaggerSpec({
-    definition: {
-      openapi: '3.0.0',
-      info: {
-        title: 'Next Swagger API Example',
-        version: '1.0',
-      },
+  const swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+      title: 'Next.js Swagger API',
+      version: '1.0.0',
+      description: 'API documentation for Next.js project',
     },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+      },
+    ],
+  }
+
+  const swaggerSpec = createSwaggerSpec({
+    definition: swaggerDefinition,
+    apiFolder: 'src/app/api',
   })
 
-  return {
-    props: {
-      spec,
-    },
-  }
+  return <SwaggerUIComponent spec={swaggerSpec} />
 }
 
-export default ApiDoc
+export default ApiDocPage

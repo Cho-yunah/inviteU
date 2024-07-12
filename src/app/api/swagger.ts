@@ -8,6 +8,6 @@ const swaggerHandler = withSwagger({
       version: '0.1.0',
     },
   },
-  apiFolder: 'pages/api',
+  apiFolder: 'src/app/api',
 })
 export default swaggerHandler()
