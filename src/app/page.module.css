@@ -3,19 +3,22 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 6rem;
   min-height: 100vh;
 }
 
 .description {
-  display: inherit;
-  justify-content: inherit;
-  align-items: inherit;
-  font-size: 0.85rem;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  /* justify-content: center; */
+  /* align-items: center; */
+  font-size: 0.80rem;
   max-width: var(--max-width);
-  width: 100%;
+  width: 375px;
+  /* width: 100%; */
   z-index: 2;
-  font-family: var(--font-mono);
+  font-family:ui-monospace;
+  font-size: 0.8rem;
 }
 
 .description a {
@@ -23,15 +26,6 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-}
-
-.description p {
-  position: relative;
-  margin: 0;
-  padding: 1rem;
-  background-color: rgba(var(--callout-rgb), 0.5);
-  border: 1px solid rgba(var(--callout-border-rgb), 0.3);
-  border-radius: var(--border-radius);
 }
 
 .code {
@@ -120,6 +114,33 @@
   }
 }
 
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  color: #fff;
+  border-radius: var(--border-radius);
+  background: rgba(var(--card-rgb), 0.1);
+  border: 1px solid rgba(var(--card-border-rgb), 0.15);
+  transition: background 200ms, border 200ms;
+}
+
+.mainButton {
+  width: 90%;
+  padding: 0.7rem 1rem;
+  font-weight: 500;
+  color: var(--primary);
+  font-weight: 600;
+  /* border: 1.5px solid var(--primary-transparent); */
+  background-color: var(--primary-transparent);
+}
+.mainButton:hover {
+  background-color: var(--primary);
+  color: #fff;
+  transition: all 0.5s ease;
+}
+
+
 @media (prefers-reduced-motion) {
   .card:hover span {
     transform: none;
@@ -127,7 +148,7 @@
 }
 
 /* Mobile */
-@media (max-width: 700px) {
+@media (max-width: 500px) {
   .content {
     padding: 4rem;
   }
@@ -164,7 +185,7 @@
     padding: 1rem;
   }
 
-  .description p,
+  /* .description p,
   .description div {
     display: flex;
     justify-content: center;
@@ -186,9 +207,9 @@
     );
     background-clip: padding-box;
     backdrop-filter: blur(24px);
-  }
+  } */
 
-  .description div {
+  /* .description div {
     align-items: flex-end;
     pointer-events: none;
     inset: auto 0 0;
@@ -200,7 +221,7 @@
       rgb(var(--background-end-rgb)) 40%
     );
     z-index: 1;
-  }
+  } */
 }
 
 /* Tablet and Smaller Desktop */
