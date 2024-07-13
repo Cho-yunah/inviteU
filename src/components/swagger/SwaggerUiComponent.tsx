@@ -11,7 +11,11 @@ interface SwaggerUIComponentProps {
 }
 
 const SwaggerUIComponent: React.FC<SwaggerUIComponentProps> = ({ spec }) => {
-  return <SwaggerUI spec={spec} />
+  return (
+    <div className="h-fit">
+      <SwaggerUI spec={spec} />
+    </div>
+  )
 }
 
 export default SwaggerUIComponent
