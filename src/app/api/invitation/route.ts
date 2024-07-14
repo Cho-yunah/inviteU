@@ -3,22 +3,13 @@ import { Database } from '@/supabase/type'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
 import { NextResponse } from 'next/server'
+import { randomUUID, UUID } from 'crypto'
 
 type Data = {
   id?: string
   error?: string
 }
 
-// NextApiRequest를 확장하여 query에 Invitation 스키마 포함
-type Invitation = Database['public']['Tables']['invitation']['Row']
-
-// NextApiRequest를 확장하여 query에 Invitation 스키마 포함
-interface NextApiRequestInvitation extends NextApiRequest {
-  query: {
-    [P in keyof Invitation]?: string | string[]
-  }
-  searchParams: URLSearchParams
-}
 /**
  * URLSearchParams를 일반 객체로 변환
  */
@@ -178,10 +169,7 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         description: Error updating invitation
  */
 
-export const POST = async (
-  req: NextApiRequestInvitation,
-  res: NextApiResponse<Data>,
-) => {
+export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   console.log(req, 'req.query', req.query)
   console.log(req?.url, 'searchParamsToObject(req.searchParams)')
 
@@ -189,6 +177,7 @@ export const POST = async (
     .searchParams
 
   console.log(searchParamsToObject(searchParams), 'hmmmmm')
+  // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
   const query = req.query ?? searchParamsToObject(searchParams)
   const {
     title,
@@ -207,35 +196,37 @@ export const POST = async (
 
   const { data, error } = await supabase.from('invitation').insert([
     {
-      title,
-      description,
-      subtitle,
-      custom_url,
-      date,
-      post_number,
-      address,
-      is_vertical,
-      is_image,
-      is_map,
-      is_video,
-      video_url,
-    } as any,
+      title: title?.toString() || '',
+      description: description?.toString(),
+      subtitle: subtitle?.toString(),
+      custom_url: custom_url?.toString(),
+      date: date?.toString(),
+      post_number: post_number?.toString(),
+      address: address?.toString(),
+      is_vertical: Boolean(is_vertical),
+      is_image: Boolean(is_image),
+      is_map: Boolean(is_map),
+      is_video: Boolean(is_video),
+      video_url: video_url?.toString(),
+      id: randomUUID(),
+    },
   ])
-  console.log(data, 'dataaaa', error, res)
-  return NextResponse.json({}, { status: 200 })
-  return { status: 200, message: 'success' }
-  if (error) {
-    return res.status(500)
-  }
 
-  res.status(200).json({ id: 'data[0].id' })
+  console.log(data, 'dataaaa', error, res)
+  if (error) {
+    return NextResponse.json(error, { status: 500 })
+  }
+  return NextResponse.json({}, { status: 200 })
 }
 
 export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  console.log(req.query, 'req.query')
+  const searchParams = new URL(req.url!, `http://${req.headers.host}`)
+    .searchParams
+
+  // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
+  const query = req.query ?? searchParamsToObject(searchParams)
 
   const {
-    id,
     title,
     description,
     subtitle,
@@ -243,26 +234,37 @@ export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     date,
     post_number,
     address,
-    isVertical,
-  } = req.query
+    is_vertical,
+    is_image,
+    is_map,
+    is_video,
+    video_url,
+    id,
+  } = query! || {}
 
   const { data, error } = await supabase
     .from('invitation')
     .update({
-      title,
-      description,
-      subtitle,
-      custom_url,
-      date,
-      post_number,
-      address,
-      is_vertical: isVertical,
-    } as any)
+      ...query,
+      // title: title?.toString() || '',
+      // description: description?.toString(),
+      // subtitle: subtitle?.toString(),
+      // custom_url: custom_url?.toString(),
+      // date: date?.toString(),
+      // post_number: post_number?.toString(),
+      // address: address?.toString(),
+      // is_vertical: Boolean(is_vertical),
+      // is_image: Boolean(is_image),
+      // is_map: Boolean(is_map),
+      // is_video: Boolean(is_video),
+      // video_url: video_url?.toString(),
+      id: randomUUID(),
+    })
     .eq('id', id as string)
 
+  console.log(data, 'dataaaa', error, res)
   if (error) {
-    return res.status(500).json({ error: error.message })
+    return NextResponse.json(error, { status: 500 })
   }
-
-  res.status(200).json(data[0])
+  return NextResponse.json({}, { status: 200 })
 }
