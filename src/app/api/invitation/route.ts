@@ -81,27 +81,32 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *           type: string
  *       - in: query
  *         name: isVertical
- *         required: true
+ *         required: false
  *         schema:
  *           type: boolean
  *       - in: query
  *         name: isImage
- *         required: true
+ *         required: false
  *         schema:
  *           type: boolean
  *       - in: query
  *         name: isMap
- *         required: true
+ *         required: false
  *         schema:
  *           type: boolean
  *       - in: query
  *         name: isVideo
- *         required: true
+ *         required: false
  *         schema:
  *           type: boolean
  *       - in: query
  *         name: videoUrl
- *         required: true
+ *         required: false
+ *         schema:
+ *           type: string
+ *        - in: query
+ *         name: videoUrl
+ *         required: false
  *         schema:
  *           type: string
  *     responses:
@@ -122,46 +127,50 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *           type: string
  *       - in: query
  *         name: title
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: description
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: subtitle
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: custom_url
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: date
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *           format: date-time
  *       - in: query
  *         name: post_number
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: address
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *       - in: query
  *         name: isVertical
- *         required: true
+ *         required: false
  *         schema:
  *           type: boolean
- *
+ *       - in: query
+ *         name: video_url
+ *         required: false
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: Invitation updated successfully
@@ -195,6 +204,22 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     user_id,
   } = query! || {}
 
+  if (
+    !title ||
+    !user_id ||
+    !description ||
+    !subtitle ||
+    !custom_url ||
+    !date ||
+    !post_number ||
+    !address
+  ) {
+    return NextResponse.json(
+      { message: 'id field is missing' },
+      { status: 400 },
+    )
+  }
+  const uuid = randomUUID()
   const { data, error } = await supabase.from('invitation').insert([
     {
       title: title?.toString() || '',
@@ -209,7 +234,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       is_map: Boolean(is_map),
       is_video: Boolean(is_video),
       video_url: video_url?.toString(),
-      id: randomUUID(),
+      id: uuid,
       user_id: user_id?.toString(),
     },
   ])
@@ -218,7 +243,10 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if (error) {
     return NextResponse.json(error, { status: 500 })
   }
-  return NextResponse.json({}, { status: 200 })
+  return NextResponse.json(
+    { id: uuid, message: 'Successfully added' },
+    { status: 200 },
+  )
 }
 
 export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
@@ -242,9 +270,14 @@ export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     is_video,
     video_url,
     id,
-    user_id,
   } = query! || {}
 
+  if (!id) {
+    return NextResponse.json(
+      { message: 'id field is missing' },
+      { status: 400 },
+    )
+  }
   const { data, error } = await supabase
     .from('invitation')
     .update({
@@ -261,8 +294,7 @@ export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       is_map: Boolean(is_map),
       is_video: Boolean(is_video),
       video_url: video_url?.toString(),
-      user_id: user_id?.toString(),
-      id: randomUUID(),
+      id: id?.toString(),
     })
     .eq('id', id as string)
 
@@ -270,5 +302,9 @@ export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   if (error) {
     return NextResponse.json(error, { status: 500 })
   }
-  return NextResponse.json({}, { status: 200 })
+
+  return NextResponse.json(
+    { id, message: 'Successfully added' },
+    { status: 200 },
+  )
 }

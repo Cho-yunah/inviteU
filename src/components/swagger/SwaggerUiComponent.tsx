@@ -12,7 +12,7 @@ interface SwaggerUIComponentProps {
 
 const SwaggerUIComponent: React.FC<SwaggerUIComponentProps> = ({ spec }) => {
   return (
-    <div className="h-fit">
+    <div className="h-[600vh] bg-white">
       <SwaggerUI spec={spec} />
     </div>
   )
