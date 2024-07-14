@@ -192,6 +192,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     is_map,
     is_video,
     video_url,
+    user_id,
   } = query! || {}
 
   const { data, error } = await supabase.from('invitation').insert([
@@ -209,6 +210,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
       is_video: Boolean(is_video),
       video_url: video_url?.toString(),
       id: randomUUID(),
+      user_id: user_id?.toString(),
     },
   ])
 
@@ -240,24 +242,26 @@ export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     is_video,
     video_url,
     id,
+    user_id,
   } = query! || {}
 
   const { data, error } = await supabase
     .from('invitation')
     .update({
       ...query,
-      // title: title?.toString() || '',
-      // description: description?.toString(),
-      // subtitle: subtitle?.toString(),
-      // custom_url: custom_url?.toString(),
-      // date: date?.toString(),
-      // post_number: post_number?.toString(),
-      // address: address?.toString(),
-      // is_vertical: Boolean(is_vertical),
-      // is_image: Boolean(is_image),
-      // is_map: Boolean(is_map),
-      // is_video: Boolean(is_video),
-      // video_url: video_url?.toString(),
+      title: title?.toString() || '',
+      description: description?.toString(),
+      subtitle: subtitle?.toString(),
+      custom_url: custom_url?.toString(),
+      date: date?.toString(),
+      post_number: post_number?.toString(),
+      address: address?.toString(),
+      is_vertical: Boolean(is_vertical),
+      is_image: Boolean(is_image),
+      is_map: Boolean(is_map),
+      is_video: Boolean(is_video),
+      video_url: video_url?.toString(),
+      user_id: user_id?.toString(),
       id: randomUUID(),
     })
     .eq('id', id as string)
