@@ -2,7 +2,7 @@ import { supabase } from '@/supabase/browser'
 import { Database } from '@/supabase/type'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID, UUID } from 'crypto'
 
 type Data = {
@@ -104,16 +104,16 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         required: false
  *         schema:
  *           type: string
- *        - in: query
+ *       - in: query
  *         name: videoUrl
  *         required: false
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Invitation created successfully
+ *         description: 초대장이 성공적으로 생성되었습니다.
  *       500:
- *         description: Error creating invitation
+ *         description: 초대장 생성 중 에러가 발생했습니다.
  *   put:
  *     summary: Update an invitation
  *     description: Update an invitation with the given details
@@ -173,21 +173,35 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *           type: string
  *     responses:
  *       200:
- *         description: Invitation updated successfully
+ *         description: 초대장이 업데이트되었습니다.
  *       500:
- *         description: Error updating invitation
+ *         description: 초대장 업데이트 도중 에러가 발생했습니다.
+ *   delete:
+ *     summary: Update an invitation
+ *     description: Update an invitation with the given details
+ *     tags:
+ *       - Invitation
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: 성공적으로 삭제되었습니다.
+ *       500:
+ *         description: 삭제 도중 에러가 발생했습니다.
  */
 
-export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  console.log(req, 'req.query', req.query)
+export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
   console.log(req?.url, 'searchParamsToObject(req.searchParams)')
 
-  const searchParams = new URL(req.url!, `http://${req.headers.host}`)
-    .searchParams
+  const searchParams = new URL(req.url!, `http://${''}`).searchParams
 
   console.log(searchParamsToObject(searchParams), 'hmmmmm')
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
-  const query = req.query ?? searchParamsToObject(searchParams)
+  const query = searchParamsToObject(searchParams)
   const {
     title,
     description,
@@ -249,12 +263,11 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
   )
 }
 
-export const PUT = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  const searchParams = new URL(req.url!, `http://${req.headers.host}`)
-    .searchParams
+export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
+  const searchParams = new URL(req.url!, `http://${''}`).searchParams
 
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
-  const query = req.query ?? searchParamsToObject(searchParams)
+  const query = searchParamsToObject(searchParams)
 
   const {
     title,
