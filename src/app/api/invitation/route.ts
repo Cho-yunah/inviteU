@@ -192,6 +192,32 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         description: 성공적으로 삭제되었습니다.
  *       500:
  *         description: 삭제 도중 에러가 발생했습니다.
+ *   get:
+ *     summary: Retrieve all invitations
+ *     description: Retrieve all invitations with pagination
+ *     tags:
+ *       - Invitation
+ *     parameters:
+ *       - in: query
+ *         name: start
+ *         required: false
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: user_id
+ *         required: false
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: 성공적으로 조회되었습니다.
+ *       500:
+ *         description: 조회 도중 에러가 발생했습니다.
  */
 
 export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
@@ -320,6 +346,37 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
 
   return NextResponse.json(
     { id, message: 'Successfully added' },
+    { status: 200 },
+  )
+}
+
+export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
+  const searchParams = req.nextUrl.searchParams
+  const query = searchParamsToObject(searchParams)
+
+  const { start, limit, user_id } = query!
+
+  let queryBuilder = supabase.from('invitation').select('*')
+  //Limit이 있을 경우 페이지네이션 로직을 추가, 기본 값은 10
+
+  queryBuilder = queryBuilder.range(
+    Number(start || 0),
+    Number(start || 0) + Number(limit || 10) - 1,
+  )
+
+  // userid가 있을 경우 해당 유저의 초대장 리스트를 조회
+  if (user_id) {
+    queryBuilder = queryBuilder.eq('user_id', user_id.toString())
+  }
+
+  const { data, error } = await queryBuilder
+
+  if (error) {
+    return NextResponse.json(error, { status: 500 })
+  }
+
+  return NextResponse.json(
+    { invitations: data, message: 'Successfully retrieved invitations' },
     { status: 200 },
   )
 }
