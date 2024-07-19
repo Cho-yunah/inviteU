@@ -197,9 +197,10 @@ function searchParamsToObject(searchParams: URLSearchParams): {
 export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
   console.log(req?.url, 'searchParamsToObject(req.searchParams)')
 
-  const searchParams = new URL(req.url!, `http://${''}`).searchParams
+  const searchParams = req.nextUrl.searchParams
 
-  console.log(searchParamsToObject(searchParams), 'hmmmmm')
+  // const searchParams = new URL(req.url!, `http://${''}`).searchParams
+
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
   const query = searchParamsToObject(searchParams)
   const {
@@ -264,11 +265,12 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
 }
 
 export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
-  const searchParams = new URL(req.url!, `http://${''}`).searchParams
-
+  const searchParams = req.nextUrl.searchParams
+  console.log(searchParams, 'searchParams')
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
   const query = searchParamsToObject(searchParams)
 
+  console.log(query, 'query')
   const {
     title,
     description,
