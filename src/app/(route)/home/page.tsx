@@ -1,5 +1,6 @@
 
-import Slider from './components/Slider';
+// import Slider from './components/Slider';
+import Slider from '@/app/components/Slider';
 import Link from 'next/link';
 
 export default function Home() {

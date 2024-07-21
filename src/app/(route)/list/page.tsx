@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "../../page.module.css";
-import ListItem from '../_components/ListItem';
+import ListItem from '../../components/ListItem';
 
 
 const List = () => {

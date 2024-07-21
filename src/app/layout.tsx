@@ -4,6 +4,9 @@ import "./global.css";
 import Logo from "../../public/logo.png"
 import Image from 'next/image';
 import styles from "./page.module.css";
+// import Scrollbars from 'react-custom-scrollbars-2';
+import { Scrollbars } from 'react-custom-scrollbars-2';
+
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -33,9 +36,11 @@ export default function RootLayout({
           </div>
         </header>
         <main className={styles.main}>
-          <div className={styles.description}>
-              {children}
-          </div>
+            <div className={styles.description}>
+          {/* <Scrollbars style={{ width: 100, height: 100 }}> */}
+                {children}
+          {/* </Scrollbars> */}
+            </div>
         </main>
         </div>
       </body>
