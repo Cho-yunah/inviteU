@@ -4,8 +4,9 @@ import styles from './page.module.css'
 import { useUser } from '@supabase/auth-helpers-react'
 import { supabase } from '@/supabase/browser'
 
-import Slider from './_components/Slider';
+// import Slider from './components/Slider';
 import Link from 'next/link';
+import Slider from '@/app/_components/Slider'
 
 export default function Home() {
   const data = useUser()
