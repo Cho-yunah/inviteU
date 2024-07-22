@@ -4,8 +4,9 @@ import SupabaseProvider from '@/supabase/provider'
 import clsx from 'clsx'
 import "./global.css";
 import styles from "./page.module.css";
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Header from './_components/common/header';
+import Header from './_components/common/Header';
+import ModalSetup from './_components/common/modal/ModalSetup';
+
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -20,6 +21,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
   return (
     <SupabaseProvider>
       <html lang="en">
@@ -28,10 +30,9 @@ export default function RootLayout({
           <div className="container">
             <Header />
             <main className={styles.main}>
-              {/* <Scrollbars style={{ width: 100, height: 100 }}> */}
-              <div className={styles.description}>{children}</div>
-              {/* </Scrollbars> */}
+              <div className ={styles.description}>{children}</div>
             </main>
+            <ModalSetup />
           </div>
         </body>
       </html>
