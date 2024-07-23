@@ -12,7 +12,7 @@ const List = () => {
         <div className='w-full text-center'>
           <button className={[styles.mainButton, 'rounded-[10px]', 'text-sm','shadow-sm'].join(' ')}>초대장 생성 +</button>
         </div>
-       <ListItem />
+        <ListItem />
     </div>
   )
 }

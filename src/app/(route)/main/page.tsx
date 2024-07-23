@@ -4,36 +4,48 @@ import styles from './page.module.css'
 import { useUser } from '@supabase/auth-helpers-react'
 import { supabase } from '@/supabase/browser'
 
-// import Slider from './components/Slider';
 import Link from 'next/link';
 import Slider from '@/app/_components/Slider'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import axios from 'axios'
 
 export default function Home() {
   const data = useUser()
-  const logInWithKakao = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-    })
-    if (error) throw error.message
-    console.log('로그인 성공', data)
+  const router = useRouter();
+  // const logInWithKakao = async () => {
+  //   const { data, error } = await supabase.auth.signInWithOAuth({
+  //     provider: 'kakao',
+  //   })
+  //   if (error) throw error.message;
+  //   else {router.push('/list')}
+  //   console.log('로그인 성공', data)
+  // }
+
+  const getInvitationInfo = async () => {
+    console.log('hello')
+    // const { data, error: sessionError } = await supabase.auth.getSession();
+    // console.log(data)
+    try {
+      const response = await axios.get(`http://localhost:3000/api/invitation/`)
+      console.log(response)
+    } catch(error) {
+      console.error('초대장 정보 조회 실패', error)
+    }
+  
   }
-  console.log(data, 'data')
+
+  useEffect(() => {
+    getInvitationInfo();
+    console.log('data',data)
+      // if (sessionError) throw new Error(sessionError.message);
+    // if (data) {
+      // 초대장 갯수 조회 
+    // }
+  },[])
+
   return (
     <>
-      {/* 임시 버튼 - 연동 후 삭제해주세요!  */}
-      <button
-        onClick={logInWithKakao}
-        className="w-full bg-[#FEE500] h-[50px] flex items-center justify-center gap-2 rounded-lg"
-      >
-        <Image
-          width={18}
-          height={18}
-          alt="kakao-logo"
-          src="./kakao-logo.svg"
-          className=" fill-black"
-        ></Image>
-        <p className="text-black text-base">카카오로 시작하기</p>
-      </button>
 
       <div className="p-[1rem]">
         <p className="text-slate-500 pb-1">부소개글</p>

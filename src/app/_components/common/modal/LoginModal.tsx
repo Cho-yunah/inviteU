@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Modal from 'react-modal';
 import './style.scss'
 import Image from 'next/image';
-import Logo from '../../../../../public/logo.png'
+import Logo from '/public/img/logo.png'
 import { IoMdClose } from "react-icons/io";
 import { useUser } from '@supabase/auth-helpers-react';
 import { supabase } from '@/supabase/browser'
@@ -25,21 +25,24 @@ const customStyles = {
 };
 
 const LoginModal = ({isOpen,setIsOpen}: any) => {
-  // const [modalIsOpen, setIsOpen] = React.useState(false);
-
   const data = useUser()
-  const logInWithKakao = async (e:any) => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-    })
-    console.log('로그인 성공', data)
-    if (error) throw error.message;
-  }
 
+  const logInWithKakao = async () => {
+    try {
+      // OAuth 인증 시작
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'kakao',
+      });
+      if (error) throw new Error(error.message);
+      // 인증 완료 후 세션 정보를 가져오기
+      // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      // if (sessionError) throw new Error(sessionError.message);
+      
+    } catch (error) {
+      console.error('로그인 실패', error);
+    }
+  };
 
-  function openModal() {
-    setIsOpen(true);
-  }
   function closeModal() {
     setIsOpen(false);
   };
@@ -81,4 +84,4 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
   )
 }
 
-export default LoginModal
+export default LoginModal;
