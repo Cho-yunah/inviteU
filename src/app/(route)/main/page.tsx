@@ -10,9 +10,9 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import axios from 'axios'
 
-export default function Home() {
-  const data = useUser()
-  const router = useRouter();
+export default function Main() {
+  // const data = useUser()
+  // const router = useRouter();
   // const logInWithKakao = async () => {
   //   const { data, error } = await supabase.auth.signInWithOAuth({
   //     provider: 'kakao',
@@ -35,14 +35,14 @@ export default function Home() {
   
   }
 
-  useEffect(() => {
-    getInvitationInfo();
-    console.log('data',data)
-      // if (sessionError) throw new Error(sessionError.message);
-    // if (data) {
-      // 초대장 갯수 조회 
-    // }
-  },[])
+  // useEffect(() => {
+  //   getInvitationInfo();
+  //   // console.log('data',data)
+  //     // if (sessionError) throw new Error(sessionError.message);
+  //   // if (data) {
+  //     // 초대장 갯수 조회 
+  //   // }
+  // },[])
 
   return (
     <>
