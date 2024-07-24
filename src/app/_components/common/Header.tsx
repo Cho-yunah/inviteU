@@ -43,6 +43,7 @@ const Header = () => {
 
   useEffect(() => {
     if(data) {
+      console.log(data)
       setisSignedIn(true)
     }
   },[data])
@@ -50,9 +51,9 @@ const Header = () => {
   return (
     <>
       <header className="border-b py-3 px-2 shadow-sm">
-        {true ? (
+        {pathName == '/mypage' ? (
           <div className='relative flex items-center justify-center'>
-            <GrPrevious className='absolute left-1  '/>
+            <GrPrevious className='absolute left-1'/>
             <div>{getTitle(pathName)}</div>
           </div>
         ) : (

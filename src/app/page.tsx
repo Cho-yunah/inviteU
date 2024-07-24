@@ -14,7 +14,6 @@ export default function Home() {
   const getInvitationInfo = async () => {
     try {
       const {data} = await axios.get(`/api/invitation/`)
-
       if(data) {
         console.log(data.invitations.length)
         setInvitationCount(data.invitations.length)
