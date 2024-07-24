@@ -143,11 +143,12 @@ header {
 
 .btn {
   padding: 5px 8px;
-  background-color: #222;
-  color: #fff;
+  color: #2c2b2b;
+  background-color: #fff;
   font-weight: 600;
   font-size: 1rem;
-  border-radius: 5px;
+  border-radius: 2px;
+  border: 1px solid #2c2b2b;
 }
 
 @media (prefers-color-scheme: dark) {

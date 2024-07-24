@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "../../page.module.css";
-import ListItem from '../_components/ListItem';
+import ListItem from '../../_components/ListItem';
 
 
 const List = () => {
@@ -12,7 +12,7 @@ const List = () => {
         <div className='w-full text-center'>
           <button className={[styles.mainButton, 'rounded-[10px]', 'text-sm','shadow-sm'].join(' ')}>초대장 생성 +</button>
         </div>
-       <ListItem />
+        <ListItem />
     </div>
   )
 }

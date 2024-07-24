@@ -1,12 +1,13 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './global.css'
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import SupabaseProvider from '@/supabase/provider'
 import clsx from 'clsx'
-import './global.css'
-import Logo from '../../public/logo.png'
-import Image from 'next/image'
-import styles from './page.module.css'
+import "./global.css";
+import styles from "./page.module.css";
+import Header from './_components/common/Header';
+import ModalSetup from './_components/common/modal/ModalSetup';
+
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,24 +21,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+
   return (
     <SupabaseProvider>
       <html lang="en">
         <body className={inter.className}>
           {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
           <div className="container">
-            <header className="flex justify-between border-b py-3 px-5 shadow-sm">
-              <div className="flex">
-                <Image src={Logo} alt="logo" width="28" />
-                <p className="px-3">Invite U</p>
-              </div>
-              <div>
-                <button className="btn text-sm">로그인</button>
-              </div>
-            </header>
+            <Header />
             <main className={styles.main}>
-              <div className={styles.description}>{children}</div>
+              <div className ={styles.description}>{children}</div>
             </main>
+            <ModalSetup />
           </div>
         </body>
       </html>
