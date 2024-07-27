@@ -5,6 +5,7 @@ import { supabase } from '@/supabase/browser'
 import { searchParamsToObject } from '@/lib/helper'
 import { ObjectCannedACL, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import client from '@/supabase/storage'
+import { randomUUID } from 'crypto'
 
 /**
  * @swagger
@@ -74,7 +75,28 @@ export const POST = async (req: NextRequest) => {
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
   const query = searchParamsToObject(searchParams)
 
-  const { invitation_id, user_uuid } = query! || {}
+  const { invitation_id, user_uuid } = query! || {
+    invitation_id: '',
+    user_uuid: '',
+  }
+
+  // Check if invitation_id exists in invitation table
+  const { data: invitationData, error: invitationError } = await supabase
+    .from('invitation')
+    .select('id')
+    .eq('id', invitation_id)
+    .single()
+
+  if (invitationError || !invitationData) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Invitation ID not found',
+      },
+      { status: 400 },
+    )
+  }
+
   const filePath = `video/${Date.now()}_${'test'}`
 
   const formData = await req.formData()
@@ -108,6 +130,17 @@ export const POST = async (req: NextRequest) => {
     const {
       data: { publicUrl },
     } = supabase.storage.from('uploads').getPublicUrl(filePath)
+
+    // Insert record into image table
+    const { data: imageData, error: imageError } = await supabase
+      .from('image')
+      .insert([
+        {
+          invitation_id: invitation_id as string,
+          image_url: publicUrl,
+          id: randomUUID(),
+        },
+      ])
 
     return NextResponse.json(
       { url: publicUrl, message: 'Successfully added' },

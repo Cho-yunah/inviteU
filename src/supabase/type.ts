@@ -9,11 +9,40 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      image: {
+        Row: {
+          created_at: string
+          id: string
+          image_url: string | null
+          invitation_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          invitation_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          invitation_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'image_invitation_id_fkey'
+            columns: ['invitation_id']
+            isOneToOne: false
+            referencedRelation: 'invitation'
+            referencedColumns: ['id']
+          },
+        ]
+      }
       invitation: {
         Row: {
           address: string | null
           created_at: string | null
-          custom_url: string | null
+          custom_url: string
           date: string | null
           description: string | null
           id: string
@@ -30,7 +59,7 @@ export type Database = {
         Insert: {
           address?: string | null
           created_at?: string | null
-          custom_url?: string | null
+          custom_url: string
           date?: string | null
           description?: string | null
           id?: string
@@ -47,7 +76,7 @@ export type Database = {
         Update: {
           address?: string | null
           created_at?: string | null
-          custom_url?: string | null
+          custom_url?: string
           date?: string | null
           description?: string | null
           id?: string
@@ -61,15 +90,7 @@ export type Database = {
           user_id?: string | null
           video_url?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'invitation_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'userinfo'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       userinfo: {
         Row: {
@@ -99,6 +120,35 @@ export type Database = {
             columns: ['id']
             isOneToOne: true
             referencedRelation: 'users'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      video: {
+        Row: {
+          created_at: string
+          id: string
+          invitation_id: string | null
+          video_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          invitation_id?: string | null
+          video_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          invitation_id?: string | null
+          video_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'video_invitation_id_fkey'
+            columns: ['invitation_id']
+            isOneToOne: false
+            referencedRelation: 'invitation'
             referencedColumns: ['id']
           },
         ]
