@@ -4,31 +4,13 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID, UUID } from 'crypto'
+import { searchParamsToObject } from '@/lib/helper'
 
 type Data = {
   id?: string
   error?: string
 }
 
-/**
- * URLSearchParams를 일반 객체로 변환
- */
-function searchParamsToObject(searchParams: URLSearchParams): {
-  [key: string]: string | boolean
-} {
-  const obj: { [key: string]: string | boolean } = {}
-  searchParams.forEach((value, key) => {
-    // true/false 문자열을 실제 boolean 값으로 변환
-    if (value === 'true') {
-      obj[key] = true
-    } else if (value === 'false') {
-      obj[key] = false
-    } else {
-      obj[key] = value
-    }
-  })
-  return obj
-}
 /**
  * @swagger
  * /api/invitation:
@@ -292,11 +274,9 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
 
 export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
-  console.log(searchParams, 'searchParams')
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
   const query = searchParamsToObject(searchParams)
 
-  console.log(query, 'query')
   const {
     title,
     description,
