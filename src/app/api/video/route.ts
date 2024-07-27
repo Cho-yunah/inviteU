@@ -4,12 +4,10 @@ import fs from 'fs'
 import { supabase } from '@/supabase/browser'
 
 import { searchParamsToObject } from '@/lib/helper'
-import { ObjectCannedACL, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import client from '@/supabase/storage'
 
 /**
  * @swagger
- * /api/image:
+ * /api/video:
  *   post:
  *     summary: Upload a video
  *     description: Upload a video to Supabase storage with a 10-year expiration.
@@ -69,17 +67,20 @@ import client from '@/supabase/storage'
  *                   description: Error message.
  */
 
+const UPLOAD_DIR = path.resolve(process.env.ROOT_PATH ?? '', 'public/uploads')
 export const POST = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams
+  console.log(111111)
 
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
   const query = searchParamsToObject(searchParams)
 
   const { invitation_id, user_uuid } = query! || {}
-  const filePath = `video/${Date.now()}_${'test'}`
+  const filePath = `videos/${Date.now()}_${'test'}`
+  console.log(2222)
 
   const formData = await req.formData()
-  // const file = (body.file as Blob) || null;
+  console.log(formData, 'formData')
   // const body = Object.fromEntries(formData)
   // const file = (body.file as Blob) || null
   const file = formData.get('file') as File
@@ -87,23 +88,15 @@ export const POST = async (req: NextRequest) => {
   console.log(file, 'filee')
   if (file) {
     const buffer = Buffer.from(await file.arrayBuffer())
-
-    const uploadParams = {
-      Bucket: 'inviteU', // Supabase Storage에서 사용 중인 버킷 이름
-      Key: `image/${invitation_id}/${Date.now() + 999999}_${file.name}`, // 파일 경로 및 이름 설정
-      Body: buffer,
-      ACL: ObjectCannedACL.public_read, // 필요에 따라 액세스 제어 설정
+    if (!fs.existsSync(UPLOAD_DIR)) {
+      fs.mkdirSync(UPLOAD_DIR)
     }
-
-    const command = new PutObjectCommand(uploadParams)
-    await client.send(command)
 
     const { data, error } = await supabase.storage
       .from('uploads')
       .upload(filePath, file, { upsert: false, cacheControl: '315360000' })
 
     if (error) {
-      console.error(error, 'error')
       return NextResponse.json(error, { status: 500 })
     }
     const {
