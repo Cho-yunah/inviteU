@@ -97,8 +97,6 @@ export const POST = async (req: NextRequest) => {
     )
   }
 
-  const filePath = `video/${Date.now()}_${'test'}`
-
   const formData = await req.formData()
   // const file = (body.file as Blob) || null;
   // const body = Object.fromEntries(formData)
@@ -108,29 +106,28 @@ export const POST = async (req: NextRequest) => {
   console.log(file, 'filee')
   if (file) {
     const buffer = Buffer.from(await file.arrayBuffer())
+    const filePath = `image/${invitation_id}/${Date.now()}_${file.name}`
 
     const uploadParams = {
       Bucket: 'inviteU', // Supabase Storage에서 사용 중인 버킷 이름
-      Key: `image/${invitation_id}/${Date.now() + 999999}_${file.name}`, // 파일 경로 및 이름 설정
+      Key: filePath, // 파일 경로 및 이름 설정
       Body: buffer,
       ACL: ObjectCannedACL.public_read, // 필요에 따라 액세스 제어 설정
     }
 
     const command = new PutObjectCommand(uploadParams)
-    await client.send(command)
+    const data = await client.send(command)
 
-    const { data, error } = await supabase.storage
-      .from('uploads')
-      .upload(filePath, file, { upsert: false, cacheControl: '315360000' })
+    console.log(data, 'dataa')
+    // const { data, error } = await supabase.storage
+    //   .from('uploads')
+    //   .upload(filePath, file, { upsert: false, cacheControl: '315360000' })
 
-    if (error) {
-      console.error(error, 'error')
-      return NextResponse.json(error, { status: 500 })
-    }
     const {
       data: { publicUrl },
-    } = supabase.storage.from('uploads').getPublicUrl(filePath)
+    } = supabase.storage.from('inviteU').getPublicUrl(filePath)
 
+    console.log(publicUrl, ' publicUrl ')
     // Insert record into image table
     const { data: imageData, error: imageError } = await supabase
       .from('image')
@@ -141,21 +138,24 @@ export const POST = async (req: NextRequest) => {
           id: randomUUID(),
         },
       ])
+    if (imageError) {
+      console.error(imageError, 'errorImage')
 
+      return NextResponse.json(
+        {
+          success: false,
+          error: imageError.message,
+        },
+        { status: 500 },
+      )
+    }
     return NextResponse.json(
       { url: publicUrl, message: 'Successfully added' },
       { status: 200 },
     )
-    // res.status(200).json({ url: publicURL });
-    //   fs.writeFileSync(path.resolve(UPLOAD_DIR, (body.file as File).name), buffer)
   } else {
     return NextResponse.json({
       success: false,
     })
   }
-
-  // return NextResponse.json({
-  //   success: true,
-  //   name: (body.file as File).name,
-  // })
 }
