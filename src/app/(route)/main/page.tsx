@@ -11,16 +11,6 @@ import { useEffect } from 'react'
 import axios from 'axios'
 
 export default function Main() {
-  // const data = useUser()
-  // const router = useRouter();
-  // const logInWithKakao = async () => {
-  //   const { data, error } = await supabase.auth.signInWithOAuth({
-  //     provider: 'kakao',
-  //   })
-  //   if (error) throw error.message;
-  //   else {router.push('/list')}
-  //   console.log('로그인 성공', data)
-  // }
 
   const getInvitationInfo = async () => {
     console.log('hello')

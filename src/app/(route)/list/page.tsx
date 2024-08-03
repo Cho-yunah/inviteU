@@ -1,9 +1,15 @@
+'use client'
+
 import React from 'react';
 import styles from "../../page.module.css";
 import ListItem from '../../_components/ListItem';
+import { useSelector } from 'react-redux';
 
 
 const List = () => {
+  const listData = useSelector((state: any)=> state.invitation)
+  console.log('listData', listData)
+  
   return (
     <div >
         <div className='p-[1rem]'>
