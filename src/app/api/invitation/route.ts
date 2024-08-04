@@ -62,22 +62,7 @@ type Data = {
  *         schema:
  *           type: string
  *       - in: query
- *         name: isVertical
- *         required: false
- *         schema:
- *           type: boolean
- *       - in: query
- *         name: isImage
- *         required: false
- *         schema:
- *           type: boolean
- *       - in: query
- *         name: isMap
- *         required: false
- *         schema:
- *           type: boolean
- *       - in: query
- *         name: isVideo
+ *         name: is_vertical
  *         required: false
  *         schema:
  *           type: boolean
@@ -87,10 +72,10 @@ type Data = {
  *         schema:
  *           type: string
  *       - in: query
- *         name: videoUrl
+ *         name: ratio
  *         required: false
  *         schema:
- *           type: string
+ *           type: number
  *     responses:
  *       200:
  *         description: 초대장이 성공적으로 생성되었습니다.
@@ -144,7 +129,7 @@ type Data = {
  *         schema:
  *           type: string
  *       - in: query
- *         name: isVertical
+ *         name: is_vertical
  *         required: false
  *         schema:
  *           type: boolean
@@ -153,6 +138,12 @@ type Data = {
  *         required: false
  *         schema:
  *           type: string
+ *           type: string
+ *       - in: query
+ *         name: ratio
+ *         required: false
+ *         schema:
+ *           type: number
  *     responses:
  *       200:
  *         description: 초대장이 업데이트되었습니다.
@@ -220,9 +211,6 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     post_number,
     address,
     is_vertical,
-    is_image,
-    is_map,
-    is_video,
     video_url,
     user_id,
   } = query! || {}
@@ -253,9 +241,6 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
       post_number: post_number?.toString(),
       address: address?.toString(),
       is_vertical: Boolean(is_vertical),
-      is_image: Boolean(is_image),
-      is_map: Boolean(is_map),
-      is_video: Boolean(is_video),
       video_url: video_url?.toString(),
       id: uuid,
       user_id: user_id?.toString(),
@@ -286,9 +271,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
     post_number,
     address,
     is_vertical,
-    is_image,
-    is_map,
-    is_video,
+
     video_url,
     id,
   } = query! || {}
@@ -311,9 +294,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
       post_number: post_number?.toString(),
       address: address?.toString(),
       is_vertical: Boolean(is_vertical),
-      is_image: Boolean(is_image),
-      is_map: Boolean(is_map),
-      is_video: Boolean(is_video),
+
       video_url: video_url?.toString(),
       id: id?.toString(),
     })
