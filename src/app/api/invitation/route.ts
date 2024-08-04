@@ -67,7 +67,7 @@ type Data = {
  *         schema:
  *           type: boolean
  *       - in: query
- *         name: videoUrl
+ *         name: video_url
  *         required: false
  *         schema:
  *           type: string
@@ -144,6 +144,11 @@ type Data = {
  *         required: false
  *         schema:
  *           type: number
+ *       - in: query
+ *         name: video_url
+ *         required: false
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: 초대장이 업데이트되었습니다.
@@ -212,6 +217,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     address,
     is_vertical,
     video_url,
+    ratio,
     user_id,
   } = query! || {}
 
@@ -242,6 +248,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
       address: address?.toString(),
       is_vertical: Boolean(is_vertical),
       video_url: video_url?.toString(),
+      ratio: Number(ratio),
       id: uuid,
       user_id: user_id?.toString(),
     },
@@ -271,7 +278,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
     post_number,
     address,
     is_vertical,
-
+    ratio,
     video_url,
     id,
   } = query! || {}
@@ -294,7 +301,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
       post_number: post_number?.toString(),
       address: address?.toString(),
       is_vertical: Boolean(is_vertical),
-
+      ratio: Number(ratio),
       video_url: video_url?.toString(),
       id: id?.toString(),
     })
