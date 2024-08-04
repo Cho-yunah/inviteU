@@ -1,26 +1,22 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
-type InvitationStateType =  {
-  email: string;
-  phone: string;
-  user_metadata: {
-    name: string;
-  }
+export type InvitationStateType =  {
+  address: string;
+  created_at: string;
+  custom_url: string;
+  data: string;
+  description: string;
+  title: string;
+  subtitle: string;
 };
 
-const initialState = {
-  email: '',
-  phone: '',
-  user_metadata: {
-    name: '',
-  },
-} as InvitationStateType;
+const initialState :InvitationStateType[] =[];
 
 export const invitationSlice = createSlice({
   name: 'invitation',
   initialState,
   reducers: {
-    setInvitation: (state, action: PayloadAction<InvitationStateType>) => {
+    setInvitation: (state, action: PayloadAction<InvitationStateType[]>) => {
       return action.payload;
     },
 

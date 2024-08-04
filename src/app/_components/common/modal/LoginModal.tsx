@@ -34,12 +34,11 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
         provider: 'kakao',
       });
       if (error) throw new Error(error.message);
+      
       // 인증 완료 후 세션 정보를 가져오기
       // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       // if (sessionError) throw new Error(sessionError.message);
-      // if(data) {
-      //   sessionStorage.setItem('username', data?.user_metadata.full_name)
-      //   sessionStorage.setItem('email', data?.email)      }
+    
     } catch (error) {
       console.error('로그인 실패', error);
     }
