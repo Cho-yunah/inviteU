@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import path from 'path'
-import fs from 'fs'
+
 import { supabase } from '@/supabase/browser'
 
 import { searchParamsToObject } from '@/lib/helper'
+import { ObjectCannedACL, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import client from '@/supabase/storage'
+import { randomUUID } from 'crypto'
 
 /**
  * @swagger
@@ -67,20 +69,36 @@ import { searchParamsToObject } from '@/lib/helper'
  *                   description: Error message.
  */
 
-const UPLOAD_DIR = path.resolve(process.env.ROOT_PATH ?? '', 'public/uploads')
 export const POST = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams
-  console.log(111111)
 
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
   const query = searchParamsToObject(searchParams)
 
-  const { invitation_id, user_uuid } = query! || {}
-  const filePath = `videos/${Date.now()}_${'test'}`
-  console.log(2222)
+  const { invitation_id, user_uuid } = query! || {
+    invitation_id: '',
+    user_uuid: '',
+  }
+
+  // Check if invitation_id exists in invitation table
+  const { data: invitationData, error: invitationError } = await supabase
+    .from('invitation')
+    .select('id')
+    .eq('id', invitation_id)
+    .single()
+
+  if (invitationError || !invitationData) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'Invitation ID not found',
+      },
+      { status: 400 },
+    )
+  }
 
   const formData = await req.formData()
-  console.log(formData, 'formData')
+  // const file = (body.file as Blob) || null;
   // const body = Object.fromEntries(formData)
   // const file = (body.file as Blob) || null
   const file = formData.get('file') as File
@@ -88,35 +106,56 @@ export const POST = async (req: NextRequest) => {
   console.log(file, 'filee')
   if (file) {
     const buffer = Buffer.from(await file.arrayBuffer())
-    if (!fs.existsSync(UPLOAD_DIR)) {
-      fs.mkdirSync(UPLOAD_DIR)
+    const filePath = `image/${invitation_id}/${Date.now()}_${file.name}`
+
+    const uploadParams = {
+      Bucket: 'inviteU', // Supabase Storage에서 사용 중인 버킷 이름
+      Key: filePath, // 파일 경로 및 이름 설정
+      Body: buffer,
+      ACL: ObjectCannedACL.public_read, // 필요에 따라 액세스 제어 설정
     }
 
-    const { data, error } = await supabase.storage
-      .from('uploads')
-      .upload(filePath, file, { upsert: false, cacheControl: '315360000' })
+    const command = new PutObjectCommand(uploadParams)
+    const data = await client.send(command)
 
-    if (error) {
-      return NextResponse.json(error, { status: 500 })
-    }
+    console.log(data, 'dataa')
+    // const { data, error } = await supabase.storage
+    //   .from('uploads')
+    //   .upload(filePath, file, { upsert: false, cacheControl: '315360000' })
+
     const {
       data: { publicUrl },
-    } = supabase.storage.from('uploads').getPublicUrl(filePath)
+    } = supabase.storage.from('inviteU').getPublicUrl(filePath)
 
+    console.log(publicUrl, ' publicUrl ')
+    // Insert record into image table
+    const { data: imageData, error: imageError } = await supabase
+      .from('image')
+      .insert([
+        {
+          invitation_id: invitation_id as string,
+          image_url: publicUrl,
+          id: randomUUID(),
+        },
+      ])
+    if (imageError) {
+      console.error(imageError, 'errorImage')
+
+      return NextResponse.json(
+        {
+          success: false,
+          error: imageError.message,
+        },
+        { status: 500 },
+      )
+    }
     return NextResponse.json(
       { url: publicUrl, message: 'Successfully added' },
       { status: 200 },
     )
-    // res.status(200).json({ url: publicURL });
-    //   fs.writeFileSync(path.resolve(UPLOAD_DIR, (body.file as File).name), buffer)
   } else {
     return NextResponse.json({
       success: false,
     })
   }
-
-  // return NextResponse.json({
-  //   success: true,
-  //   name: (body.file as File).name,
-  // })
 }

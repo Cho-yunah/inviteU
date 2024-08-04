@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 const FormPage = () => {
+  //image
   const [formData, setFormData] = useState<FormData>()
   const [invitationId, setInvitationId] = useState('')
   //video
@@ -27,7 +28,7 @@ const FormPage = () => {
         body: formData,
       })
       alert(`response: ${response.status}`)
-      console.log(response, 'onSubmitImage_response')
+      console.log(response, 'onSubmitVideo_response')
     }
   }
   return (
