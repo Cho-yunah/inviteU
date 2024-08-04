@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import Slider from './_components/Slider';
 import Link from 'next/link';
 import { useUser } from '@supabase/auth-helpers-react';
-import { supabase } from '@/supabase/browser';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setInvitation } from '@/lib/features/invitation/invitationSlice';
@@ -18,7 +17,6 @@ export default function Home() {
     try {
       const {data} = await axios.get(`/api/invitation/`)
       if(data) {
-        console.log('invitation data', data.invitations)
         dispatch(setInvitation(data.invitations))
         setInvitationCount(data.invitations.length)
       }
@@ -30,7 +28,6 @@ export default function Home() {
   }
 
   useEffect(() => {
-      console.log('data', data)
       getInvitationInfo();
   },[data])
 
