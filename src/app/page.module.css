@@ -133,13 +133,15 @@
   width: 90%;
   padding: 0.7rem 1rem;
   font-weight: 500;
-  color: var(--primary);
+  color: #383838;
   font-weight: 600;
-  /* border: 1.5px solid var(--primary-transparent); */
-  background-color: var(--primary-transparent);
+  border: 1px solid #d5d5d5;
+  background-color: #fff;
+  /* background-color: var(--primary-transparent); */
 }
 .mainButton:hover {
-  background-color: var(--primary);
+  background-color: var(--primary-transparent);
+  border: 1px solid var(--primary-transparent);
   color: #fff;
   transition: all 0.5s ease;
 }

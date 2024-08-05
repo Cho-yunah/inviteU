@@ -40,7 +40,7 @@
   --card-border-rgb: 131, 134, 135;
 
   --primary: rgba(255,127,166, 0.9);
-  --primary-transparent: rgba(255,127,166, 0.2);
+  --primary-transparent: rgba(250, 148, 148, 0.6);
   --secondary: rgba(31, 209, 253, 0.4);
   --tertiary: rgba(31, 209, 253, 0.6);
 }

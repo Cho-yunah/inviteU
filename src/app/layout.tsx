@@ -6,7 +6,8 @@ import "./global.css";
 import styles from "./page.module.css";
 import Header from './_components/common/Header';
 import ModalSetup from './_components/common/modal/ModalSetup';
-
+import ReduxProvider from "./StoreProvider";
+import ErrorBoundary from './_components/common/errorBoundary/Errorboundary';
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,13 +28,17 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
-          <div className="container">
-            <Header />
-            <main className={styles.main}>
-              <div className ={styles.description}>{children}</div>
-            </main>
-            <ModalSetup />
-          </div>
+            <ErrorBoundary >
+              <div className="container">
+                <Header />
+                <main className={styles.main}>
+                  <ReduxProvider>
+                    <div className ={styles.description}>{children}</div>
+                  </ReduxProvider>
+                </main>
+                <ModalSetup />
+              </div>
+          </ErrorBoundary>
         </body>
       </html>
     </SupabaseProvider>
