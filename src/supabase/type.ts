@@ -9,35 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      image: {
-        Row: {
-          created_at: string
-          id: string
-          image_url: string | null
-          invitation_id: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          image_url?: string | null
-          invitation_id?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          image_url?: string | null
-          invitation_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'image_invitation_id_fkey'
-            columns: ['invitation_id']
-            isOneToOne: false
-            referencedRelation: 'invitation'
-            referencedColumns: ['id']
-          },
-        ]
-      }
       invitation: {
         Row: {
           address: string | null
@@ -46,11 +17,10 @@ export type Database = {
           date: string | null
           description: string | null
           id: string
-          is_image: boolean | null
-          is_map: boolean | null
+          image_urls: string | null
           is_vertical: boolean | null
-          is_video: boolean | null
           post_number: string | null
+          ratio: number | null
           subtitle: string | null
           title: string
           user_id: string | null
@@ -63,11 +33,10 @@ export type Database = {
           date?: string | null
           description?: string | null
           id?: string
-          is_image?: boolean | null
-          is_map?: boolean | null
+          image_urls?: string | null
           is_vertical?: boolean | null
-          is_video?: boolean | null
           post_number?: string | null
+          ratio?: number | null
           subtitle?: string | null
           title: string
           user_id?: string | null
@@ -80,11 +49,10 @@ export type Database = {
           date?: string | null
           description?: string | null
           id?: string
-          is_image?: boolean | null
-          is_map?: boolean | null
+          image_urls?: string | null
           is_vertical?: boolean | null
-          is_video?: boolean | null
           post_number?: string | null
+          ratio?: number | null
           subtitle?: string | null
           title?: string
           user_id?: string | null
@@ -120,35 +88,6 @@ export type Database = {
             columns: ['id']
             isOneToOne: true
             referencedRelation: 'users'
-            referencedColumns: ['id']
-          },
-        ]
-      }
-      video: {
-        Row: {
-          created_at: string
-          id: string
-          invitation_id: string | null
-          video_url: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          invitation_id?: string | null
-          video_url?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          invitation_id?: string | null
-          video_url?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: 'video_invitation_id_fkey'
-            columns: ['invitation_id']
-            isOneToOne: false
-            referencedRelation: 'invitation'
             referencedColumns: ['id']
           },
         ]

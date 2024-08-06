@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from 'next/server'
 
 import { supabase } from '@/supabase/browser'
 
-import { searchParamsToObject } from '@/lib/helper'
+import { getFileType, searchParamsToObject } from '@/lib/helper'
 import { ObjectCannedACL, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import client from '@/supabase/storage'
-import { randomUUID } from 'crypto'
 
+const BUCKET_NAME = process.env.STORAGE_BUCKET || ''
 /**
  * @swagger
  * /api/files:
@@ -87,7 +87,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     .select('id')
     .eq('id', user_uuid)
     .single()
-  console.log(userError, 'userError', 'userdata', userData)
 
   if (userError || !userData) {
     return NextResponse.json(
@@ -99,45 +98,35 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     )
   }
 
-  console.log(userData, 'userDataa')
-
   const formData = await req.formData()
-  // const file = (body.file as Blob) || null;
-  // const body = Object.fromEntries(formData)
-  // const file = (body.file as Blob) || null
+
   const file = formData.get('file') as File
 
-  console.log(file, 'filee')
   if (file) {
     const buffer = Buffer.from(await file.arrayBuffer())
-    const filePath = `image/${user_uuid}/${Date.now()}`
+    const fileType = getFileType(file.type)
+    const filePath = `${fileType}/${user_uuid}/${Date.now()}`
 
     const uploadParams = {
-      Bucket: 'inviteU', // Supabase Storage에서 사용 중인 버킷 이름
+      Bucket: BUCKET_NAME, // Supabase Storage에서 사용 중인 버킷 이름
       Key: filePath, // 파일 경로 및 이름 설정
       Body: buffer,
       ACL: ObjectCannedACL.public_read, // 필요에 따라 액세스 제어 설정
     }
 
     const command = new PutObjectCommand(uploadParams)
-    const data = await client.send(command)
-
-    console.log(data, 'dataa')
-    // const { data, error } = await supabase.storage
-    //   .from('uploads')
-    //   .upload(filePath, file, { upsert: false, cacheControl: '315360000' })
+    await client.send(command)
 
     const {
       data: { publicUrl },
-    } = supabase.storage.from('inviteU').getPublicUrl(filePath)
+    } = supabase.storage.from(BUCKET_NAME).getPublicUrl(filePath)
 
     // Insert record into image table
 
-    console.log(NextResponse.json({ hello: 'Next.js' }).body, 'hmm???')
     if (publicUrl) {
       return NextResponse.json(
         { publicUrl, message: 'Successfully added' },
-        { status: 201 },
+        { status: 200 },
       )
     } else {
       return NextResponse.json(

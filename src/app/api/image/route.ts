@@ -129,26 +129,7 @@ export const POST = async (req: NextRequest) => {
 
     console.log(publicUrl, ' publicUrl ')
     // Insert record into image table
-    const { data: imageData, error: imageError } = await supabase
-      .from('image')
-      .insert([
-        {
-          invitation_id: invitation_id as string,
-          image_url: publicUrl,
-          id: randomUUID(),
-        },
-      ])
-    if (imageError) {
-      console.error(imageError, 'errorImage')
 
-      return NextResponse.json(
-        {
-          success: false,
-          error: imageError.message,
-        },
-        { status: 500 },
-      )
-    }
     return NextResponse.json(
       { url: publicUrl, message: 'Successfully added' },
       { status: 200 },

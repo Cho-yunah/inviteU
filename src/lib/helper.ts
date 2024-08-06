@@ -19,3 +19,34 @@ export const searchParamsToObject = (
   })
   return obj
 }
+
+const imageMimeTypes = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/bmp',
+  'image/webp',
+  'image/tiff',
+  'image/svg+xml',
+]
+
+const videoMimeTypes = [
+  'video/mp4',
+  'video/mpeg',
+  'video/ogg',
+  'video/webm',
+  'video/quicktime',
+  'video/x-msvideo',
+  'video/x-ms-wmv',
+  'video/x-flv',
+]
+
+export function getFileType(fileType: string): 'image' | 'video' | undefined {
+  if (imageMimeTypes.includes(fileType)) {
+    return 'image'
+  }
+  if (videoMimeTypes.includes(fileType)) {
+    return 'video'
+  }
+  return
+}
