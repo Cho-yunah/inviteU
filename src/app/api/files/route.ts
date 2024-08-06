@@ -3,10 +3,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/supabase/browser'
 
 import { getFileType, searchParamsToObject } from '@/lib/helper'
-import { ObjectCannedACL, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { ObjectCannedACL, PutObjectCommand } from '@aws-sdk/client-s3'
 import client from '@/supabase/storage'
 
 const BUCKET_NAME = process.env.STORAGE_BUCKET || ''
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024 // 5MB
+const MAX_VIDEO_SIZE = 30 * 1024 * 1024 // 30MB
+
 /**
  * @swagger
  * /api/files:
@@ -105,6 +108,30 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   if (file) {
     const buffer = Buffer.from(await file.arrayBuffer())
     const fileType = getFileType(file.type)
+    const fileSize = file.size
+    if (!fileType)
+      return NextResponse.json(
+        {
+          success: false,
+          error: `지원되지 않는 파일 타입입니다.`,
+        },
+        { status: 400 },
+      )
+    if (
+      (fileType === 'image' && fileSize > MAX_IMAGE_SIZE) ||
+      (fileType === 'video' && fileSize > MAX_VIDEO_SIZE)
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `파일 사이즈가 초과되었습니다. ${fileType} 의 최대 사이즈는 ${
+            fileType === 'image' ? '5MB' : '30MB'
+          }. 입니다`,
+        },
+        { status: 400 },
+      )
+    }
+
     const filePath = `${fileType}/${user_uuid}/${Date.now()}`
 
     const uploadParams = {
