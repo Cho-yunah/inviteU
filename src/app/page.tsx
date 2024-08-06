@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import Slider from './_components/Slider';
 import Link from 'next/link';
 import { useUser } from '@supabase/auth-helpers-react';
-import { supabase } from '@/supabase/browser';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { setInvitation } from '@/lib/features/invitation/invitationSlice';
 
 export default function Home() {
   const data = useUser()
+  const dispatch = useDispatch();
   const [invitationCount, setInvitationCount] = useState(0);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
 
@@ -15,7 +17,7 @@ export default function Home() {
     try {
       const {data} = await axios.get(`/api/invitation/`)
       if(data) {
-        console.log(data.invitations.length)
+        dispatch(setInvitation(data.invitations))
         setInvitationCount(data.invitations.length)
       }
     } catch(error) {
@@ -27,7 +29,7 @@ export default function Home() {
 
   useEffect(() => {
       getInvitationInfo();
-  },[])
+  },[data])
 
   return (
     <>

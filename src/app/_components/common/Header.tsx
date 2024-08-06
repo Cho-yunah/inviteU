@@ -41,9 +41,17 @@ const Header = () => {
     router.push('/mypage')
   }
 
+  const handleMoveHome = () => {
+    router.push('/')
+  }
+
+  const handleMoveBack = () => {
+    router.back();
+  }
+
   useEffect(() => {
     if(data) {
-      console.log(data)
+      console.log('header data',data)
       setisSignedIn(true)
     }
   },[data])
@@ -53,12 +61,12 @@ const Header = () => {
       <header className="border-b py-3 px-2 shadow-sm">
         {pathName == '/mypage' ? (
           <div className='relative flex items-center justify-center'>
-            <GrPrevious className='absolute left-1'/>
+            <GrPrevious className='absolute left-1 p-1 w-6 h-6 cursor-pointer' onClick={handleMoveBack}/>
             <div>{getTitle(pathName)}</div>
           </div>
         ) : (
           <div className="flex justify-between">
-            <div className="flex" >
+            <div className="flex items-center cursor-pointer" onClick={handleMoveHome}>
                 <Image src={Logo} alt="logo" width="28" />
                 <p className="px-3">Invite U</p>
             </div>
