@@ -1,34 +1,15 @@
 import { supabase } from '@/supabase/browser'
-import { Database } from '@/supabase/type'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID, UUID } from 'crypto'
+import { judgeImageAndVideoValid, searchParamsToObject } from '@/lib/helper'
 
 type Data = {
   id?: string
   error?: string
 }
 
-/**
- * URLSearchParams를 일반 객체로 변환
- */
-function searchParamsToObject(searchParams: URLSearchParams): {
-  [key: string]: string | boolean
-} {
-  const obj: { [key: string]: string | boolean } = {}
-  searchParams.forEach((value, key) => {
-    // true/false 문자열을 실제 boolean 값으로 변환
-    if (value === 'true') {
-      obj[key] = true
-    } else if (value === 'false') {
-      obj[key] = false
-    } else {
-      obj[key] = value
-    }
-  })
-  return obj
-}
 /**
  * @swagger
  * /api/invitation:
@@ -80,35 +61,20 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         schema:
  *           type: string
  *       - in: query
- *         name: isVertical
+ *         name: is_vertical
  *         required: false
  *         schema:
  *           type: boolean
  *       - in: query
- *         name: isImage
- *         required: false
- *         schema:
- *           type: boolean
- *       - in: query
- *         name: isMap
- *         required: false
- *         schema:
- *           type: boolean
- *       - in: query
- *         name: isVideo
- *         required: false
- *         schema:
- *           type: boolean
- *       - in: query
- *         name: videoUrl
+ *         name: video_url
  *         required: false
  *         schema:
  *           type: string
  *       - in: query
- *         name: videoUrl
+ *         name: ratio
  *         required: false
  *         schema:
- *           type: string
+ *           type: number
  *     responses:
  *       200:
  *         description: 초대장이 성공적으로 생성되었습니다.
@@ -162,7 +128,7 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         schema:
  *           type: string
  *       - in: query
- *         name: isVertical
+ *         name: is_vertical
  *         required: false
  *         schema:
  *           type: boolean
@@ -171,14 +137,29 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         required: false
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: ratio
+ *         required: false
+ *         schema:
+ *           type: number
+ *       - in: query
+ *         name: image_urls
+ *         required: false
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: 초대장이 업데이트되었습니다.
  *       500:
  *         description: 초대장 업데이트 도중 에러가 발생했습니다.
+ */
+
+/**
+ * @swagger
+ * /api/invitation:
  *   delete:
- *     summary: Update an invitation
- *     description: Update an invitation with the given details
+ *     summary: Delete an invitation
+ *     description: Delete an invitation with the given details
  *     tags:
  *       - Invitation
  *     parameters:
@@ -192,6 +173,11 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         description: 성공적으로 삭제되었습니다.
  *       500:
  *         description: 삭제 도중 에러가 발생했습니다.
+ */
+
+/**
+ * @swagger
+ * /api/invitation:
  *   get:
  *     summary: Retrieve all invitations
  *     description: Retrieve all invitations with pagination
@@ -213,21 +199,21 @@ function searchParamsToObject(searchParams: URLSearchParams): {
  *         required: false
  *         schema:
  *           type: string
+ *       - in: query
+ *         name: invitation_id
+ *         required: false
+ *         schema:
+ *           type: string
  *     responses:
  *       200:
  *         description: 성공적으로 조회되었습니다.
  *       500:
  *         description: 조회 도중 에러가 발생했습니다.
  */
-
 export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
-  console.log(req?.url, 'searchParamsToObject(req.searchParams)')
-
   const searchParams = req.nextUrl.searchParams
 
-  // const searchParams = new URL(req.url!, `http://${''}`).searchParams
-
-  // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
+  // next.js14의 query는 query 객체가 아닌 searchParams에 있습니다.
   const query = searchParamsToObject(searchParams)
   const {
     title,
@@ -238,11 +224,10 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     post_number,
     address,
     is_vertical,
-    is_image,
-    is_map,
-    is_video,
     video_url,
+    ratio,
     user_id,
+    image_urls,
   } = query! || {}
 
   if (
@@ -256,10 +241,33 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     !address
   ) {
     return NextResponse.json(
-      { message: 'id field is missing' },
+      { message: '필수 항목이 없습니다.' },
       { status: 400 },
     )
   }
+
+  const { isVideoUrlValid, isImageUrlsValid } = judgeImageAndVideoValid({
+    image_urls,
+    video_url,
+  })
+  if (!isImageUrlsValid) {
+    return NextResponse.json(
+      {
+        message:
+          '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
+      },
+      { status: 400 },
+    )
+  }
+  if (!isVideoUrlValid) {
+    return NextResponse.json(
+      {
+        message: '적절한 비디오 url이 아닙니다.',
+      },
+      { status: 400 },
+    )
+  }
+
   const uuid = randomUUID()
   const { data, error } = await supabase.from('invitation').insert([
     {
@@ -271,17 +279,15 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
       post_number: post_number?.toString(),
       address: address?.toString(),
       is_vertical: Boolean(is_vertical),
-      is_image: Boolean(is_image),
-      is_map: Boolean(is_map),
-      is_video: Boolean(is_video),
       video_url: video_url?.toString(),
+      ratio: Number(ratio),
       id: uuid,
+      image_urls: image_urls?.toString(),
       user_id: user_id?.toString(),
     },
   ])
 
-  console.log(data, 'dataaaa', error, res)
-  if (error) {
+  if (error || !data) {
     return NextResponse.json(error, { status: 500 })
   }
   return NextResponse.json(
@@ -292,11 +298,10 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
 
 export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
-  console.log(searchParams, 'searchParams')
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
+
   const query = searchParamsToObject(searchParams)
 
-  console.log(query, 'query')
   const {
     title,
     description,
@@ -306,11 +311,10 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
     post_number,
     address,
     is_vertical,
-    is_image,
-    is_map,
-    is_video,
+    ratio,
     video_url,
     id,
+    image_urls,
   } = query! || {}
 
   if (!id) {
@@ -331,15 +335,13 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
       post_number: post_number?.toString(),
       address: address?.toString(),
       is_vertical: Boolean(is_vertical),
-      is_image: Boolean(is_image),
-      is_map: Boolean(is_map),
-      is_video: Boolean(is_video),
+      ratio: Number(ratio),
       video_url: video_url?.toString(),
       id: id?.toString(),
+      image_urls: image_urls?.toString(),
     })
     .eq('id', id as string)
 
-  console.log(data, 'dataaaa', error, res)
   if (error) {
     return NextResponse.json(error, { status: 500 })
   }
@@ -354,11 +356,14 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
   const query = searchParamsToObject(searchParams)
 
-  const { start, limit, user_id } = query!
+  const { start, limit, user_id, invitation_id } = query!
 
   let queryBuilder = supabase.from('invitation').select('*')
   //Limit이 있을 경우 페이지네이션 로직을 추가, 기본 값은 10
 
+  if (invitation_id) {
+    queryBuilder = queryBuilder.eq('id', invitation_id)
+  }
   queryBuilder = queryBuilder.range(
     Number(start || 0),
     Number(start || 0) + Number(limit || 10) - 1,

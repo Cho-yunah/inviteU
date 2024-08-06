@@ -13,15 +13,14 @@ export type Database = {
         Row: {
           address: string | null
           created_at: string | null
-          custom_url: string | null
+          custom_url: string
           date: string | null
           description: string | null
           id: string
-          is_image: boolean | null
-          is_map: boolean | null
+          image_urls: string | null
           is_vertical: boolean | null
-          is_video: boolean | null
           post_number: string | null
+          ratio: number | null
           subtitle: string | null
           title: string
           user_id: string | null
@@ -30,15 +29,14 @@ export type Database = {
         Insert: {
           address?: string | null
           created_at?: string | null
-          custom_url?: string | null
+          custom_url: string
           date?: string | null
           description?: string | null
           id?: string
-          is_image?: boolean | null
-          is_map?: boolean | null
+          image_urls?: string | null
           is_vertical?: boolean | null
-          is_video?: boolean | null
           post_number?: string | null
+          ratio?: number | null
           subtitle?: string | null
           title: string
           user_id?: string | null
@@ -47,29 +45,20 @@ export type Database = {
         Update: {
           address?: string | null
           created_at?: string | null
-          custom_url?: string | null
+          custom_url?: string
           date?: string | null
           description?: string | null
           id?: string
-          is_image?: boolean | null
-          is_map?: boolean | null
+          image_urls?: string | null
           is_vertical?: boolean | null
-          is_video?: boolean | null
           post_number?: string | null
+          ratio?: number | null
           subtitle?: string | null
           title?: string
           user_id?: string | null
           video_url?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: 'invitation_user_id_fkey'
-            columns: ['user_id']
-            isOneToOne: false
-            referencedRelation: 'userinfo'
-            referencedColumns: ['id']
-          },
-        ]
+        Relationships: []
       }
       userinfo: {
         Row: {
