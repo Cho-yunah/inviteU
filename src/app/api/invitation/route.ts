@@ -1,5 +1,4 @@
 import { supabase } from '@/supabase/browser'
-import { Database } from '@/supabase/type'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
 import { NextRequest, NextResponse } from 'next/server'
