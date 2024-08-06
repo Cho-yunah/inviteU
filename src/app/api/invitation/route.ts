@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID, UUID } from 'crypto'
-import { searchParamsToObject } from '@/lib/helper'
+import { isValidUrl, searchParamsToObject } from '@/lib/helper'
 
 type Data = {
   id?: string
@@ -214,8 +214,11 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
 export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
+  console.log(searchParams, 'searchParams')
+
   const query = searchParamsToObject(searchParams)
 
+  console.log(query, 'query')
   const {
     title,
     description,
@@ -256,6 +259,31 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
     })
     .eq('id', id as string)
 
+  // 파일 url 타입인지 점검하기.
+
+  const isImageUrlsValid = image_urls
+    ?.toString()
+    ?.split(',')
+    ?.every((url) => isValidUrl(url))
+  const isVideoUrlValid = isValidUrl(video_url?.toString())
+
+  if (!isImageUrlsValid) {
+    return NextResponse.json(
+      {
+        message:
+          '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
+      },
+      { status: 400 },
+    )
+  }
+  if (!isVideoUrlValid) {
+    return NextResponse.json(
+      {
+        message: '적절한 비디오 url이 아닙니다.',
+      },
+      { status: 400 },
+    )
+  }
   console.log(data, 'dataaaa', error, res)
   if (error) {
     return NextResponse.json(error, { status: 500 })
