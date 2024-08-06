@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID, UUID } from 'crypto'
-import { isValidUrl, searchParamsToObject } from '@/lib/helper'
+import { judgeImageAndVideoValid, searchParamsToObject } from '@/lib/helper'
 
 type Data = {
   id?: string
@@ -13,6 +13,73 @@ type Data = {
 /**
  * @swagger
  * /api/invitation:
+ *   post:
+ *     summary: Create a new invitation
+ *     description: Create a new invitation with the given details
+ *     tags:
+ *       - Invitation
+ *     parameters:
+ *       - in: query
+ *         name: title
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: user_id
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: description
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: subtitle
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: custom_url
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: date
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: date-time
+ *       - in: query
+ *         name: post_number
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: address
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: is_vertical
+ *         required: false
+ *         schema:
+ *           type: boolean
+ *       - in: query
+ *         name: video_url
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - in: query
+ *         name: ratio
+ *         required: false
+ *         schema:
+ *           type: number
+ *     responses:
+ *       200:
+ *         description: 초대장이 성공적으로 생성되었습니다.
+ *       500:
+ *         description: 초대장 생성 중 에러가 발생했습니다.
  *   put:
  *     summary: Update an invitation
  *     description: Update an invitation with the given details
@@ -144,13 +211,9 @@ type Data = {
  *         description: 조회 도중 에러가 발생했습니다.
  */
 export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
-  console.log(req?.url, 'searchParamsToObject(req.searchParams)')
-
   const searchParams = req.nextUrl.searchParams
 
-  // const searchParams = new URL(req.url!, `http://${''}`).searchParams
-
-  // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
+  // next.js14의 query는 query 객체가 아닌 searchParams에 있습니다.
   const query = searchParamsToObject(searchParams)
   const {
     title,
@@ -178,10 +241,33 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     !address
   ) {
     return NextResponse.json(
-      { message: 'id field is missing' },
+      { message: '필수 항목이 없습니다.' },
       { status: 400 },
     )
   }
+
+  const { isVideoUrlValid, isImageUrlsValid } = judgeImageAndVideoValid({
+    image_urls,
+    video_url,
+  })
+  if (!isImageUrlsValid) {
+    return NextResponse.json(
+      {
+        message:
+          '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
+      },
+      { status: 400 },
+    )
+  }
+  if (!isVideoUrlValid) {
+    return NextResponse.json(
+      {
+        message: '적절한 비디오 url이 아닙니다.',
+      },
+      { status: 400 },
+    )
+  }
+
   const uuid = randomUUID()
   const { data, error } = await supabase.from('invitation').insert([
     {
@@ -201,8 +287,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     },
   ])
 
-  console.log(data, 'dataaaa', error, res)
-  if (error) {
+  if (error || !data) {
     return NextResponse.json(error, { status: 500 })
   }
   return NextResponse.json(
@@ -214,11 +299,9 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
 export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
-  console.log(searchParams, 'searchParams')
 
   const query = searchParamsToObject(searchParams)
 
-  console.log(query, 'query')
   const {
     title,
     description,
@@ -259,32 +342,6 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
     })
     .eq('id', id as string)
 
-  // 파일 url 타입인지 점검하기.
-
-  const isImageUrlsValid = image_urls
-    ?.toString()
-    ?.split(',')
-    ?.every((url) => isValidUrl(url))
-  const isVideoUrlValid = isValidUrl(video_url?.toString())
-
-  if (!isImageUrlsValid) {
-    return NextResponse.json(
-      {
-        message:
-          '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
-      },
-      { status: 400 },
-    )
-  }
-  if (!isVideoUrlValid) {
-    return NextResponse.json(
-      {
-        message: '적절한 비디오 url이 아닙니다.',
-      },
-      { status: 400 },
-    )
-  }
-  console.log(data, 'dataaaa', error, res)
   if (error) {
     return NextResponse.json(error, { status: 500 })
   }
