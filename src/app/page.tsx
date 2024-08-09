@@ -6,9 +6,22 @@ import { useUser } from '@supabase/auth-helpers-react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setInvitation } from '@/lib/features/invitation/invitationSlice';
+import { useRouter } from 'next/navigation';
+
+// const ListButton = (props: any) => {
+//   console.log(props.invitationCount)
+//   return (
+//     <button onClick={props.handleMoveListPage}
+//     className="m-4 mt-0 p-3 bg-slate-800 border-2 border-slate-800 text-white rounded-3xl"
+//   >
+//     내 초대장 {props.invitationCount}
+//   </button>
+//   )
+// }
 
 export default function Home() {
-  const data = useUser()
+  const userData = useUser()
+  const router = useRouter();
   const dispatch = useDispatch();
   const [invitationCount, setInvitationCount] = useState(0);
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
@@ -16,6 +29,7 @@ export default function Home() {
   const getInvitationInfo = async () => {
     try {
       const {data} = await axios.get(`/api/invitation/`)
+      console.log('iiiii', data.invitations)
       if(data) {
         dispatch(setInvitation(data.invitations))
         setInvitationCount(data.invitations.length)
@@ -27,9 +41,17 @@ export default function Home() {
     }
   }
 
+  const handleMoveEditPage = () => {
+    router.push('/edit')
+  }
+  const handleMoveListPage = () => {
+    router.push('/list')
+  }
+
   useEffect(() => {
-      getInvitationInfo();
-  },[data])
+    console.log(userData)
+    getInvitationInfo();
+  },[])
 
   return (
     <>
@@ -46,16 +68,18 @@ export default function Home() {
           <img src='/img/weddingIntro.png' width={350} height={350} className='py-4'/>
         </div>
       </div>
-      <button className="m-4 p-3 border-2 rounded-3xl shadow-sm">
+      <button onClick={handleMoveEditPage}
+          className="m-4 p-3 border-2 rounded-3xl shadow-sm" 
+        >
         초대장 만들기
       </button>
+      {/* <ListButton handleMoveListPage={handleMoveListPage} invitationCount={invitationCount} /> */}
       {invitationCount !=0 && (
-        <Link
-          href="/list"
+        <button onClick={handleMoveListPage}
           className="m-4 mt-0 p-3 bg-slate-800 border-2 border-slate-800 text-white rounded-3xl"
         >
           내 초대장 {invitationCount}
-        </Link>
+        </button>
       )}
       <div className="mt-10 bg-slate-100 h-[400px]">
         <Slider />

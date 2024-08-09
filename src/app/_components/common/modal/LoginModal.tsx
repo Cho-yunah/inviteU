@@ -33,10 +33,12 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
       });
+      
       if (error) throw new Error(error.message);
+      // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      // console.log(sessionData)
       
       // 인증 완료 후 세션 정보를 가져오기
-      // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       // if (sessionError) throw new Error(sessionError.message);
     
     } catch (error) {

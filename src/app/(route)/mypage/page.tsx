@@ -1,4 +1,5 @@
 'use client'
+import { supabase } from '@/supabase/browser';
 import { useUser } from '@supabase/auth-helpers-react';
 import React from 'react'
 
@@ -6,8 +7,9 @@ const Mypage = () => {
   const data = useUser() ;
   console.log(data?.user_metadata.email)
 
-  const handleLogout = () => {
-    console.log('로그아웃')
+  const handleLogout = async() => {
+    const { error } = await supabase.auth.signOut();
+    alert('로그아웃 되었습니다');
   }
 
   const handleWithdrawalmembership = () => { 
