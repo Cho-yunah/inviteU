@@ -19,7 +19,7 @@ export default function Slider() {
       <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
         {slideInfo.map((slide) => ( 
           <SwiperSlide key={slide.id}>
-            <div className={`w-[100%] h-[100%] p-5 ${slide.color}`}>{slide.title}</div>
+            <div className={`size-full p-5 ${slide.color}`}>{slide.title}</div>
           </SwiperSlide>
           )
         )}

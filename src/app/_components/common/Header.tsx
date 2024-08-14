@@ -56,11 +56,11 @@ const Header = () => {
 
   return (
     <>
-      <header className="border-b py-3 px-2 shadow-sm">
+      <header className="border-b px-2 py-3 shadow-sm">
         {headerType === 'elseHeader' ? (
           <div className="relative flex items-center justify-center">
             <GrPrevious
-              className="absolute left-1 p-1 w-6 h-6 cursor-pointer"
+              className="absolute left-1 size-6 cursor-pointer p-1"
               onClick={handleMoveBack}
             />
             <div>{getTitle(pathName)}</div>
@@ -69,7 +69,7 @@ const Header = () => {
         ) : (
           <div className="flex justify-between">
             <div
-              className="flex items-center cursor-pointer"
+              className="flex cursor-pointer items-center"
               onClick={handleMoveHome}
             >
               <p className="px-3">Invite U</p>
@@ -78,7 +78,7 @@ const Header = () => {
               {session?.access_token != null ? (
                 <button
                   onClick={handleMoveMyPage}
-                  className="w-6 h-6 flex items-center justify-center border-[1px] border-gray-500 rounded-full bg-gray-100"
+                  className="flex size-6 items-center justify-center rounded-full border border-gray-500 bg-gray-100"
                 >
                   <CiUser />
                 </button>

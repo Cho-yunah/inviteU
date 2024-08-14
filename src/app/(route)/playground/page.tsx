@@ -19,7 +19,7 @@ const FormPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-3 m-2">
+    <div className="m-2 flex flex-col gap-3">
       <div className="flex flex-col gap-3 border border-black p-2">
         <h1>POST: /api/files/user_uuid={userUuid} </h1>
         <input
@@ -40,9 +40,9 @@ const FormPage = () => {
           onChange={(e) => setUseruuid(e.target.value)}
           type="text"
           placeholder="user_uuid (uuid)"
-          className="border-black p-2 border"
+          className="border border-black p-2"
         />
-        <button onClick={onSubmitFile} className="p-2 border border-black">
+        <button onClick={onSubmitFile} className="border border-black p-2">
           제출하기
         </button>
       </div>

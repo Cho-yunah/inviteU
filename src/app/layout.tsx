@@ -10,7 +10,6 @@ import ReduxProvider from "./StoreProvider";
 import ErrorBoundary from './_components/common/errorBoundary/Errorboundary';
 import AuthContext from "./_components/AuthContext";
 
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -24,7 +23,6 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
 
-
   return (
     <html lang="en">
         <body className={inter.className}>
@@ -32,18 +30,17 @@ export default async function RootLayout({
             <AuthContext>
             {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
               <ErrorBoundary >
-                <div className="container">
-                  <Header />
-                  <main className={styles.main}>
-                    <ReduxProvider>
-                      <div className={styles.description}>{children}</div>
-                    </ReduxProvider>
-                  </main>
-                  <ModalSetup />
-                </div>
+                  <div className="container">
+                    <Header />
+                    <main className={styles.main}>
+                      <ReduxProvider>
+                        <div className={styles.description}>{children}</div>
+                      </ReduxProvider>
+                    </main>
+                    <ModalSetup />
+                  </div>
             </ErrorBoundary>
             </AuthContext>
-
           </SupabaseProvider>
         </body>
       </html>

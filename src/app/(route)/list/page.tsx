@@ -33,8 +33,8 @@ const List = () => {
 
   return (
     <div >
-        <div className='p-[1rem]'>
-          <h1 className='text-gray-700 text-2xl font-bold pt-2 pb-2'>내 초대장</h1>
+        <div className='p-4'>
+          <h1 className='py-2 text-2xl font-bold text-gray-700'>내 초대장</h1>
         </div>
         <div className='w-full text-center'>
           <button className={[styles.mainButton, 'rounded-[10px]', 'text-sm','shadow-sm'].join(' ')}>+ 초대장 만들기</button>
