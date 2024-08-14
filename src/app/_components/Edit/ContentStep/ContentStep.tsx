@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { Switch } from 'antd'
 import Image from 'next/image'
 import cx from 'classnames'
-// import ChevronIcon from '/public/chevron_top.svg'
 
 import styles from './contentStep.module.scss'
+import { Label } from '@/components/ui/label'
+import { Switch } from '@/components/ui/switch'
 
 interface Props {
   title: string
@@ -26,8 +26,8 @@ export default function ContentStep({ title, description, children }: Props) {
   return (
     <div className={styles.contentStep}>
       <div className={styles.contentHeader}>
-        <Switch defaultChecked onChange={onChange} size="small" />
-        <span className={styles.headerTitle}>{title}</span>
+        <Switch id="contents-switch" defaultChecked={false} checked={isOpen} onCheckedChange={toggleButtonOnClick} />
+        <Label htmlFor="contents-switch" className='pl-2 font-bold text-gray-800'>{title}</Label>
         <button
           type="button"
           className={cx(styles.toggleButton, {
@@ -35,7 +35,7 @@ export default function ContentStep({ title, description, children }: Props) {
           })}
           onClick={toggleButtonOnClick}
         >
-          {/* <Image src={ChevronIcon} alt="contents toggle icon" width="28" /> */}
+          <Image src="./Chevron.svg" alt='Chevron' width={24} height={24} />
         </button>
       </div>
       {isOpen && (

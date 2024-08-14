@@ -1,45 +1,28 @@
 'use client'
 
 import React from 'react'
-import { Tabs } from 'antd'
-
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import BaseInfo from '@/app/_components/Edit/BaseInfo'
 import EditContents from '@/app/_components/Edit/EditContents'
-
 import styles from './edit.module.scss'
 
 const Edit = () => {
   return (
     <div>
-      <Tabs
-        defaultActiveKey="1"
-        className={styles.customTabs}
-        items={[
-          {
-            label: '기본정보',
-            key: '1',
-            children: (
-              <div className={styles.tabInner}>
-                <BaseInfo />
-              </div>
-            ),
-          },
-          {
-            label: '콘텐츠',
-            key: '2',
-            children: (
-              <div className={styles.tabInner}>
-                <EditContents />
-              </div>
-            ),
-          },
-          {
-            label: '배경',
-            key: '3',
-            children: 'Tab 3',
-          },
-        ]}
-      />
+      <Tabs defaultValue="basic" className="w-full">
+        <TabsList className='grid w-full grid-cols-3 bg-gray-100 p-0'>
+            <TabsTrigger className={styles.tabTrigger} value="basic">기본 정보</TabsTrigger>
+            <TabsTrigger className={styles.tabTrigger} value="contents">콘텐츠</TabsTrigger>
+            <TabsTrigger className={styles.tabTrigger} value="backgrond">배경</TabsTrigger>
+        </TabsList>
+        <TabsContent  value="basic">
+          <BaseInfo/>
+        </TabsContent>
+        <TabsContent className='px-5' value="contents">
+          <EditContents/>
+        </TabsContent>
+        <TabsContent className='px-5' value="backgrond">후후 your password here.</TabsContent>
+       </Tabs>
     </div>
   )
 }

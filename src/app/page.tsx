@@ -1,35 +1,25 @@
 'use client'
 import { useEffect, useState } from 'react';
 import Slider from './_components/Slider';
-import Link from 'next/link';
 import { useUser } from '@supabase/auth-helpers-react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setInvitation } from '@/lib/features/invitation/invitationSlice';
 import { useRouter } from 'next/navigation';
-
-// const ListButton = (props: any) => {
-//   console.log(props.invitationCount)
-//   return (
-//     <button onClick={props.handleMoveListPage}
-//     className="m-4 mt-0 p-3 bg-slate-800 border-2 border-slate-800 text-white rounded-3xl"
-//   >
-//     내 초대장 {props.invitationCount}
-//   </button>
-//   )
-// }
+import { useAuthState } from './_components/AuthContext';
 
 export default function Home() {
   const userData = useUser()
   const router = useRouter();
   const dispatch = useDispatch();
-  const [invitationCount, setInvitationCount] = useState(0);
+  const {session} = useAuthState();
+
   const [loading, setLoading] = useState(true); // 로딩 상태 추가
+  const [invitationCount, setInvitationCount] = useState(0);
 
   const getInvitationInfo = async () => {
     try {
       const {data} = await axios.get(`/api/invitation/`)
-      console.log('iiiii', data.invitations)
       if(data) {
         dispatch(setInvitation(data.invitations))
         setInvitationCount(data.invitations.length)
@@ -49,18 +39,18 @@ export default function Home() {
   }
 
   useEffect(() => {
-    console.log(userData)
-    getInvitationInfo();
+    if(session?.access_token != null) {
+      getInvitationInfo();
+    }
   },[])
 
   return (
     <>
-      <div className="p-[1rem]">
-        {/* <p className="text-slate-500 pb-1">Make Your Own Invitation Page</p> */}
-        <h1 className="text-slate-900 text-2xl font-bold pt-4 pb-3 font-[Menlo]">
+      <div className="p-4">
+        <h1 className="pb-3 pt-4 font-[Menlo] text-2xl font-bold text-slate-900">
           Invite U
         </h1>
-        <div className="text-slate-400 w-100 h-auto text-left">
+        <div className="w-full h-auto text-left text-slate-400">
           <p>당신만의 특별한 초대장을 만들어보세요<br/>
             하나뿐인 초대장으로 소중한 사람들을 초대하세요
           </p>
@@ -69,19 +59,19 @@ export default function Home() {
         </div>
       </div>
       <button onClick={handleMoveEditPage}
-          className="m-4 p-3 border-2 rounded-3xl shadow-sm" 
+          className="m-4 rounded-3xl border-2 p-3 shadow-sm" 
         >
         초대장 만들기
       </button>
       {/* <ListButton handleMoveListPage={handleMoveListPage} invitationCount={invitationCount} /> */}
-      {invitationCount !=0 && (
+      {session?.access_token && (
         <button onClick={handleMoveListPage}
-          className="m-4 mt-0 p-3 bg-slate-800 border-2 border-slate-800 text-white rounded-3xl"
+          className="m-4 mt-0 rounded-3xl border-2 border-slate-800 bg-slate-800 p-3 text-white"
         >
           내 초대장 {invitationCount}
         </button>
       )}
-      <div className="mt-10 bg-slate-100 h-[400px]">
+      <div className="mt-10 h-[400px] bg-slate-100">
         <Slider />
       </div>
     </>
