@@ -39,3 +39,19 @@
   color: #333;
   padding-bottom: 8px;
 }
+
+.timeItem {
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.timeItem:hover {
+  background-color: #e7f5ff ;
+
+}
+
+.active {
+  // border: 2px solid #d0ebff;
+  box-shadow: 0 0 0 2px #c5f6fa inset;
+  background-color: #e7f5ff ;
+}
