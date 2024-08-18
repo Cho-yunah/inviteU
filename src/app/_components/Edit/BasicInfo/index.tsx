@@ -87,7 +87,7 @@ export default function BaseInfo() {
           />
           <DatePickerForm/>
           <TimePickerCustom setDate={setDate} date={date} />
-          {/* <FormField
+          <FormField
             control={form.control}
             name="url"
             render={({ field }) => (
@@ -101,7 +101,7 @@ export default function BaseInfo() {
                 </FormControl>
               </FormItem>
             )}
-          /> */}
+          />
           {/* <Button type="submit">Submit</Button> */}
         </form>
       </Form>
