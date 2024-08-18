@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import BaseInfo from '@/app/_components/Edit/BaseInfo'
-import EditContents from '@/app/_components/Edit/EditContents'
+import BaseInfo from '@/app/_components/Edit/BasicInfo'
+import ContentsInfo from '@/app/_components/Edit/ContentsInfo'
 import styles from './edit.module.scss'
 
 const Edit = () => {
@@ -19,7 +19,7 @@ const Edit = () => {
           <BaseInfo/>
         </TabsContent>
         <TabsContent className='px-5' value="contents">
-          <EditContents/>
+          <ContentsInfo/>
         </TabsContent>
         <TabsContent className='px-5' value="backgrond">후후 your password here.</TabsContent>
        </Tabs>

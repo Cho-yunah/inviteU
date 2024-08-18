@@ -63,7 +63,7 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
       >
         <div className='py-3 text-center'>
           <div className='flex items-center justify-center p-2'>
-            <Image src={Logo} alt='logo' width='28' className='p-1'/>
+            <Image src={Logo} alt='logo' width='28' height='26' className='p-1'/>
             <p className='p-1 font-semibold text-gray-600'>Invite U</p>
           </div>
           <p className='text-sm text-gray-600'>간편한 카카오 로그인으로 시작해보세요!</p>
