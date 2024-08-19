@@ -31,6 +31,6 @@ $ npm run dev
 </div>
 
 ## 프로젝트 구성원
-프론트엔드: 조윤아 https://github.com/Cho-yunah
-백엔드: 박나현 https://github.com/nahyunbak
+프론트엔드: 조윤아 https://github.com/Cho-yunah <br/>
+백엔드: 박나현 https://github.com/nahyunbak  <br/>
 기획: 차은원
