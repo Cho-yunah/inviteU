@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from '../contents.module.scss'
-import { FileUpload } from './FileUpload'
+import { VideoUpload } from './VideoUpload'
 
-export default function ImageContainer() {
+export default function VideoContainer() {
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
@@ -13,23 +13,10 @@ export default function ImageContainer() {
 
   return (
     <div>
-        <p className={styles.contentStepTitle}>이미지 추가*</p>        
-        <FileUpload onFileUpload={handleFileUpload} />
+        <p className={styles.contentStepTitle}>동영상 추가*</p>        
+        <VideoUpload onFileUpload={handleFileUpload} />
 
-        <p className={styles.contentStepTitle}>레이아웃*</p>
-        <div className='flex gap-3 my-2'>
-            <div className="flex flex-1 items-center space-x-1 ">
-                <input type='radio' value="vertical" id="vertical" className={styles.radioItem} name='structure' onChange={handleChange} defaultChecked />
-                <label htmlFor="vertical" onClick={handleChange} className={styles.label}>
-                  세로 나열형 
-                </label>
-            </div>
-            <div className="flex flex-1 items-center space-x-1">
-                <input type='radio' value="horizontal" id="horizontal" className={styles.radioItem} name='structure' onChange={handleChange}/>
-                <label htmlFor="horizontal" onClick={handleChange} className={styles.label}>
-                  가로 나열형 </label>
-            </div>
-        </div>      
+        <p className={styles.contentStepTitle}>동영상 비율</p>
 
         <div className='flex gap-2 my-2' >
             <div className="flex flex-1 items-center space-x-1">

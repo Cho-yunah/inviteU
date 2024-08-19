@@ -2,11 +2,8 @@
 
 import React, { useState } from "react";
 import { Input } from '@/components/ui/input'
-import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { IoClose } from "react-icons/io5";
-import { LoadingSpinner } from "@/app/_components/common/LoadingSpinner";
-
 
 interface FileUploadProps  {
     onFileUpload: (files: FileList) => void;
@@ -89,8 +86,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
     };
   
     return (
-      <div>
-        <CardContent className="grid grid-cols-2 grid-rows-auto gap-x-4 gap-y-3 px-2">
+        <div className={`grid grid-cols-2 grid-rows-auto gap-x-4 gap-y-3 px-2 py-1 mb-4 ${isDragging && 'shadow-[0_0px_0px_5px_rgba(135,211,248,0.5)_inset]'}`}>
           <div
             className={`w-[130px] h-[130px] bg-gray-50 border-[1px] rounded-md border-gray-300 p-4 text-center ${
               isDragging ? "bg-gray-100" : ""
@@ -131,10 +127,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
                 </Button>
               </div>
             ))}
-          {/* {uploadProgress !==null && (
-            <LoadingSpinner />
-          )} */}
-        </CardContent>
-      </div>
+        </div>
     );
 };
