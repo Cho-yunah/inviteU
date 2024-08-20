@@ -5,7 +5,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { supabase } from '@/supabase/browser'
 
 import Link from 'next/link';
-import Slider from '@/app/_components/Slider'
+import Slider from '@/app/_components/main/Slider'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import axios from 'axios'

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../contents.module.scss'
+import styles from '../../edit.module.scss'
 import { VideoUpload } from './VideoUpload'
 
 export default function VideoContainer() {
@@ -12,12 +12,11 @@ export default function VideoContainer() {
   }
 
   return (
-    <div>
-        <p className={styles.contentStepTitle}>동영상 추가*</p>        
+    <div className='mt-4'>
+        <p className='font-bold text-sm text-[#333] pb-1'>동영상 추가*</p>        
         <VideoUpload onFileUpload={handleFileUpload} />
 
-        <p className={styles.contentStepTitle}>동영상 비율</p>
-
+        <p className='font-bold text-sm text-[#333] pb-1'>동영상 비율</p>
         <div className='flex gap-2 my-2' >
             <div className="flex flex-1 items-center space-x-1">
                 <input type='radio' value="3:4" id="3/4" className={styles.radioItem} name='arrangement' onChange={handleChange} defaultChecked />

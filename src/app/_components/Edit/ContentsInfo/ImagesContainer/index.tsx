@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from '../contents.module.scss'
-import { FileUpload } from './FileUpload'
+import styles from '../../edit.module.scss'
+import { FileUpload } from './fileUpload'
 
 export default function ImageContainer() {
 
@@ -12,11 +12,11 @@ export default function ImageContainer() {
   }
 
   return (
-    <div>
-        <p className={styles.contentStepTitle}>이미지 추가*</p>        
+    <div className='mt-4'>
+        <p className='font-bold text-sm text-[#333] pb-1'>이미지 추가*</p>        
         <FileUpload onFileUpload={handleFileUpload} />
 
-        <p className={styles.contentStepTitle}>레이아웃*</p>
+        <p className='font-bold text-sm text-[#333] pb-1'>레이아웃*</p>
         <div className='flex gap-3 my-2'>
             <div className="flex flex-1 items-center space-x-1 ">
                 <input type='radio' value="vertical" id="vertical" className={styles.radioItem} name='structure' onChange={handleChange} defaultChecked />

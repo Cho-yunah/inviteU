@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react';
-import Slider from './_components/Slider';
+import Slider from './_components/main/Slider';
 import { useUser } from '@supabase/auth-helpers-react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';

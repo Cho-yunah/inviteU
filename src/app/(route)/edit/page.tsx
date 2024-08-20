@@ -2,8 +2,8 @@
 
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import BaseInfo from '@/app/_components/Edit/BasicInfo'
-import ContentsInfo from '@/app/_components/Edit/ContentsInfo'
+import BaseInfo from '@/app/_components/edit/BasicInfo'
+import ContentsInfo from '@/app/_components/edit/ContentsInfo'
 import styles from './edit.module.scss'
 
 const Edit = () => {

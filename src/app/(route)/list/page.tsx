@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import styles from "../../page.module.css";
-import ListItem from '../../_components/ListItem';
+import ListItem from '@/app/_components/list/ListItem';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { setInvitation } from '@/lib/features/invitation/invitationSlice';
@@ -42,7 +42,6 @@ const List = () => {
         {listData.map((item: any, index: number) => (
           <ListItem key={index} item={item} />
         ))}
-        {/* <ListItem /> */}
     </div>
   )
 }

@@ -6,7 +6,7 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { CiUser } from "react-icons/ci";
 import { usePathname, useRouter } from 'next/navigation'
 import { GrPrevious } from "react-icons/gr";
-import EditButton from '../Edit/EditButton/EditButton'
+import EditButton from '../edit/EditButton/EditButton'
 import { useAuthState } from '../AuthContext'
 
 const getTitle = (path: string) => {
