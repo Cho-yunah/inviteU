@@ -32,17 +32,48 @@
 
 .contentDesc {
   padding-top: 8px;
-  transition: 'transform 1.2s ease-in';
-  animation: slideOut 0.5s ease-in;
 }
 
-@keyframes slideOut {
-  from { height: 0 }
-  to { height: 'var(--accordion-height)' }
+.contentRefStyle {
+  display: none;
+  animation-name: accordionUp;
+  animation-duration: 3s;
+  transition: "all 0.5s ease-in" 
+  
 }
-@keyframes slideIn {
-  from { height: 'var(--accordion-height)' }
+
+.active{
+  display: block;
+  animation-name: accordionDown;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 0.5s ease-in;
+}
+
+.inactive{
+  display: none;
+  animation-name: accordionUp;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 0.5s ease-in; 
+}
+
+@keyframes accordionDown {
+  from { height: 0 }
+  to { height: 100% }
+}
+@keyframes accordionUp {
+  from { height: 100% }
   to { height: 0 }
+}
+
+.animate {
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+}
+.inanimate {
+  transition: 0 0.3s ease-out;
+  overflow: hidden;
 }
 
 .star {

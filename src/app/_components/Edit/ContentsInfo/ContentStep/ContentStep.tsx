@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+'use client'
+import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import cx from 'classnames'
 
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export default function ContentStep({ title, description, children }: Props) {
+  const slideRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(true)
 
   const onChange = (checked: boolean) => {
@@ -23,8 +25,23 @@ export default function ContentStep({ title, description, children }: Props) {
     setIsOpen((prev) => !prev)
   }
 
+  useEffect(() => {
+    if (isOpen && slideRef.current) {
+      console.log('slideRef:', slideRef)
+      slideRef!.current!.parentElement!.style.display = 'block';
+      const height = slideRef.current.style.getPropertyValue('--accordion-height');
+  
+      if (height === '0' || !height) {
+        slideRef.current.parentElement!.style.setProperty(
+          '--accordion-height',
+          `${slideRef.current.clientHeight}px`,
+        );
+      }
+    }
+  }, [isOpen]);
+
   return (
-    <div className={styles.contentStep}>
+    <div className={styles.contentStep} ref={slideRef}>
       <div className={styles.contentHeader}>
         <Switch id="contents-switch" defaultChecked={false} checked={isOpen} onCheckedChange={toggleButtonOnClick} />
         <Label htmlFor="contents-switch" className='pl-2 font-bold text-gray-800'>{title}</Label>
