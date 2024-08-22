@@ -115,7 +115,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
                 <img
                   src={preview}
                   alt={`File Preview ${index + 1}`}
-                  className="size-[110px] bg-yellow-300 aspect-square object-cover rounded-sm"
+                  className="size-[110px] aspect-square object-cover rounded-sm"
                 />
                 <Button
                   color="danger"
