@@ -9,7 +9,7 @@ export interface TimeSelectProps {
   
 const TimeSelect = ({arr, item, setItem }: TimeSelectProps) => {
   
-    const handleClick = (e) => {
+    const handleClick = (e: any) => {
       console.log(e.currentTarget.id)
       setItem(e.currentTarget.id)
     }

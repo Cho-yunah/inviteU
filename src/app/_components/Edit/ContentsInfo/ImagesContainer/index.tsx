@@ -1,13 +1,13 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
-import { FileUpload } from './fileUpload'
+import { FileUpload } from './FileUpload'
 
 export default function ImageContainer() {
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
   };
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
         console.log(e)
   }
 

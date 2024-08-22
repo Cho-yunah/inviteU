@@ -88,7 +88,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
     return (
         <div className={`grid grid-cols-2 grid-rows-auto gap-x-4 gap-y-3 px-2 py-1 mb-4 ${isDragging && 'shadow-[0_0px_0px_5px_rgba(135,211,248,0.5)_inset]'}`}>
           <div
-            className={`w-[130px] h-[130px] bg-gray-50 border-[1px] rounded-md border-gray-300 p-4 text-center ${
+            className={`size-[130px] bg-gray-50 border-[1px] rounded-md border-gray-300 p-4 text-center ${
               isDragging ? "bg-gray-100" : ""
             }`}
             onDragEnter={handleDragEnter}
@@ -105,23 +105,23 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
               multiple
             />
             <label htmlFor={"file-input"}
-              className="cursor-pointer text-gray-500 w-full h-full flex flex-col items-center justify-center"
+              className="cursor-pointer text-gray-500 size-full flex flex-col items-center justify-center"
             >
                 <img src='/plus.svg' width='24' height='24' alt='plus icon' />
             </label>
           </div>
             {filePreviews.map((preview, index) => (
-              <div key={index} className="w-[130px] h-[130px] relative flex flex-wrap p-2 border-[1px] rounded-md border-gray-300">
+              <div key={index} className="size-[130px] relative flex flex-wrap p-2 border-[1px] rounded-md border-gray-300">
                 <img
                   src={preview}
                   alt={`File Preview ${index + 1}`}
-                  className="w-[110px] h-[110px] bg-yellow-300 aspect-square object-cover rounded-sm"
+                  className="size-[110px] bg-yellow-300 aspect-square object-cover rounded-sm"
                 />
                 <Button
                   color="danger"
                   size='sm'
                   onClick={() => handleDeletePreview(index)}
-                  className="absolute top-1 right-2 w-5 h-5 p-0 bg-slate-50"
+                  className="absolute top-1 right-2 size-5 p-0 bg-slate-50"
                 >
                     <IoClose />
                 </Button>

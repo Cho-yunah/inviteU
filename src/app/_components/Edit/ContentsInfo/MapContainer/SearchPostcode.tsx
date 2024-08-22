@@ -10,7 +10,7 @@ interface SearchPostCodeProps {
 
 const SearchPostCode = ({showModal, setShowModal, address, setAddress}: SearchPostCodeProps) => {
 
-	const handleComplete = (data) => {
+	const handleComplete = (data: { address: string; bname: string; buildingName: string; }) => {
         let fullAddress = data.address;
         let bname = data.bname;
         let buildingName = data.buildingName;

@@ -7,7 +7,7 @@ export default function VideoContainer() {
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
   };
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
         console.log(e)
   }
 
