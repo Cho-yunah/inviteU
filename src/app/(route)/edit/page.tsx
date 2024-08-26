@@ -8,7 +8,7 @@ import styles from './edit.module.scss'
 
 const Edit = () => {
   return (
-    <div>
+    <div className='w-[375px] '>
       <Tabs defaultValue="basic" className="w-full">
         <TabsList className='grid w-full grid-cols-3 bg-gray-100 p-0'>
             <TabsTrigger className={styles.tabTrigger} value="basic">기본 정보</TabsTrigger>
