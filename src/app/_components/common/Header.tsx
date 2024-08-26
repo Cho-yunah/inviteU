@@ -7,7 +7,7 @@ import { CiUser } from "react-icons/ci";
 import { usePathname, useRouter } from 'next/navigation'
 import { GrPrevious } from "react-icons/gr";
 import EditButton from '../edit/EditButton/EditButton'
-import { useAuthState } from '../AuthContext'
+import { useAuthState } from './AuthContext'
 
 const getTitle = (path: string) => {
   switch (path) {

@@ -6,7 +6,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setInvitation } from '@/lib/features/invitation/invitationSlice';
 import { useRouter } from 'next/navigation';
-import { useAuthState } from './_components/AuthContext';
+import { useAuthState } from './_components/common/AuthContext';
 
 export default function Home() {
   const userData = useUser()
