@@ -2,8 +2,11 @@ import React from 'react'
 import styles from '../../edit.module.scss'
 import { FileUpload } from './FileUpload'
 import Accordion from '@/app/_components/common/accordion/Accordion';
+import { ContainerProps } from '@/app/_types/editTypes';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
-export default function ImageContainer() {
+export default function ImageContainer({setComponents,id}: ContainerProps) {
+  console.log(id)
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
@@ -12,14 +15,19 @@ export default function ImageContainer() {
         console.log(e)
   }
 
+  const handleDeleteComponent = (id) => {
+    setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+  };
+
   return (
     <Accordion>
         <Accordion.Header >{'이미지'}</Accordion.Header>
         <Accordion.Animation>
           <Accordion.Content description="초대장에 넣고 싶은 이미지를 추가해보세요">
             {/* <ImageContainer /> */}
-            <div className='mt-4'>
-                <p className='font-bold text-sm text-[#333] pb-1'>이미지 추가*</p>        
+            <div className='mt-4 pb-1'>
+                <p className='font-bold text-sm text-[#333] pb-1'>이미지 추가*</p>      
+                {/* <button onClick={() => console.log('hi')} className='bg-black text-white text-sm p-1 rounded-md'>삭제</button> */}
                 <FileUpload onFileUpload={handleFileUpload} />
 
                 <p className='font-bold text-sm text-[#333] pb-1'>레이아웃*</p>
@@ -56,6 +64,10 @@ export default function ImageContainer() {
                     </div>
                 </div>      
             </div>
+            <button onClick={() => handleDeleteComponent(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
+                <p>삭제</p>
+                <RiDeleteBin6Line className='size-4 text-gray-600 ml-1' />
+            </button>
           </Accordion.Content>
         </Accordion.Animation>
       </Accordion>

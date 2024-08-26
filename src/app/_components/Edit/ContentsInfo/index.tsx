@@ -8,26 +8,26 @@ import MapContainer from './MapContainer'
 import IntervalContainer from './IntervalContainer'
 import TextContainer from './TextContainer'
 import Image from 'next/image';
+import BottomDrawer from '../../common/bottomDrawer';
 
-const initialComponents = [
-  { id: '1', content: <ImageContainer /> },
-  { id: '2', content: <VideoContainer /> },
-  { id: '3', content: <MapContainer /> },
-  { id: '4', content: <TextContainer />},
-  { id: '5', content: <IntervalContainer /> },
-];
+interface Component {
+  id: string;
+  content: JSX.Element;
+}
 
- function SortableItem(props) {
+const initialComponents: Component[] = [];
+
+function SortableItem(props) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
     position: "relative",
-    margin: "4px 0",
+    margin: "4px 0px"
   };
   
   return (
-    <div ref={setNodeRef} style={style} {...attributes}>
+    <div ref={setNodeRef} style={style} {...attributes}  className='absolute' >
         {/* 드래그 핸들 버튼 */}
         <button
           {...listeners}
@@ -40,13 +40,18 @@ const initialComponents = [
           >
           <Image src="./Drag.svg" alt='move button' width={24} height={24} />
         </button>
-          {props.content}     
+          {props.content}
    </div>
   );
 }
 
 export default function EditContents() {
+  const [showDrawer, setShowDrawer] = useState(false);
   const [components, setComponents] = useState(initialComponents);
+
+  const handleShowDrawer = () => {
+    setShowDrawer(true);
+  }
 
   const handleDragEnd = (event) => {
     const { active, over } = event;
@@ -60,16 +65,58 @@ export default function EditContents() {
     }
   };
 
+  const handleAddComponent = (name: string) => {
+    // 선택한 컴포넌트 추가
+    const switchComponent = () => {
+      switch (name) {
+        case 'Image':
+          return <ImageContainer setComponents={setComponents} id={components.length+1} />;
+        case 'Video':
+          return <VideoContainer setComponents={setComponents} id={components.length+1} />;
+        case 'Map':
+          return <MapContainer setComponents={setComponents} id={components.length+1} />;
+        case 'Text':
+          return <TextContainer setComponents={setComponents} id={components.length+1} />;
+        case 'Interval':
+          return <IntervalContainer setComponents={setComponents} id={components.length+1} />;
+        default:
+          return <ImageContainer setComponents={setComponents} id={components.length+1} />;
+      }
+    }
+
+    const newComponent = {
+        id: `${components.length + 1}`,
+        content: switchComponent(), // 새로운 컴포넌트 유형을 원하는 대로 설정할 수 있습니다.
+    };
+    setComponents((prevComponents) => [...prevComponents, newComponent]);
+  };
+
+
+  const handleDeleteComponent = (id) => {
+    setComponents((prevComponents) => prevComponents.filter((component) => component.id !== id));
+  };
+
   return (
-    <div className='w-max-[350px] overflow-hidden'>
+    <div >
+    <div className='w-max-[350px]'>
+      <button onClick={handleShowDrawer} className='mt-4 bg-black w-full rounded-md text-base text-white p-3 flex items-center justify-center'>
+        <span>콘텐츠 추가하기 + </span>
+      </button>
       <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
         <SortableContext items={components} strategy={verticalListSortingStrategy}>
           {components.map((component) => (
-            <SortableItem key={component.id} id={component.id} content={component.content} />
+            <SortableItem 
+              key={component.id} 
+              id={component.id} 
+              content={component.content}
+              handleDeleteComponent={handleDeleteComponent} />
           ))}
         </SortableContext>
       </DndContext>
     </div>
+    <BottomDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} handleAddComponent={handleAddComponent} />  
+    </div>
+
   );
 }
 

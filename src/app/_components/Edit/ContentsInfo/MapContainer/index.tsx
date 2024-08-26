@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import SearchPostCode from './SearchPostcode'
 import Accordion from '@/app/_components/common/accordion/Accordion'
+import { ContainerProps } from '@/app/_types/editTypes'
+import { RiDeleteBin6Line } from 'react-icons/ri'
 
-const MapContainer = () => {
+const MapContainer = ({setComponents, id}: ContainerProps) => {
     const [showModal, setShowModal] = useState<boolean>(false)
     const [address, setAddress] = useState<string>('')
     const [detailAddress, setDetailAddress] = useState<string>('')
@@ -11,12 +13,17 @@ const MapContainer = () => {
         setShowModal(true)
     }
 
+    const handleDeleteComponent = (id) => {
+      // console.log('delete', id)
+      setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+    };
+
   return (
     <Accordion>
         <Accordion.Header >{'지도'}</Accordion.Header>
         <Accordion.Animation>
           <Accordion.Content description="일정이 열리는 위치를 추가해보세요">
-            <div className='mt-4'>
+            <div className='mt-4 pb-1'>
                 <p className='font-bold text-sm text-[#333] pb-1'>위치 검색*</p>  
                 <div className='flex w-full' onClick={handleInputClick}>
                     <input placeholder='주소를 검색해주세요' 
@@ -37,6 +44,10 @@ const MapContainer = () => {
                     />
                 }
             </div>
+            <button onClick={() => handleDeleteComponent(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
+                <p>삭제</p>
+                <RiDeleteBin6Line className='size-4 text-gray-600 ml-1' />
+            </button>
           </Accordion.Content>
         </Accordion.Animation>
       </Accordion>

@@ -51,7 +51,7 @@ export default function BaseInfo() {
   }
 
   return (
-    <div className='px-5'>
+    <div className='px-5 w-max-[350px]'>
       <h2 className='text-gray-400 text-base font-bold pb-2' >기본정보</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

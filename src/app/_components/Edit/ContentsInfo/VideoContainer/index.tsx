@@ -2,8 +2,10 @@ import React from 'react'
 import styles from '../../edit.module.scss'
 import { VideoUpload } from './VideoUpload'
 import Accordion from '@/app/_components/common/accordion/Accordion';
+import { RiDeleteBin6Line } from 'react-icons/ri';
+import { ContainerProps } from '@/app/_types/editTypes';
 
-export default function VideoContainer() {
+export default function VideoContainer({setComponents,id}: ContainerProps) {
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
@@ -12,16 +14,21 @@ export default function VideoContainer() {
         console.log(e)
   }
 
+  const handleDeleteComponent = (id) => {
+    // console.log('delete', id)
+    setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+  };
+
   return (
-    <Accordion>
+    <Accordion >
         <Accordion.Header >{'동영상'}</Accordion.Header>
         <Accordion.Animation>
           <Accordion.Content description="초대장에 넣고 싶은 동영상을 추가해보세요">
-            <div className='mt-4'>
+            <div className='mt-4 pb-1'>
                 <p className='font-bold text-sm text-[#333] pb-1'>동영상 추가*</p>        
                 <VideoUpload onFileUpload={handleFileUpload} />
 
-                <p className='font-bold text-sm text-[#333] pb-1'>동영상 비율</p>
+                <p className='font-bold text-sm text-[#333] py-1'>동영상 비율</p>
                 <div className='flex gap-2 my-2' >
                     <div className="flex flex-1 items-center space-x-1">
                         <input type='radio' value="3:4" id="3/4" className={styles.radioItem} name='arrangement' onChange={handleChange} defaultChecked />
@@ -41,6 +48,10 @@ export default function VideoContainer() {
                     </div>
                 </div>      
             </div>
+             <button onClick={() => handleDeleteComponent(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
+                <p>삭제</p>
+                <RiDeleteBin6Line className='size-4 text-gray-600 ml-1' />
+              </button>
           </Accordion.Content>
         </Accordion.Animation>
       </Accordion>
