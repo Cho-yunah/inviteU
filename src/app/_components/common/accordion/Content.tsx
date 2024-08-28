@@ -1,6 +1,6 @@
 // 'use client'
 import React from 'react';
-import { useAccordion } from "./Accordion";
+import { useAccordion } from "./index";
 
 interface AccordionContentProps {
     children: React.ReactNode;
