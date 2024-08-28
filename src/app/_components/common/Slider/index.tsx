@@ -9,8 +9,6 @@ import 'swiper/css/pagination';
 import './style.css';
 
 import Image from 'next/image';
-import background_1 from '/public/background/background_1.png';
-import background_2 from '/public/background/background_2.png';
 import { Pagination } from 'swiper/modules';
 
 interface slideProps {
@@ -28,8 +26,6 @@ export default function Slider({slideArr}: slideProps) {
         {slideArr?.map((slide) => ( 
           <SwiperSlide key={slide.id}>
             <div className={` p-5 ${slide.color}`}>
-                {/* {slide.title} */}
-                {/* {slide.url} */}
                 <Image src={slide.url} alt={slide.title} width={250} height={450} />
             </div>
           </SwiperSlide>

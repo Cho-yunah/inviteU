@@ -6,6 +6,8 @@ const slideArr = [
     {id: 2, title: 'Slide 2', color: 'bg-green-100', url: '/img/background_2.png'},
     {id: 3, title: 'Slide 3', color: 'bg-red-100', url: '/img/background_3.png'},
     {id: 4, title: 'Slide 4', color: 'bg-yellow-100', url: '/img/background_4.png'},
+    {id: 4, title: 'Slide 4', color: 'bg-yellow-100', url: '/img/background_5.png'},
+    {id: 4, title: 'Slide 4', color: 'bg-yellow-100', url: '/img/background_6.png'},
 ]
 
 const Background = () => {
