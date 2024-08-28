@@ -17,7 +17,7 @@ const Background = () => {
                 <p className='justify-center font-semibold'>배경 선택</p>
                 <span className='text-red-600 self-start pl-1'>*</span>
             </div>
-            <div className="mt-3 h-[400px] bg-slate-100">
+            <div className="mt-3 bg-slate-100">
         <Slider slideArr={slideArr}/>
       </div>
       </div>

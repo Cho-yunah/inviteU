@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
-import Accordion from '@/app/_components/common/accordion/Accordion'
 import { ContainerProps } from '@/app/_types/editTypes'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import Accordion from '@/app/_components/common/Accordion'
 
 export default function IntervalContainer({setComponents, id}: ContainerProps) {
 
@@ -12,7 +12,7 @@ export default function IntervalContainer({setComponents, id}: ContainerProps) {
 
   const handleDeleteComponent = (id) => {
     // console.log('delete', id)
-    setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+    setComponents((prevComponents: ContainerProps[]) => prevComponents.filter((component: ContainerProps) => component.id !== id));
   };
 
   return (

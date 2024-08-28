@@ -1,15 +1,16 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 import './style.css';
 
 import Image from 'next/image';
-import { Pagination } from 'swiper/modules';
+import { Navigation, Pagination } from 'swiper/modules';
 
 interface slideProps {
   slideArr?: Array<{id: number, title: string, color: string, url: any}>
@@ -22,11 +23,11 @@ export default function Slider({slideArr}: slideProps) {
 
   return (
     <>
-      <Swiper pagination={{clickable: true}} modules={[Pagination]} className="mySwiper">
+      <Swiper pagination={{clickable: true}} modules={[Pagination, Navigation]} className="mySwiper">
         {slideArr?.map((slide) => ( 
           <SwiperSlide key={slide.id}>
-            <div className={` p-5 ${slide.color}`}>
-                <Image src={slide.url} alt={slide.title} width={250} height={450} />
+            <div className={`p-0 shadow-md flex justify-center`}>
+                <Image src={slide.url} alt={slide.title} width={250} height={650} />
             </div>
           </SwiperSlide>
           )

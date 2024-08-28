@@ -2,9 +2,10 @@
 
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import styles from './edit.module.scss'
 import BaseInfo from '@/app/_components/edit/BasicInfo'
 import ContentsInfo from '@/app/_components/edit/ContentsInfo'
-import styles from './edit.module.scss'
+import Background from '@/app/_components/edit/Background'
 
 const Edit = () => {
   return (
@@ -21,7 +22,9 @@ const Edit = () => {
         <TabsContent className='px-5' value="contents">
           <ContentsInfo/>
         </TabsContent>
-        <TabsContent className='px-5' value="backgrond">후후 your password here.</TabsContent>
+        <TabsContent className='px-5' value="backgrond">
+          <Background />
+        </TabsContent>
        </Tabs>
     </div>
   )
