@@ -7,7 +7,7 @@ import styles from "./page.module.css";
 import Header from './_components/common/Header';
 import ModalSetup from './_components/common/modal/ModalSetup';
 import ReduxProvider from "./StoreProvider";
-import ErrorBoundary from './_components/common/errorBoundary/Errorboundary';
+import ErrorBoundary from './_components/common/ErrorBoundary/Errorboundary';
 import AuthContext from "./_components/AuthContext";
 
 const inter = Inter({ subsets: ['latin'] })
