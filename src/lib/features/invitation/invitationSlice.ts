@@ -19,7 +19,6 @@ export const invitationSlice = createSlice({
     setInvitation: (state, action: PayloadAction<InvitationStateType[]>) => {
       return action.payload;
     },
-
   },
 });
 

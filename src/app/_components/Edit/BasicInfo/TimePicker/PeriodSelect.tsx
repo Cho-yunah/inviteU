@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Period, display12HourValue, setDateByType } from "./time-picker-utils";
 
+
 export interface PeriodSelectorProps {
   period: Period;
   setPeriod: (m: Period) => void;
@@ -23,10 +24,10 @@ export const TimePeriodSelect = React.forwardRef<
   HTMLButtonElement,
   PeriodSelectorProps
 >(({ period, setPeriod, date, setDate, onLeftFocus, onRightFocus }, ref) => {
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
-    if (e.key === "ArrowRight") onRightFocus?.();
-    if (e.key === "ArrowLeft") onLeftFocus?.();
-  };
+  // const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+  //   if (e.key === "ArrowRight") onRightFocus?.();
+  //   if (e.key === "ArrowLeft") onLeftFocus?.();
+  // };
 
   const handleValueChange = (value: Period) => {
     setPeriod(value);
@@ -58,7 +59,7 @@ export const TimePeriodSelect = React.forwardRef<
         <SelectTrigger
           ref={ref}
           className="w-[65px] border-none focus:bg-accent focus:text-accent-foreground"
-          onKeyDown={handleKeyDown}
+          // onKeyDown={handleKeyDown}
         >
           <SelectValue />
         </SelectTrigger>
