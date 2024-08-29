@@ -37,7 +37,7 @@ const formSchema = z.object({
   })),
 })
 
-export default function BaseInfo() {
+export default function BaseInfo({form}: {form: any}) {
   const [date, setDate] = useState<Date>();
 
   // const onChange = (
@@ -47,27 +47,25 @@ export default function BaseInfo() {
   //   console.log('Change:', e.target.value)
   // }
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-      custom_url:"",
-      date: new Date(),
-      image_urls:'',
-    },
-  })
+  // const form = useForm<z.infer<typeof formSchema>>({
+  //   resolver: zodResolver(formSchema),
+  //   defaultValues: {
+  //     title: "",
+  //     custom_url:"",
+  //     date: new Date(),
+  //     image_urls:'',
+  //   },
+  // })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
     
   }
 
-
-
   return (
     <div className='px-5'>
       <h2 className='text-gray-400 text-base font-bold pb-2'>기본정보</h2>
-      <Form {...form}>
+      {/* <Form {...form}> */}
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
@@ -106,16 +104,16 @@ export default function BaseInfo() {
             name="date"
             render={({ field }) => (
               <FormItem className='grid w-full max-w-sm gap-0 space-y-0'>
-              <div className='flex leading-7 items-center my-0'>
-                <FormLabel className='justify-center font-semibold'>날짜</FormLabel>
-                <span className='text-red-600 self-start pl-1'>*</span>
-              </div>
-              <FormControl className=''>
-                {/* <Input className='mt-0 border-gray-300 rounded-md placeholder:text-slate-400 ' placeholder="기본 URL/wearegettingmarry" {...field} /> */}
-                <DatePickerForm field={field} formSchema={formSchema} date={date} setDate={setDate} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
+                <div className='flex leading-7 items-center my-0'>
+                  <FormLabel className='justify-center font-semibold'>날짜</FormLabel>
+                  <span className='text-red-600 self-start pl-1'>*</span>
+                </div>
+                <FormControl className=''>
+                  {/* <Input className='mt-0 border-gray-300 rounded-md placeholder:text-slate-400 ' placeholder="기본 URL/wearegettingmarry" {...field} /> */}
+                  <DatePickerForm field={field} formSchema={formSchema} date={date} setDate={setDate} />
+                </FormControl>
+                <FormMessage className='text-xs text-red-400 p-1' />
+              </FormItem>
             )}
           />
           <FormField
@@ -130,7 +128,7 @@ export default function BaseInfo() {
                 <FormControl className=''>
                   <TimePickerCustom field={field} formSchema={formSchema} date={date} setDate={setDate} />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className='text-xs text-red-400 p-1' />
               </FormItem>
             )}
           />
@@ -152,7 +150,7 @@ export default function BaseInfo() {
           />
           <Button type="submit">임시 저장</Button>
         </form>
-      </Form>
+      {/* </Form> */}
     </div>
   )
 }

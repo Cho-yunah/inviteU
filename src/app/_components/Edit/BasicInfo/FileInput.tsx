@@ -1,18 +1,130 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import Image from 'next/image'
-import { Label } from '@/components/ui/label'
+// import { Label } from '@/components/ui/label'
+import { Button } from '@/components/ui/button';
+import { IoClose } from 'react-icons/io5';
 
-export default function FileInput() {
+interface FileUploadProps  {
+  onFileUpload: (files: FileList) => void;
+}
+
+export default function FileInput({ onFileUpload, ...props }:FileUploadProps) {
+  const [isDragging, setIsDragging] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
+    const [filePreviews, setFilePreviews] = useState<string[]>([]);
+  
+    const handleDragEnter = (e: React.DragEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      setIsDragging(true);
+    };
+  
+    const handleDragLeave = (e: React.DragEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      setIsDragging(false);
+    };
+  
+    const handleDrop = (e: React.DragEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+        
+        const files = e.dataTransfer.files;
+        console.log(files)
+      if (files.length > 0) {
+        uploadFiles(files);
+        previewFiles(files);
+      }
+    };
+  
+    const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      if (files && files.length > 0) {
+        uploadFiles(files);
+        previewFiles(files);
+      }
+    };
+  
+    const uploadFiles = (files: FileList) => {
+      Array.from(files).forEach((file, index) => {
+        const totalSize = file.size;
+        const chunkSize = 1024 * 1024; 
+        let uploaded = 0;
+  
+        const uploadInterval = setInterval(() => {
+          uploaded += chunkSize;
+          const progress = (uploaded / totalSize) * 100;
+  
+          setUploadProgress(progress);
+  
+          if (progress >= 100) {
+            clearInterval(uploadInterval);
+            setTimeout(() => {
+              setUploadProgress(null);
+              onFileUpload(files);
+            }, 500); // Delay for visual feedback
+          }
+        }, 500); // Simulated 500ms delay per chunk
+      });
+    };
+  
+    const previewFiles = (files: FileList) => {
+      const previews: string[] = [];
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          previews.push(reader.result as string);
+          setFilePreviews([...filePreviews , ...previews]);
+        };
+        reader.readAsDataURL(file);
+      });
+    };
+  
+    const handleDeletePreview = () => {
+      // const updatedPreviews = [...filePreviews];
+      // updatedPreviews.splice(index, 1);
+      setFilePreviews([]);
+    };
+
+    useEffect(() => {
+      console.log(filePreviews)
+    },[filePreviews])
+
   return (
-    <div className='border-[1px] border-gray-200 rounded-md flex flex-col items-center justify-center p-5'>
-        <Image src='/img/upload.png' width='36' height='36' alt='upload icon'/>
-        <p className='text-sm font-bold pb-1 text-gray-400'>이미지 파일을 업로드 해주세요</p>
-        <p className='text-xs mb-2 text-gray-400'>최대 파일 사이즈 : 5 MB </p>
-        <div className='mt-2'>
-          <Label htmlFor="picture" className='rounded-[3px] bg-black text-white py-2 px-8 text-xs'>파일 선택</Label>
-          <Input id="picture" type="file" className='invisible h-0 w-0'/>
+    <div className={`border-[1px] border-gray-200 rounded-md flex flex-col items-center justify-center p-2 bg-pink-100
+      ${isDragging && 'shadow-[0_0px_0px_5px_rgba(135,211,248,0.5)_inset]'}`}
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      >
+        {filePreviews.length != 0? 
+          <div className="relative flex flex-wrap p- border-[1px] rounded-md border-gray-300">
+            <img
+              src={filePreviews[0]}
+              alt={`File Preview`}
+              className="aspect-auto object-cover rounded-sm"
+            />
+            <Button
+              color="danger"
+              size='sm'
+              onClick={handleDeletePreview}
+              className="absolute top-1 right-2 size-6 p-0 bg-slate-50"
+            >
+              <IoClose />
+            </Button>
+          </div>
+          :
+        <div className='p-3 flex flex-col items-center'>
+          <Image src='/img/upload.png' width='36' height='36' alt='upload icon'/>
+          <p className='text-sm font-bold pb-1 text-gray-400'>이미지 파일을 업로드 해주세요</p>
+          <p className='text-xs mb-2 text-gray-400'>최대 파일 사이즈 : 5 MB </p>
+          <Input id="img-input" type="file" onChange={handleFileInputChange} className="hidden" {...props} />
+          <label htmlFor={"img-input"} className='rounded-[3px] bg-black text-white py-2 px-8 text-xs cursor-pointer'>
+                파일 선택
+          </label>
         </div>
+        }
+       
     </div>
   )
 }
