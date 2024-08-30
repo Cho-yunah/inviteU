@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button';
 import { IoClose } from 'react-icons/io5';
+import { useUser } from '@supabase/auth-helpers-react';
 
 interface FileUploadProps  {
+  field: any;
   onFileUpload: (files: FileList) => void;
 }
 
-export default function FileInput({ onFileUpload, ...props }:FileUploadProps) {
-  const [isDragging, setIsDragging] = useState(false);
+export default function FileInput({ field, onFileUpload, ...props }:FileUploadProps) {
+    const {id} = useUser() || {};
+    const [isDragging, setIsDragging] = useState(false);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
     const [filePreviews, setFilePreviews] = useState<string[]>([]);
   
@@ -39,6 +42,7 @@ export default function FileInput({ onFileUpload, ...props }:FileUploadProps) {
       if (files && files.length > 0) {
         uploadFiles(files);
         previewFiles(files);
+        handleFileUpload(files[0])
       }
     };
   
@@ -83,9 +87,19 @@ export default function FileInput({ onFileUpload, ...props }:FileUploadProps) {
       setFilePreviews([]);
     };
 
-    useEffect(() => {
-      console.log(filePreviews)
-    },[filePreviews])
+    /* Multipart/formdata Upload */
+    const handleFileUpload= async(file: File) => {
+      const form = new FormData();
+      form.append('file', field.value[0]);
+      console.log(file)
+      if(!!id && !!form) {
+        const response = await fetch(`/api/files?user_uuid=${id}`, {
+          method: 'POST',
+          body: form,
+        })
+        console.log(await response.json(), 'onSubmitImage_response')
+      }
+    }
 
   return (
     <div className={`border-[1px] border-gray-200 rounded-md flex flex-col items-center justify-center p-2 

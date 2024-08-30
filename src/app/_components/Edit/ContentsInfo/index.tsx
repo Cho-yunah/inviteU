@@ -105,8 +105,8 @@ export default function EditContents() {
 
   return (
     <div >
-      <div className='w-max-[350px]'>
-        <button onClick={handleShowDrawer} className='mt-4 bg-black w-full rounded-md text-base text-white p-3 flex items-center justify-center'>
+      <div className='w-full'>
+        <button onClick={handleShowDrawer} className='mt-5 bg-black w-full rounded-md text-base text-white p-3 flex items-center justify-center'>
           <span>콘텐츠 추가하기 + </span>
         </button>
         <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>

@@ -23,9 +23,9 @@ const formSchema = z.object({
     message: "커스텀 주소는 영어 소문자로 입력해주세요.",
   }),
   date: z.string().date("날짜(또는 시간)를 입력해주세요."),
-  image_urls: z.string(z.string().min(3, {
+  image_urls: z.string().min(3, {
     message: "이미지 URL을 입력해주세요.",
-  })),
+  }),
 })
 
 const Edit = () => {
@@ -48,13 +48,13 @@ const Edit = () => {
             <TabsTrigger className={styles.tabTrigger} value="backgrond">배경</TabsTrigger>
         </TabsList>
         <Form {...form}>
-          <TabsContent  value="basic">
-            <BaseInfo form={form}/>
+          <TabsContent className='px-6 py-2' value="basic">
+            <BaseInfo form={form} formSchema={formSchema}/>
           </TabsContent>
-          <TabsContent className='px-5' value="contents">
+          <TabsContent className='px-6 py-2' value="contents">
             <ContentsInfo/>
           </TabsContent>
-          <TabsContent className='px-5' value="backgrond">
+          <TabsContent className='px-6 py-2' value="backgrond">
             <Background />
           </TabsContent>
         </Form>
