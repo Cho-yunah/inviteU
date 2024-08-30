@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Input } from '@/components/ui/input'
 import Image from 'next/image'
-// import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button';
 import { IoClose } from 'react-icons/io5';
 
@@ -60,7 +58,7 @@ export default function FileInput({ onFileUpload, ...props }:FileUploadProps) {
             clearInterval(uploadInterval);
             setTimeout(() => {
               setUploadProgress(null);
-              onFileUpload(files);
+              // onFileUpload(files);
             }, 500); // Delay for visual feedback
           }
         }, 500); // Simulated 500ms delay per chunk
@@ -90,7 +88,7 @@ export default function FileInput({ onFileUpload, ...props }:FileUploadProps) {
     },[filePreviews])
 
   return (
-    <div className={`border-[1px] border-gray-200 rounded-md flex flex-col items-center justify-center p-2 bg-pink-100
+    <div className={`border-[1px] border-gray-200 rounded-md flex flex-col items-center justify-center p-2 
       ${isDragging && 'shadow-[0_0px_0px_5px_rgba(135,211,248,0.5)_inset]'}`}
       onDragEnter={handleDragEnter}
       onDragOver={handleDragEnter}
@@ -118,11 +116,19 @@ export default function FileInput({ onFileUpload, ...props }:FileUploadProps) {
           <Image src='/img/upload.png' width='36' height='36' alt='upload icon'/>
           <p className='text-sm font-bold pb-1 text-gray-400'>이미지 파일을 업로드 해주세요</p>
           <p className='text-xs mb-2 text-gray-400'>최대 파일 사이즈 : 5 MB </p>
-          <Input id="img-input" type="file" onChange={handleFileInputChange} className="hidden" {...props} />
-          <label htmlFor={"img-input"} className='rounded-[3px] bg-black text-white py-2 px-8 text-xs cursor-pointer'>
-                파일 선택
+          <input 
+            type="file" 
+            accept="image/jpg, image/png, image/jpeg" 
+            {...props} 
+            onChange={handleFileInputChange} 
+            className="hidden"
+            id='img-input'
+          />
+          <label htmlFor="img-input" className='cursor-pointer'>
+            <p className='rounded-[3px] bg-black text-white py-2 px-8 text-xs'>파일 선택</p>
           </label>
         </div>
+        
         }
        
     </div>

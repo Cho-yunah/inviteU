@@ -1,8 +1,6 @@
 "use client"
 
-import React, { use, useEffect, useState } from 'react'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import React, { useState } from 'react'
 import { z } from "zod"
 import {
   Form,
@@ -40,22 +38,9 @@ const formSchema = z.object({
 export default function BaseInfo({form}: {form: any}) {
   const [date, setDate] = useState<Date>();
 
-  // const onChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  // ) => {
-  //   console.log(e)
-  //   console.log('Change:', e.target.value)
-  // }
-
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     title: "",
-  //     custom_url:"",
-  //     date: new Date(),
-  //     image_urls:'',
-  //   },
-  // })
+  const handleFileUpload = (files: FileList) => {
+    console.log("Uploaded files:", files);
+};
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
@@ -142,7 +127,7 @@ export default function BaseInfo({form}: {form: any}) {
                   <span className='text-red-600 self-start pl-1'>*</span>
                 </div>
                 <FormControl className=''>
-                  <FileInput />
+                  <FileInput onFileUpload={handleFileUpload} />
                 </FormControl>
                 <FormMessage className='text-xs text-red-400 p-1' />
               </FormItem>
