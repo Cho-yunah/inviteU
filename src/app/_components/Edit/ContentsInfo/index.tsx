@@ -99,6 +99,7 @@ export default function EditContents() {
 
 
   const handleDeleteComponent = (id) => {
+    console.log('delete', id)
     setComponents((prevComponents) => prevComponents.filter((component) => component.id !== id));
   };
 

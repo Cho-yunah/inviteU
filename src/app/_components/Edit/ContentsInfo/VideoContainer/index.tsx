@@ -16,7 +16,7 @@ export default function VideoContainer({setComponents,id}: ContainerProps) {
 
   const handleDeleteComponent = (id) => {
     // console.log('delete', id)
-    setComponents((prevComponents: ContainerProps[]) => prevComponents.filter((component: ContainerProps) => component.id !== id));
+    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
   };
 
   return (

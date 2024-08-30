@@ -15,7 +15,8 @@ export default function ImageContainer({setComponents,id}: ContainerProps) {
   }
 
   const handleDeleteComponent = (id) => {
-    setComponents((prevComponents: ContainerProps[]) => prevComponents.filter((component: ContainerProps) => component.id !== id));
+    console.log('image',id)
+    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
   };
 
   return (
