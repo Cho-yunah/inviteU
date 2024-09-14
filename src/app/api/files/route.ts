@@ -78,26 +78,34 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const searchParams = req.nextUrl.searchParams
 
   // swagger 의 query는 query 객체가 아닌 req의 query에 있음.
-  const query = searchParamsToObject(searchParams)
+  const query = searchParamsToObject<{ user_uuid: string }>(searchParams)
 
   const { user_uuid } = query! || {
     user_uuid: '',
   }
 
   // Check if invitation_id exists in invitation table
-  const { data: userData, error: userError } = await supabase
-    .from('userinfo')
-    .select('id')
-    .eq('id', user_uuid)
-    .single()
+  // 사용자가 인증되었는지 확인
+  const { data: authData, error: authError } = await supabase.auth.getUser()
 
-  if (userError || !userData) {
+  if (authError || !authData.user) {
     return NextResponse.json(
       {
         success: false,
-        error: 'Invitation ID not found',
+        error: '인증되지 않은 사용자입니다.',
       },
-      { status: 400 },
+      { status: 401 },
+    )
+  }
+
+  // 인증된 사용자의 UUID와 요청의 user_uuid가 일치하는지 확인
+  if (authData.user.id !== user_uuid) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: '사용자 인증 정보가 일치하지 않습니다.',
+      },
+      { status: 403 },
     )
   }
 
