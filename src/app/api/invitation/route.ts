@@ -1,4 +1,6 @@
 import { supabase } from '@/supabase/browser'
+import { type Database } from '@/supabase/type'
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { withSwagger } from 'next-swagger-doc'
 import { NextRequest, NextResponse } from 'next/server'
@@ -9,6 +11,44 @@ type Data = {
   id?: string
   error?: string
 }
+
+type ImageType = {
+  type: 'image'
+  layout: 'vertical' | 'horizontal'
+  ratio: number
+  urls: string
+}
+type VideoType = {
+  type: 'video'
+  ratio: number
+  urls: string
+}
+type TextType = {
+  type: 'text'
+  font_size: number
+  font_type: string
+  urls: string
+  layout: 'left' | 'center' | 'right'
+  text: string
+}
+type IntervalType = {
+  type: 'interval'
+  size: 'small' | 'medium' | 'big'
+}
+
+type MapType = {
+  type: 'map'
+  main_address: string
+  detail_address: string
+  post_number: number
+}
+type QueryDataType = (
+  | ImageType
+  | VideoType
+  | TextType
+  | IntervalType
+  | MapType
+)[]
 
 /**
  * @swagger
@@ -214,7 +254,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
 
   // next.js14의 query는 query 객체가 아닌 searchParams에 있습니다.
-  const query = searchParamsToObject(searchParams)
+  const query = searchParamsToObject<QueryDataType[]>(searchParams)
   const {
     title,
     description,

@@ -1,11 +1,7 @@
 /**
  * @description URLSearchParams를 일반 객체로 변환
  */
-export const searchParamsToObject = (
-  searchParams: URLSearchParams,
-): {
-  [key: string]: string | boolean
-} => {
+export const searchParamsToObject = <T>(searchParams: URLSearchParams) => {
   const obj: { [key: string]: string | boolean } = {}
   searchParams.forEach((value, key) => {
     // true/false 문자열을 실제 boolean 값으로 변환
@@ -17,7 +13,7 @@ export const searchParamsToObject = (
       obj[key] = value
     }
   })
-  return obj
+  return obj as T
 }
 
 const imageMimeTypes = [

@@ -33,18 +33,24 @@ export type Database = {
           id: string
           image_url: string | null
           invitation_id: string | null
+          layout: string | null
+          ratio: number | null
         }
         Insert: {
           created_at?: string
           id?: string
           image_url?: string | null
           invitation_id?: string | null
+          layout?: string | null
+          ratio?: number | null
         }
         Update: {
           created_at?: string
           id?: string
           image_url?: string | null
           invitation_id?: string | null
+          layout?: string | null
+          ratio?: number | null
         }
         Relationships: [
           {
@@ -107,6 +113,27 @@ export type Database = {
           primary_image?: string | null
           title?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      map: {
+        Row: {
+          created_at: string
+          detail_address: string | null
+          id: number
+          main_address: string | null
+        }
+        Insert: {
+          created_at?: string
+          detail_address?: string | null
+          id?: number
+          main_address?: string | null
+        }
+        Update: {
+          created_at?: string
+          detail_address?: string | null
+          id?: number
+          main_address?: string | null
         }
         Relationships: []
       }
@@ -185,18 +212,21 @@ export type Database = {
           created_at: string
           id: string
           invitation_id: string
+          ratio: number | null
           video_url: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           invitation_id: string
+          ratio?: number | null
           video_url?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           invitation_id?: string
+          ratio?: number | null
           video_url?: string | null
         }
         Relationships: [
