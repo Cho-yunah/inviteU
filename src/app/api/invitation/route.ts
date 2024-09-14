@@ -42,14 +42,19 @@ type MapType = {
   detail_address: string
   post_number: number
 }
-type QueryDataType = (
-  | ImageType
-  | VideoType
-  | TextType
-  | IntervalType
-  | MapType
-)[]
+type ContentDataType = ImageType | VideoType | TextType | IntervalType | MapType
 
+type QueryDataType = {
+  contents: ContentDataType[]
+  background_image: string | null
+  custom_url: string
+  date: string | null
+  id: string
+  post_number: string | null
+  primary_image: string | null
+  title: string
+  user_id: string | null
+}
 /**
  * @swagger
  * /api/invitation:
@@ -254,76 +259,217 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
 
   // next.js14의 query는 query 객체가 아닌 searchParams에 있습니다.
-  const query = searchParamsToObject<QueryDataType[]>(searchParams)
+  const query = searchParamsToObject<QueryDataType>(searchParams)
   const {
-    title,
-    description,
-    subtitle,
+    contents,
+    background_image,
     custom_url,
     date,
     post_number,
-    address,
-    is_vertical,
-    video_url,
-    ratio,
+    primary_image,
+    title,
     user_id,
-    image_urls,
-  } = query! || {}
+  } = query!
 
-  if (
-    !title ||
-    !user_id ||
-    !description ||
-    !subtitle ||
-    !custom_url ||
-    !date ||
-    !post_number ||
-    !address
-  ) {
+  if (!title || !user_id) {
     return NextResponse.json(
       { message: '필수 항목이 없습니다.' },
       { status: 400 },
     )
   }
 
-  const { isVideoUrlValid, isImageUrlsValid } = judgeImageAndVideoValid({
-    image_urls,
-    video_url,
-  })
-  if (!isImageUrlsValid) {
-    return NextResponse.json(
-      {
-        message:
-          '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
-      },
-      { status: 400 },
-    )
-  }
-  if (!isVideoUrlValid) {
-    return NextResponse.json(
-      {
-        message: '적절한 비디오 url이 아닙니다.',
-      },
-      { status: 400 },
-    )
+  const uuid = randomUUID()
+
+  let refinedContents: {
+    type: 'images' | 'videos' | 'text' | 'interval' | 'map'
+    uuid: string
+  }[] = []
+  for await (const item of query.contents) {
+    if (item.type === 'image') {
+      const { isImageUrlsValid } = judgeImageAndVideoValid({
+        image_urls: item.urls,
+      })
+      if (!isImageUrlsValid) {
+        return NextResponse.json(
+          {
+            message:
+              '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
+          },
+          { status: 400 },
+        )
+      }
+
+      const { data: imageData, error: imageError } = await supabase
+        .from('images')
+        .insert({
+          url: item.urls,
+          layout: item.layout,
+          ratio: item.ratio,
+        })
+        .select('id')
+        .single()
+
+      if (imageError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: '이미지 데이터 삽입 중 오류가 발생했습니다.',
+          },
+          { status: 500 },
+        )
+      }
+
+      if (imageData.id) {
+        refinedContents.push({
+          type: 'images',
+          uuid: imageData.id,
+        })
+      }
+      if (imageError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: '이미지 데이터 삽입 중 오류가 발생했습니다.',
+          },
+          { status: 500 },
+        )
+      }
+    } else if (item.type === 'video') {
+      const { isVideoUrlValid } = judgeImageAndVideoValid({
+        video_url: item.urls,
+      })
+      if (!isVideoUrlValid) {
+        return NextResponse.json(
+          {
+            message:
+              '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
+          },
+          { status: 400 },
+        )
+      }
+      const { data: videoData, error: videoError } = await supabase
+        .from('videos')
+        .insert({
+          url: item.urls,
+          ratio: item.ratio,
+        })
+        .select('id')
+        .single()
+
+      if (videoError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: '비디오 데이터 삽입 중 오류가 발생했습니다.',
+          },
+          { status: 500 },
+        )
+      }
+
+      if (videoData.id) {
+        refinedContents.push({
+          type: 'videos',
+          uuid: videoData.id,
+        })
+      }
+    } else if (item.type === 'text') {
+      const { data: textData, error: textError } = await supabase
+        .from('text')
+        .insert({
+          invitation_id: uuid,
+          text: item.text,
+          font_size: item.font_size,
+          font_type: item.font_type,
+          layout: item.layout,
+          urls: item.urls,
+        })
+        .select('id')
+        .single()
+
+      if (textError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: '텍스트 데이터 삽입 중 오류가 발생했습니다.',
+          },
+          { status: 500 },
+        )
+      }
+
+      if (textData.id) {
+        refinedContents.push({
+          type: 'text',
+          uuid: textData.id,
+        })
+      }
+    } else if (item.type === 'interval') {
+      const { data: intervalData, error: intervalError } = await supabase
+        .from('interval')
+        .insert({
+          invitation_id: uuid,
+          size: item.size,
+        })
+        .select('id')
+        .single()
+
+      if (intervalError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: '간격 데이터 삽입 중 오류가 발생했습니다.',
+          },
+          { status: 500 },
+        )
+      }
+
+      if (intervalData.id) {
+        refinedContents.push({
+          type: 'interval',
+          uuid: intervalData.id,
+        })
+      }
+    } else if (item.type === 'map') {
+      const { data: mapData, error: mapError } = await supabase
+        .from('map')
+        .insert({
+          main_address: item.main_address,
+          detail_address: item.detail_address,
+          post_number: item.post_number,
+        })
+        .select('id')
+        .single()
+
+      if (mapError) {
+        return NextResponse.json(
+          {
+            success: false,
+            error: '지도 데이터 삽입 중 오류가 발생했습니다.',
+          },
+          { status: 500 },
+        )
+      }
+
+      if (mapData.id) {
+        refinedContents.push({
+          type: 'map',
+          uuid: mapData.id,
+        })
+      }
+    }
   }
 
-  const uuid = randomUUID()
+  // invitation 테이블에 데이터 삽입
   const { data, error } = await supabase.from('invitation').insert([
     {
-      title: title?.toString() || '',
-      description: description?.toString(),
-      subtitle: subtitle?.toString(),
-      custom_url: custom_url?.toString(),
-      date: date?.toString(),
-      post_number: post_number?.toString(),
-      address: address?.toString(),
-      is_vertical: Boolean(is_vertical),
-      video_url: video_url?.toString(),
-      ratio: Number(ratio),
+      background_image,
+      contents: refinedContents,
+      custom_url,
+      date,
       id: uuid,
-      image_urls: image_urls?.toString(),
-      user_id: user_id?.toString(),
+      post_number,
+      primary_image,
+      title,
+      user_id,
     },
   ])
 

@@ -32,7 +32,6 @@ export type Database = {
           created_at: string
           id: string
           image_url: string | null
-          invitation_id: string | null
           layout: string | null
           ratio: number | null
         }
@@ -40,7 +39,6 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
-          invitation_id?: string | null
           layout?: string | null
           ratio?: number | null
         }
@@ -48,19 +46,10 @@ export type Database = {
           created_at?: string
           id?: string
           image_url?: string | null
-          invitation_id?: string | null
           layout?: string | null
           ratio?: number | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "images_invitation_id_fkey"
-            columns: ["invitation_id"]
-            isOneToOne: false
-            referencedRelation: "invitation"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       interval: {
         Row: {
@@ -83,6 +72,7 @@ export type Database = {
       invitation: {
         Row: {
           background_image: string | null
+          contents: Json | null
           created_at: string | null
           custom_url: string
           date: string | null
@@ -94,6 +84,7 @@ export type Database = {
         }
         Insert: {
           background_image?: string | null
+          contents?: Json | null
           created_at?: string | null
           custom_url: string
           date?: string | null
@@ -105,6 +96,7 @@ export type Database = {
         }
         Update: {
           background_image?: string | null
+          contents?: Json | null
           created_at?: string | null
           custom_url?: string
           date?: string | null
@@ -120,20 +112,23 @@ export type Database = {
         Row: {
           created_at: string
           detail_address: string | null
-          id: number
+          id: string
           main_address: string | null
+          post_number: number | null
         }
         Insert: {
           created_at?: string
           detail_address?: string | null
-          id?: number
+          id?: string
           main_address?: string | null
+          post_number?: number | null
         }
         Update: {
           created_at?: string
           detail_address?: string | null
-          id?: number
+          id?: string
           main_address?: string | null
+          post_number?: number | null
         }
         Relationships: []
       }
@@ -142,8 +137,7 @@ export type Database = {
           created_at: string
           font_size: number | null
           font_type: string | null
-          id: number
-          invitation_id: string | null
+          id: string
           layout: string | null
           text: string | null
         }
@@ -151,8 +145,7 @@ export type Database = {
           created_at?: string
           font_size?: number | null
           font_type?: string | null
-          id?: number
-          invitation_id?: string | null
+          id?: string
           layout?: string | null
           text?: string | null
         }
@@ -160,20 +153,11 @@ export type Database = {
           created_at?: string
           font_size?: number | null
           font_type?: string | null
-          id?: number
-          invitation_id?: string | null
+          id?: string
           layout?: string | null
           text?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "text_invitation_id_fkey"
-            columns: ["invitation_id"]
-            isOneToOne: false
-            referencedRelation: "invitation"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       userinfo: {
         Row: {
@@ -211,33 +195,22 @@ export type Database = {
         Row: {
           created_at: string
           id: string
-          invitation_id: string
           ratio: number | null
           video_url: string | null
         }
         Insert: {
           created_at?: string
           id?: string
-          invitation_id: string
           ratio?: number | null
           video_url?: string | null
         }
         Update: {
           created_at?: string
           id?: string
-          invitation_id?: string
           ratio?: number | null
           video_url?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "videos_invitation_id_fkey"
-            columns: ["invitation_id"]
-            isOneToOne: false
-            referencedRelation: "invitation"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Views: {

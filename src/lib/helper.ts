@@ -66,13 +66,13 @@ export function judgeImageAndVideoValid({
   image_urls,
   video_url,
 }: {
-  image_urls: string | boolean // input type
-  video_url: string | boolean
+  image_urls?: string | boolean // input type
+  video_url?: string | boolean
 }) {
   const isImageUrlsValid = image_urls
     ?.toString()
     ?.split(',')
     ?.every((url) => isValidUrl(url))
-  const isVideoUrlValid = isValidUrl(video_url?.toString())
+  const isVideoUrlValid = isValidUrl(video_url?.toString() || '')
   return { isImageUrlsValid, isVideoUrlValid }
 }
