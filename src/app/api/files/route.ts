@@ -10,70 +10,6 @@ const BUCKET_NAME = process.env.STORAGE_BUCKET || ''
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024 // 5MB
 const MAX_VIDEO_SIZE = 30 * 1024 * 1024 // 30MB
 
-/**
- * @swagger
- * /api/files:
- *   post:
- *     summary: Upload a file
- *     description: Upload a file to Supabase storage and return its public URL.
- *     consumes:
- *       - multipart/form-data
- *     parameters:
- *       - in: query
- *         name: user_uuid
- *         schema:
- *           type: string
- *         required: true
- *         description: The user UUID.
- *       - in: formData
- *         name: file
- *         schema:
- *           type: string
- *           format: binary
- *         required: true
- *         description: The file to upload.
- *     responses:
- *       201:
- *         description: Successfully uploaded
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 publicUrl:
- *                   type: string
- *                   description: The public URL of the uploaded file.
- *                 message:
- *                   type: string
- *                   description: Success message.
- *       400:
- *         description: Bad request
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   description: Success status.
- *                 error:
- *                   type: string
- *                   description: Error message.
- *       500:
- *         description: Internal server error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                   description: Success status.
- *                 error:
- *                   type: string
- *                   description: Error message.
- */
-
 export const POST = async (req: NextRequest, res: NextResponse) => {
   const searchParams = req.nextUrl.searchParams
 
@@ -85,27 +21,20 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   }
 
   // Check if invitation_id exists in invitation table
-  // 사용자가 인증되었는지 확인
-  const { data: authData, error: authError } = await supabase.auth.getUser()
 
-  if (authError || !authData.user) {
+  const { data: userData, error: userError } = await supabase
+    .from('userinfo')
+    .select('id')
+    .eq('id', user_uuid)
+    .single()
+
+  if (userError || !userData) {
     return NextResponse.json(
       {
         success: false,
-        error: '인증되지 않은 사용자입니다.',
+        error: 'Invitation ID not found',
       },
-      { status: 401 },
-    )
-  }
-
-  // 인증된 사용자의 UUID와 요청의 user_uuid가 일치하는지 확인
-  if (authData.user.id !== user_uuid) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: '사용자 인증 정보가 일치하지 않습니다.',
-      },
-      { status: 403 },
+      { status: 400 },
     )
   }
 
