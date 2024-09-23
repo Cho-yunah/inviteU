@@ -1,12 +1,11 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
-import { FileUpload } from './FileUpload'
-import Accordion from '@/app/_components/common/accordion/Accordion';
 import { ContainerProps } from '@/app/_types/editTypes';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { FileUpload } from './FileUpload';
+import Accordion from '@/app/_components/common/Accordion';
 
 export default function ImageContainer({setComponents,id}: ContainerProps) {
-  console.log(id)
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
@@ -16,7 +15,8 @@ export default function ImageContainer({setComponents,id}: ContainerProps) {
   }
 
   const handleDeleteComponent = (id) => {
-    setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+    console.log('image',id)
+    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
   };
 
   return (

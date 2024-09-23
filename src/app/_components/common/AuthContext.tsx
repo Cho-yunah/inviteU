@@ -40,12 +40,13 @@ export default function SupabaseProvider({
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-   if (!session ) {   
-      console.log("not found user")
-        router.push('/');
-      }
-  }, [session]);
+  // 새로고침 / 페이지로 이동되지 않도록 해야함
+  // useEffect(() => {
+  //  if (!session ) {   
+  //     console.log("not found user")
+  //       router.push('/');
+  //     }
+  // }, [session]);
 
   return (
     <Context.Provider value={{ supabase, session, isLoading }}>

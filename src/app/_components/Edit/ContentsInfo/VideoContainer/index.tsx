@@ -1,9 +1,9 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
-import { VideoUpload } from './VideoUpload'
-import Accordion from '@/app/_components/common/accordion/Accordion';
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { ContainerProps } from '@/app/_types/editTypes';
+import Accordion from '@/app/_components/common/Accordion';
+import { VideoUpload } from './VideoUpload';
 
 export default function VideoContainer({setComponents,id}: ContainerProps) {
 
@@ -16,7 +16,7 @@ export default function VideoContainer({setComponents,id}: ContainerProps) {
 
   const handleDeleteComponent = (id) => {
     // console.log('delete', id)
-    setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
   };
 
   return (

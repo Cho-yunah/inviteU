@@ -1,9 +1,9 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
 import { Select, SelectContent, SelectItem,SelectTrigger, SelectValue } from '@/components/ui/select'
-import Accordion from '@/app/_components/common/accordion/Accordion'
 import { ContainerProps } from '@/app/_types/editTypes'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import Accordion from '@/app/_components/common/Accordion'
 
 
 export default function TextContainer({setComponents, id}: ContainerProps) {
@@ -13,7 +13,8 @@ export default function TextContainer({setComponents, id}: ContainerProps) {
   }
 
   const handleDeleteComponent = (id) => {
-    setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+    console.log('text', id)
+    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
   };
 
   return (

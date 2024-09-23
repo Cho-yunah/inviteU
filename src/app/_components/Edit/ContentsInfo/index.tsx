@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
+import Image from 'next/image';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import ImageContainer from './ImagesContainer'
-import VideoContainer from './VideoContainer'
+import ImageContainer from './ImagesContainer';
+import VideoContainer from './VideoContainer';
 import MapContainer from './MapContainer'
 import IntervalContainer from './IntervalContainer'
 import TextContainer from './TextContainer'
-import Image from 'next/image';
 import BottomDrawer from '../../common/bottomDrawer';
 
 interface Component {
@@ -17,7 +17,13 @@ interface Component {
 
 const initialComponents: Component[] = [];
 
-function SortableItem(props) {
+interface SortableItemProps {
+  id: string;
+  content: JSX.Element;
+  handleDeleteComponent: (id: string) => void;
+}
+
+function SortableItem(props: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
@@ -27,21 +33,21 @@ function SortableItem(props) {
   };
   
   return (
-    <div ref={setNodeRef} style={style} {...attributes}  className='absolute' >
-        {/* 드래그 핸들 버튼 */}
-        <button
-          {...listeners}
-          style={{
-            position: "absolute",
-            top: "13px",
-            left: "8px",
-            cursor: "grab",
-          }}
-          >
-          <Image src="./Drag.svg" alt='move button' width={24} height={24} />
-        </button>
-          {props.content}
-   </div>
+    <div ref={setNodeRef} style={style} {...attributes} className='absolute'>
+      {/* 드래그 핸들 버튼 */}
+      <button
+        {...listeners}
+        style={{
+          position: "absolute",
+          top: "13px",
+          left: "8px",
+          cursor: "grab",
+        }}
+      >
+        <Image src="./Drag.svg" alt='move button' width={24} height={24} />
+      </button>
+      {props.content}
+    </div>
   );
 }
 
@@ -93,30 +99,30 @@ export default function EditContents() {
 
 
   const handleDeleteComponent = (id) => {
+    console.log('delete', id)
     setComponents((prevComponents) => prevComponents.filter((component) => component.id !== id));
   };
 
   return (
     <div >
-    <div className='w-max-[350px]'>
-      <button onClick={handleShowDrawer} className='mt-4 bg-black w-full rounded-md text-base text-white p-3 flex items-center justify-center'>
-        <span>콘텐츠 추가하기 + </span>
-      </button>
-      <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-        <SortableContext items={components} strategy={verticalListSortingStrategy}>
-          {components.map((component) => (
-            <SortableItem 
-              key={component.id} 
-              id={component.id} 
-              content={component.content}
-              handleDeleteComponent={handleDeleteComponent} />
-          ))}
-        </SortableContext>
-      </DndContext>
+      <div className='w-full'>
+        <button onClick={handleShowDrawer} className='mt-5 bg-black w-full rounded-md text-base text-white p-3 flex items-center justify-center'>
+          <span>콘텐츠 추가하기 + </span>
+        </button>
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <SortableContext items={components} strategy={verticalListSortingStrategy}>
+            {components.map((component) => (
+              <SortableItem 
+                key={component.id} 
+                id={component.id} 
+                content={component.content}
+                handleDeleteComponent={handleDeleteComponent} />
+            ))}
+          </SortableContext>
+        </DndContext>
+      </div>
+      <BottomDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} handleAddComponent={handleAddComponent} />  
     </div>
-    <BottomDrawer showDrawer={showDrawer} setShowDrawer={setShowDrawer} handleAddComponent={handleAddComponent} />  
-    </div>
-
   );
 }
 

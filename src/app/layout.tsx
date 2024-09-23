@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import SupabaseProvider from '@/supabase/provider'
-import clsx from 'clsx'
 import "./global.css";
 import styles from "./page.module.css";
 import Header from './_components/common/Header';
 import ModalSetup from './_components/common/modal/ModalSetup';
 import ReduxProvider from "./StoreProvider";
-import ErrorBoundary from './_components/common/errorBoundary/Errorboundary';
 import AuthContext from "./_components/common/AuthContext";
+import ErrorBoundary from "./_components/common/errorBoundary/Errorboundary";
 
 const inter = Inter({ subsets: ['latin'] })
 

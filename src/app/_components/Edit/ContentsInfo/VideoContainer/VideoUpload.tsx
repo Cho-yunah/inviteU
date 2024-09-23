@@ -4,8 +4,7 @@ import React, { useState } from "react";
 import { Input } from '@/components/ui/input'
 import { IoClose } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
-// import { LoadingSpinner } from "@/app/_components/common/loadingSpinner/LoadingSpinner";
-
+// import { LoadingSpinner } from "@/app/_components/common/LoadingSpinner";
 
 interface FileUploadProps  {
     onFileUpload: (files: FileList) => void;

@@ -5,7 +5,7 @@ import cx from 'classnames'
 import styles from './accordion.module.scss'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { useAccordion } from './Accordion'
+import { useAccordion } from './index'
 
 interface AccordionHeaderProps {
     children: string | React.ReactNode;

@@ -1,16 +1,13 @@
 "use client"
 
 import React, { useState } from 'react'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
 import { z } from "zod"
-// import styles from './edit.module.scss'
 import {
-  Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -18,43 +15,22 @@ import { DatePickerForm } from './DatePicker'
 import { TimePickerCustom } from './TimePicker'
 import FileInput from './FileInput'
 
-const formSchema = z.object({
-  title: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  url: z.string().min(7, {
-    message: "Username must be at least 7 characters.",
-  }),
-})
+export default function BaseInfo({form, formSchema}: {form: any, formSchema: any}) {
+  const [date, setDate] = useState<Date>();
 
-export default function BaseInfo() {
-  const [date, setDate] = React.useState<Date>();
-  const [time, setTime] = useState<Date | undefined>(undefined);
-
-  const onChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    console.log('Change:', e.target.value)
-  }
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      title: "",
-    },
-  })
+  const handleFileUpload = (files: FileList) => {
+    console.log("Uploaded files:", files);
+};
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
     console.log(values)
+    
   }
 
   return (
-    <div className='px-5 w-max-[350px]'>
-      <h2 className='text-gray-400 text-base font-bold pb-2' >기본정보</h2>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+    <div >
+      <h2 className='text-black-400 text-base font-bold pb-2'>기본정보</h2>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="title"
@@ -67,44 +43,76 @@ export default function BaseInfo() {
                 <FormControl className='space-y-0 '>
                   <Input className=' mt-0 border-gray-300 rounded-md placeholder:text-slate-400 ' placeholder="내용을 입력해주세요" {...field} />
                 </FormControl>
+                <FormMessage className='text-xs text-red-400 p-1' />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name="url"
+            name="custom_url"
             render={({ field }) => (
               <FormItem className='grid w-full max-w-sm gap-0 space-y-0'>
               <div className='flex leading-7 items-center my-0'>
                 <FormLabel className='justify-center font-semibold'>링크 생성</FormLabel>
                 <span className='text-red-600 self-start pl-1'>*</span>
               </div>
-              <FormControl className=''>
+              <FormControl >
                 <Input className='mt-0 border-gray-300 rounded-md placeholder:text-slate-400 ' placeholder="기본 URL/wearegettingmarry" {...field} />
               </FormControl>
+              <FormMessage className='text-xs text-red-400 p-1' />
             </FormItem>
             )}
           />
-          <DatePickerForm/>
-          <TimePickerCustom setDate={setDate} date={date} />
           <FormField
             control={form.control}
-            name="url"
+            name="date"
+            render={({ field }) => (
+              <FormItem className='grid w-full max-w-sm gap-0 space-y-0'>
+                <div className='flex leading-7 items-center my-0'>
+                  <FormLabel className='justify-center font-semibold'>날짜</FormLabel>
+                  <span className='text-red-600 self-start pl-1'>*</span>
+                </div>
+                <FormControl >
+                  <DatePickerForm field={field} formSchema={formSchema} date={date} setDate={setDate} />
+                </FormControl>
+                <FormMessage className='text-xs text-red-400 p-1' />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem className='grid w-full max-w-sm gap-0 space-y-0 my-[5px]'>
+                <div className='flex leading-7 items-center my-0'>
+                  <FormLabel className='justify-center font-semibold'>시간</FormLabel>
+                  <span className='text-red-600 self-start pl-1'>*</span>
+                </div>
+                <FormControl >
+                  <TimePickerCustom field={field} formSchema={formSchema} date={date} setDate={setDate} />
+                </FormControl>
+                <FormMessage className='text-xs text-red-400 p-1' />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="image_urls"
             render={({ field }) => (
               <FormItem className='grid w-full max-w-sm gap-0 space-y-0'>
                 <div className='flex leading-7 items-center my-0'>
                   <FormLabel className='justify-center font-semibold'>대표 이미지</FormLabel>
                   <span className='text-red-600 self-start pl-1'>*</span>
+                  <FormMessage className='text-xs text-red-400 py-1 px-3' />
                 </div>
-                <FormControl className=''>
-                  <FileInput />
+                <FormControl >
+                  <FileInput field={field} onFileUpload={handleFileUpload} />
                 </FormControl>
               </FormItem>
             )}
           />
-          {/* <Button type="submit">Submit</Button> */}
+          <Button type="submit">임시 저장</Button>
         </form>
-      </Form>
     </div>
   )
 }

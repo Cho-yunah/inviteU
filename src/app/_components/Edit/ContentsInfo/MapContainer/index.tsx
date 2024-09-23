@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
-import SearchPostCode from './SearchPostcode'
-import Accordion from '@/app/_components/common/accordion/Accordion'
 import { ContainerProps } from '@/app/_types/editTypes'
 import { RiDeleteBin6Line } from 'react-icons/ri'
+import Accordion from '@/app/_components/common/Accordion'
+import SearchPostCode from './SearchPostcode'
 
 const MapContainer = ({setComponents, id}: ContainerProps) => {
     const [showModal, setShowModal] = useState<boolean>(false)
@@ -15,7 +15,7 @@ const MapContainer = ({setComponents, id}: ContainerProps) => {
 
     const handleDeleteComponent = (id) => {
       // console.log('delete', id)
-      setComponents((prevComponents) => prevComponents.filter((component) => component.id != id));
+      setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
     };
 
   return (
@@ -38,7 +38,7 @@ const MapContainer = ({setComponents, id}: ContainerProps) => {
                         value={detailAddress}
                         onChange={(e) => setDetailAddress(e.target.value)} />
                 {showModal && 
-                    <SearchPostCode 
+                    <SearchPostCode
                         showModal={showModal} setShowModal={setShowModal}
                         address={address} setAddress={setAddress}
                     />
