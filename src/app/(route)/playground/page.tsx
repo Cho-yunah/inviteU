@@ -80,13 +80,6 @@ const FormPage = () => {
   async function onSubmitInvitationGet(e: any) {
     e.preventDefault() // 폼 기본 동작 방지
 
-    const queryParams = {
-      start,
-      limit,
-      user_id: userId,
-      invitation_id: invitationId,
-    }
-
     const response = await axios.get(
       `/api/invitation?start=${start}&limit=${limit}&user_id=${userId}&invitation_id=${invitationId}`,
     )

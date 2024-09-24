@@ -40,13 +40,12 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
   }, [])
 
   // 새로고침 / 페이지로 이동되지 않도록 해야함
-  // useEffect(() => {
-  //   if (!data) {
-  //     console.log("not found user")
-  //       router.push('/');
-  //   }
-  // }, [data]);
-
+  useEffect(() => {
+    if (!data) {
+      console.log('not found user')
+      router.push('/')
+    }
+  }, [data])
   return (
     <Context.Provider value={{ supabase, session, isLoading }}>
       <>{children}</>
