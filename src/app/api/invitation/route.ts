@@ -563,15 +563,23 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
 
 export const DELETE = async (req: NextRequest, res: NextResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
-  const query = searchParamsToObject<QueryDataType>(searchParams)
-  const { id, user_id } = query!
+  const query = searchParamsToObject<{
+    user_id: string
+    invitation_id: string
+  }>(searchParams)
 
-  if (!id || !user_id) {
+  const { user_id, invitation_id } = query!
+
+  if (!invitation_id || !user_id) {
     return NextResponse.json({ message: 'id와 user_id 필드가 누락되었습니다' }, { status: 400 })
   }
 
   // invitation 테이블에서 데이터 삭제
-  const { error } = await supabase.from('invitation').delete().eq('id', id).eq('user_id', user_id)
+  const { error } = await supabase
+    .from('invitation')
+    .delete()
+    .eq('id', invitation_id)
+    .eq('user_id', user_id)
 
   if (error) {
     return NextResponse.json(

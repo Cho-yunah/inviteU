@@ -94,6 +94,15 @@ const FormPage = () => {
     console.log(response.data, '초대장 조회 응답')
   }
 
+  async function onSubmitInvitationDelete(e: any) {
+    e.preventDefault() // 폼 기본 동작 방지
+
+    const response = await axios.delete(
+      `/api/invitation?user_id=${userId}&invitation_id=${invitationId}`,
+    )
+    alert(`응답: ${response.status}`)
+    console.log(response.data, '초대장 삭제 응답')
+  }
   //please write down example value
 
   return (
@@ -218,6 +227,25 @@ const FormPage = () => {
         />
         <button onClick={onSubmitInvitationGet} className="border border-black p-2 w-full">
           초대장 조회 (GET)
+        </button>
+      </div>
+
+      <div className="flex flex-col gap-3 border border-black p-2">
+        <h1>DELETE : /api/invitation</h1>
+        <input
+          type="text"
+          placeholder="특정 id를 조회하길 원한다면 초대장 id를 적어주세요."
+          className="border border-black p-2"
+          onChange={(e) => setInvitationId(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="유저 아이디."
+          className="border border-black p-2"
+          onChange={(e) => setUserId(e.target.value)}
+        />{' '}
+        <button onClick={onSubmitInvitationDelete} className="border border-black p-2 w-full">
+          초대장 삭제 (DELETE)
         </button>
       </div>
     </div>
