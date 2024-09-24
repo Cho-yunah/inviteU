@@ -16,9 +16,9 @@ const ListItem = ({ item }: { item: InvitationStateType }) => {
           <div className='flex justify-between'>
             <div className='flex'>
               <div className='align-text-middle'>
-                <IoIosLink className='inline text-gray-400' />  <span>happyforeverdogcat.io</span>
+                <IoIosLink className='inline text-gray-400' />  <span>{item.custom_url}</span>
                 <br/>
-                <CiCalendar className='inline text-gray-400' /> <span>2021.10.10 SAT 14:00</span>
+                <CiCalendar className='inline text-gray-400' /> <span>{item.date}</span>
               </div>
             </div>
             <div className='m-1 flex w-14 items-end justify-between'>

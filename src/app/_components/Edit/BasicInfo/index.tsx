@@ -10,20 +10,21 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 import { DatePickerForm } from './DatePicker'
 import { TimePickerCustom } from './TimePicker'
 import FileInput from './FileInput'
+import EditButton from '../EditButton/EditButton'
 
 export default function BaseInfo({form, formSchema}: {form: any, formSchema: any}) {
   const [date, setDate] = useState<Date>();
+
 
   const handleFileUpload = (files: FileList) => {
     console.log("Uploaded files:", files);
 };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    console.log('values', values)
     
   }
 
@@ -97,7 +98,7 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
           />
           <FormField
             control={form.control}
-            name="image_urls"
+            name="represent_img"
             render={({ field }) => (
               <FormItem className='grid w-full max-w-sm gap-0 space-y-0'>
                 <div className='flex leading-7 items-center my-0'>
@@ -111,7 +112,7 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
               </FormItem>
             )}
           />
-          <Button type="submit">임시 저장</Button>
+          <button type="submit"  className='absolute top-[-10px] right-2 z-1000' >저장</button>
         </form>
     </div>
   )

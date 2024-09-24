@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState } from 'react'
-import LoginModal from './modal/LoginModal'
-import { useUser } from '@supabase/auth-helpers-react'
-import { CiUser } from "react-icons/ci";
+import React from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { GrPrevious } from "react-icons/gr";
-import EditButton from '../edit/EditButton/EditButton'
+import { useUser } from '@supabase/auth-helpers-react'
 import { useAuthState } from './AuthContext'
+import { CiUser } from "react-icons/ci";
+import { GrPrevious } from "react-icons/gr";
+import LoginModal from './modal/LoginModal'
+import EditButton from '../edit/EditButton/EditButton'
 
 const getTitle = (path: string) => {
   switch (path) {
@@ -32,7 +32,6 @@ const Header = () => {
   const {session} = useAuthState();
 
   const [isModalsOpen, setIsModalOpen] = React.useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const handleShowLoginModal=() => {
     setIsModalOpen(true)
@@ -64,7 +63,7 @@ const Header = () => {
               onClick={handleMoveBack}
             />
             <div>{getTitle(pathName)}</div>
-            {pathName === '/edit' && <EditButton text="저장" position="right" />}
+            {/* {pathName === '/edit' && <EditButton text="저장" position="right" />} */}
           </div>
         ) : (
           <div className="flex justify-between">

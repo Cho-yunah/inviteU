@@ -4,7 +4,7 @@ export type InvitationStateType =  {
   address: string;
   created_at: string;
   custom_url: string;
-  data: string;
+  date: string;
   description: string;
   title: string;
   subtitle: string;

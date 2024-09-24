@@ -45,6 +45,10 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
         handleFileUpload(files[0])
       }
     };
+
+    const clickTest = () => {
+      console.log('click')
+    }
   
     const uploadFiles = (files: FileList) => {
       Array.from(files).forEach((file, index) => {
@@ -141,10 +145,12 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
           <label htmlFor="img-input" className='cursor-pointer'>
             <p className='rounded-[3px] bg-black text-white py-2 px-8 text-xs'>파일 선택</p>
           </label>
+            {/* <label htmlFor="profile" >파일 선택
+              <input type="file" id="profile" accept="image/png, image/jpeg" />
+            </label> */}
+
         </div>
-        
         }
-       
     </div>
   )
 }

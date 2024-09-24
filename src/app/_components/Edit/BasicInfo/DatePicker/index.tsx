@@ -30,9 +30,9 @@ export function DatePickerForm({ date, setDate }: DatePickerProps) {
     }
   }
 
-  useEffect(() => {
-    console.log('Date:', date)
-  }, [date])
+  // useEffect(() => {
+  //   console.log('Date:', date)
+  // }, [date])
 
   return (
     <>

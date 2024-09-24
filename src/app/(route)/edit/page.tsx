@@ -22,8 +22,10 @@ const formSchema = z.object({
   }).refine (value => /^[a-z-]+$/g.test(value), {
     message: "커스텀 주소는 영어 소문자로 입력해주세요.",
   }),
-  date: z.string().date("날짜(또는 시간)를 입력해주세요."),
-  image_urls: z.string().min(3, {
+  date: z.date().min(new Date(), {message: "날짜(또는 시간)를 입력해주세요."}),
+  // date: z.string().min(4, {message: "날짜(또는 시간)를 입력해주세요."}),
+  time: z.string().time("날짜(또는 시간)를 입력해주세요."),
+  represent_img: z.string().min(3, {
     message: "이미지 URL을 입력해주세요.",
   }),
 })
@@ -34,13 +36,14 @@ const Edit = () => {
     defaultValues: {
       title: "",
       custom_url:"",
-      date: new Date().toISOString(),
-      image_urls:'',
+      date:  new Date(),
+      // time: new Time().toString()
+      represent_img:'',
     },
   })
 
   return (
-    <div className='w-[375px] '>
+    <div className='w-[375px] min-h-[375px] overflow-hidden'>
       <Tabs defaultValue="basic" className="w-full">
         <TabsList className='grid w-full grid-cols-3 bg-gray-100 p-0'>
             <TabsTrigger className={styles.tabTrigger} value="basic">기본 정보</TabsTrigger>

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import SupabaseProvider from '@/supabase/provider'
 import "./global.css";
 import styles from "./page.module.css";
+import SupabaseProvider from '@/supabase/provider'
+import ReduxProvider from "./StoreProvider";
 import Header from './_components/common/Header';
 import ModalSetup from './_components/common/modal/ModalSetup';
-import ReduxProvider from "./StoreProvider";
 import AuthContext from "./_components/common/AuthContext";
 import ErrorBoundary from "./_components/common/errorBoundary/Errorboundary";
 
@@ -25,22 +25,22 @@ export default async function RootLayout({
   return (
     <html lang="en">
         <body className={inter.className}>
-          <SupabaseProvider>
-            <AuthContext>
-            {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
-              <ErrorBoundary >
-                  <div className="container">
-                    <Header />
-                    <main className={styles.main}>
-                      <ReduxProvider>
-                        <div className={styles.description}>{children}</div>
-                      </ReduxProvider>
-                    </main>
-                    <ModalSetup />
-                  </div>
-            </ErrorBoundary>
-            </AuthContext>
-          </SupabaseProvider>
+          <ErrorBoundary >
+            <SupabaseProvider>
+              <AuthContext>
+              {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
+                    <div className="container relative">
+                      <Header />
+                      <main className={styles.main}>
+                        <ReduxProvider>
+                          <div className={styles.description}>{children}</div>
+                        </ReduxProvider>
+                      </main>
+                      <ModalSetup />
+                    </div>
+              </AuthContext>
+            </SupabaseProvider>
+          </ErrorBoundary>
         </body>
       </html>
   )

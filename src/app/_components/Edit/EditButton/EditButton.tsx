@@ -4,19 +4,23 @@ import cx from 'classnames'
 import styles from './editButton.module.scss'
 
 interface Props {
+  type: 'button' | 'submit' | 'reset'
   text: string
-  type?: 'primary' | 'secondary'
+  style?: 'primary' | 'secondary'
   position?: 'right'
+  className?: string
+  props?:any
 }
 
-export default function EditButton({ text, type, position }: Props) {
+export default function EditButton({ type, text, style, position, className, props }: Props) {
   return (
     <button
-      type="button"
-      className={cx(styles.editButton, {
-        [styles.secondary]: type === 'secondary',
+      type={type}
+      className={cx(styles.editButton, className, {
+        [styles.secondary]: style === 'secondary',
         [styles.positionRight]: position === 'right',
       })}
+      {...props}
     >
       {text}
     </button>

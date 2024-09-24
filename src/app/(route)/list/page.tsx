@@ -8,6 +8,7 @@ import axios from 'axios';
 import { setInvitation } from '@/lib/features/invitation/invitationSlice';
 import Loader from '@/app/_components/common/Loader';
 import { useRouter } from 'next/navigation';
+import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 
 
 const List = () => {
@@ -20,6 +21,7 @@ const List = () => {
   const getInvitationInfo = async () => {
     try {
       const {data} = await axios.get(`/api/invitation/`)
+      console.log(data)
       if(data) {
         dispatch(setInvitation(data.invitations))
       }
@@ -60,10 +62,13 @@ const List = () => {
           // 로딩이 완료되면 리스트 데이터 렌더
           <div>
             {listData.length === 0 ? (
-              <p>저장된 초대장이 없습니다.</p>
+              <div className='my-10 mx-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl'>
+                <HiOutlineArchiveBoxXMark size={35} color='gray' /><br/>
+                <p className='text-sm text-gray-500'>저장된 초대장이 없습니다.</p>
+              </div>
             ) : (
               listData.map((item: any, index: number) => (
-                <ListItem key={index} item={item} />
+                <ListItem key={item.id} item={item} />
               ))
             )}
           </div>

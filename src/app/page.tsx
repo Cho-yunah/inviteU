@@ -19,7 +19,8 @@ export default function Home() {
 
   const getInvitationInfo = async () => {
     try {
-      const {data} = await axios.get(`/api/invitation/`)
+      const {data} = await axios.get(`/api/invitation`)
+      console.log(data)
       if(data) {
         dispatch(setInvitation(data.invitations))
         setInvitationCount(data.invitations.length)
@@ -39,10 +40,11 @@ export default function Home() {
   }
 
   useEffect(() => {
+    console.log('hello',session)
     if(session?.access_token != null) {
       getInvitationInfo();
     }
-  },[])
+  },[session])
 
   return (
     <>

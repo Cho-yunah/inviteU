@@ -41,9 +41,9 @@ export function TimePickerCustom({date, setDate, field, formSchema }: TimePicker
     }
   }, [hours, minutes, period]);
 
-  useEffect(() => {
-    console.log('Date:', date)
-  }, [date])
+  // useEffect(() => {
+  //   console.log('Date:', date)
+  // }, [date])
 
 
   return (
