@@ -72,6 +72,11 @@ const Header = () => {
               className="flex cursor-pointer items-center"
               onClick={handleMoveHome}
             >
+              <img
+                src="/img/logo.png"
+                alt="logo"
+                className="w-6 h-6" 
+              />
               <p className="px-3">Invite U</p>
             </div>
             <div>
