@@ -23,6 +23,10 @@ type QueryDataType = {
   user_id: string | null
 }
 
+export type RefinedContentsType = {
+  type: 'images' | 'videos' | 'text' | 'interval' | 'map'
+  uuid: string
+}
 export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
   // req의 body에서 값을 받아오도록 변경
 
@@ -491,16 +495,20 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
     queryBuilder = queryBuilder.eq('user_id', user_id.toString())
   }
 
-  const { data: rawData, error } = await queryBuilder.select('*')
-  const data = rawData?.[0]
-  console.log(rawData, 'rawData', invitation_id, typeof data?.contents)
-  let contents: any[] = []
+  const { data, error } = await queryBuilder.select('*')
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 
-  if (data && data?.contents && Array.isArray(data.contents) && data.contents?.length > 0) {
-    contents = await Promise.all(
-      data?.contents?.map(async (content: any) => {
+  const response = []
+
+  for (const item of data) {
+    const contents = []
+
+    if (item.contents && Array.isArray(item.contents)) {
+      for (const content of item.contents as RefinedContentsType[]) {
         let contentData
-        switch (content.type) {
+        switch (content?.type) {
           case 'images':
             const { data: imageData } = await supabase
               .from('images')
@@ -526,7 +534,7 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
             contentData = { type: 'text', ...textData }
             break
           case 'interval':
-            const { data: intervalData, error } = await supabase
+            const { data: intervalData } = await supabase
               .from('interval')
               .select('*')
               .eq('id', content.uuid)
@@ -542,23 +550,20 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
             contentData = { type: 'map', ...mapData }
             break
         }
-        return contentData
-      }),
-    )
+        if (contentData) {
+          contents.push(contentData)
+        }
+      }
+    }
+
+    response.push({ ...item, contents })
   }
-  console.log(contents, 'contents', error)
 
   if (error) {
     return NextResponse.json(error, { status: 500 })
   }
 
-  return NextResponse.json(
-    {
-      invitations: { ...data, contents },
-      message: 'Successfully retrieved invitations',
-    },
-    { status: 200 },
-  )
+  return NextResponse.json(response, { status: 200 })
 }
 
 export const DELETE = async (req: NextRequest, res: NextResponse<Data>) => {
