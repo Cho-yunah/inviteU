@@ -3,7 +3,9 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-height: 100vh;
+  height: calc(100vh - 57px);
+  overflow-y: auto;
+  /* position: relative; */
 }
 
 .description {
@@ -45,9 +47,9 @@
   border-radius: var(--border-radius);
   background: rgba(var(--card-rgb), 0);
   border: 1px solid rgba(var(--card-border-rgb), 0);
-  transition:
-    background 200ms,
-    border 200ms;
+  /* transition:
+    background 200ms
+    border 200ms; */
 }
 
 .card span {
