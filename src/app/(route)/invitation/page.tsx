@@ -21,7 +21,7 @@ const List = () => {
   const [listData, setListData] = useState([]);
 
   const handleMoveEditPage=() => {
-    router.push('/edit')
+    router.push('/invitation/new')
   }
 
   const getInvitationInfo = async () => {

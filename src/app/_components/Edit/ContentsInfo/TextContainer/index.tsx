@@ -12,7 +12,7 @@ export default function TextContainer({setComponents, id}: ContainerProps) {
         console.log(e)
   }
 
-  const handleDeleteComponent = (id) => {
+  const handleDeleteComponent = (id: number) => {
     console.log('text', id)
     setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
   };

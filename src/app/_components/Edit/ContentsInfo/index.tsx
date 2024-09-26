@@ -8,7 +8,7 @@ import VideoContainer from './VideoContainer';
 import MapContainer from './MapContainer'
 import IntervalContainer from './IntervalContainer'
 import TextContainer from './TextContainer'
-import BottomDrawer from '../../common/bottomDrawer';
+import BottomDrawer from '../../common/BottomDrawer';
 
 interface Component {
   id: string;
@@ -59,7 +59,7 @@ export default function EditContents() {
     setShowDrawer(true);
   }
 
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event: any) => {
     const { active, over } = event;
 
     if (active.id !== over.id) {
@@ -98,7 +98,7 @@ export default function EditContents() {
   };
 
 
-  const handleDeleteComponent = (id) => {
+  const handleDeleteComponent = (id: string) => {
     console.log('delete', id)
     setComponents((prevComponents) => prevComponents.filter((component) => component.id !== id));
   };

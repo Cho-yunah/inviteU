@@ -14,10 +14,10 @@ export default function Home() {
   const [invitationCount, setInvitationCount] = useState(0);
 
   const handleMoveEditPage = () => {
-    router.push('/edit')
+    router.push('/invitation/new')
   }
   const handleMoveListPage = () => {
-    router.push('/list')
+    router.push('/invitation')
   }
 
   

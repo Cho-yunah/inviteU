@@ -13,8 +13,7 @@ const MapContainer = ({setComponents, id}: ContainerProps) => {
         setShowModal(true)
     }
 
-    const handleDeleteComponent = (id) => {
-      // console.log('delete', id)
+    const handleDeleteComponent = (id: number) => {
       setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
     };
 

@@ -7,22 +7,24 @@ import { useAuthState } from './AuthContext'
 import { CiUser } from "react-icons/ci";
 import { GrPrevious } from "react-icons/gr";
 import LoginModal from './modal/LoginModal'
-import EditButton from '../edit/EditButton/EditButton'
 
 const getTitle = (path: string) => {
   switch (path) {
     case '/':
       return 'Invite U';
-    case '/list':
-      return 'About Us';
+    case '/invitation':
+      return '초대장 목록';
+    case '/invitation/new':
+      return '초대장 생성'
+    case 'invitation/[id]':
+      return '초대장 수정'
     case '/mypage':
       return '마이페이지';
-    case '/edit':
-      return '초대장 생성'
     default:
       return 'Invite U';
   }
 };
+
 
 
 const Header = () => {
@@ -49,7 +51,7 @@ const Header = () => {
     router.back();
   }
 
-  const headerType = ['/mypage', '/edit'].includes(pathName)
+  const headerType = ['/mypage', '/invitation/new', `/invitation/${pathName.split('/')[2]}`].includes(pathName)
   ? 'elseHeader'
   : 'homeHeader'
 
@@ -63,7 +65,6 @@ const Header = () => {
               onClick={handleMoveBack}
             />
             <div>{getTitle(pathName)}</div>
-            {/* {pathName === '/edit' && <EditButton text="저장" position="right" />} */}
           </div>
         ) : (
           <div className="flex justify-between">

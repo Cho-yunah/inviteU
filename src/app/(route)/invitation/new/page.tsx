@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import styles from './edit.module.scss'
+import styles from '../edit.module.scss'
 import BaseInfo from '@/app/_components/edit/BasicInfo'
 import ContentsInfo from '@/app/_components/edit/ContentsInfo'
 import Background from '@/app/_components/edit/Background'

@@ -10,7 +10,7 @@ export default function IntervalContainer({setComponents, id}: ContainerProps) {
         console.log(e)
   }
 
-  const handleDeleteComponent = (id) => {
+  const handleDeleteComponent = (id: number) => {
     // console.log('delete', id)
     setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
   };

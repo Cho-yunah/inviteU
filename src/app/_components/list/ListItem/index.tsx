@@ -1,16 +1,24 @@
+'use client'
 import React from 'react'
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import { IoIosLink } from "react-icons/io";
 import { CiCalendar, CiShare2,CiTrash } from "react-icons/ci";
 import { InvitationStateType } from '@/lib/features/invitation/invitationSlice';
-import axios from 'axios';
 import { toast } from 'react-toastify';
+import dayjs from 'dayjs'
 
 const ListItem = ({ item }: { item: InvitationStateType }) => {
+  const router = useRouter();
+
+  const handleClickMove = () => {
+    router.push(`/invitation/${item.id}`)
+  }
 
   const handleClickShare= async() => {
     console.log('share click', item.custom_url)
     try {
-      await navigator.clipboard.writeText(item.custom_url);
+      await navigator.clipboard.writeText(`https://invite-u.vercel.app/${item.custom_url}`);
       toast.success('클립보드에 링크가 복사되었습니다.');
     } catch (e) {
       alert('복사에 실패하였습니다');
@@ -28,7 +36,9 @@ const ListItem = ({ item }: { item: InvitationStateType }) => {
   }
 
   return (
-      <div className='relative m-5 rounded-md bg-gray-50 shadow-md'>
+      <div 
+        onClick={handleClickMove}
+        className='relative m-5 rounded-md bg-gray-50 shadow-md'>
         <p className='absolute h-full w-2 rounded-l-md bg-red-400'></p>
         <div className='p-3 pl-5'>
           <p className='text-sm py-1 font-bold text-gray-800'>{item.title}</p>
@@ -38,7 +48,7 @@ const ListItem = ({ item }: { item: InvitationStateType }) => {
                 <IoIosLink size={15} className='text-gray-400 mr-1' /><span> {item.custom_url}</span>
               </div>
               <div className='flex items-center justify-center text-xs text-gray-700 '>
-                <CiCalendar size={15} className='text-gray-400 mr-1' /><span className='mt-[2px] align-bottom'> {item.date}</span>
+                <CiCalendar size={15} className='text-gray-400 mr-1' /><span className='mt-[2px] align-bottom'> {dayjs(item.date).format('YYYY.MM.DD  ddd  HH:mm A')}</span>
               </div>
             </div>
             <div className='m-1 flex w-14 items-end justify-between'>
