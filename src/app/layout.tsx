@@ -8,6 +8,8 @@ import Header from './_components/common/Header';
 import ModalSetup from './_components/common/modal/ModalSetup';
 import AuthContext from "./_components/common/AuthContext";
 import ErrorBoundary from "./_components/common/errorBoundary/Errorboundary";
+import { Toaster } from '@/components/ui/toaster';
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -37,6 +39,7 @@ export default async function RootLayout({
                         </ReduxProvider>
                       </main>
                       <ModalSetup />
+                    <Toaster />
                     </div>
               </AuthContext>
             </SupabaseProvider>

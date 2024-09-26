@@ -77,7 +77,6 @@ export type Database = {
           custom_url: string
           date: string | null
           id: string
-          post_number: string | null
           primary_image: string | null
           title: string
           user_id: string | null
@@ -89,7 +88,6 @@ export type Database = {
           custom_url: string
           date?: string | null
           id?: string
-          post_number?: string | null
           primary_image?: string | null
           title: string
           user_id?: string | null
@@ -101,7 +99,6 @@ export type Database = {
           custom_url?: string
           date?: string | null
           id?: string
-          post_number?: string | null
           primary_image?: string | null
           title?: string
           user_id?: string | null

@@ -1,48 +1,54 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styles from "../../page.module.css";
 import ListItem from '@/app/_components/list/ListItem';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { setInvitation } from '@/lib/features/invitation/invitationSlice';
+import { setInvitationList } from '@/lib/features/invitation/invitationSlice';
 import Loader from '@/app/_components/common/Loader';
 import { useRouter } from 'next/navigation';
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
-
+import { useAuthState } from '@/app/_components/common/AuthContext';
+// import { toast } from '@/components/ui/use-toast';
 
 const List = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+  const {session} = useAuthState();
 
-  const listData = useSelector((state: any)=> state.invitation)
   const [loading, setLoading] = useState(true);
+  const [listData, setListData] = useState([]);
+
+  const handleMoveEditPage=() => {
+    router.push('/edit')
+  }
 
   const getInvitationInfo = async () => {
     try {
-      const {data} = await axios.get(`/api/invitation/`)
-      console.log(data)
+      const {data} = await axios.get(`/api/invitation`)
       if(data) {
-        dispatch(setInvitation(data.invitations))
+        dispatch(setInvitationList(data))
+        setListData(data)
+        localStorage.setItem("invitationCount", data?.length);
       }
     } catch(error) {
       console.error('초대장 정보 조회 실패', error)
+      // toast({
+      //   description: "초대장 정보 조회에 실패했습니다.",
+      // })    
     } finally {
-      setLoading(false)
+      setLoading(false); // 로딩 상태 업데이트
     }
   }
 
-  const handleMoveEditPage=() => [
-    router.push('/edit')
-  ]
-
   useEffect(() => {
-    if(listData.length === 0) {
+    if(session?.access_token != null) {
       getInvitationInfo();
     } else {
       setLoading(false)
     }
-  },[listData])
+  },[session?.access_token])
 
   return (
     <div >
@@ -61,13 +67,13 @@ const List = () => {
         ) : (
           // 로딩이 완료되면 리스트 데이터 렌더
           <div>
-            {listData.length === 0 ? (
+            {listData?.length === 0 ? (
               <div className='my-10 mx-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl'>
                 <HiOutlineArchiveBoxXMark size={35} color='gray' /><br/>
                 <p className='text-sm text-gray-500'>저장된 초대장이 없습니다.</p>
               </div>
             ) : (
-              listData.map((item: any, index: number) => (
+              listData?.map((item: any, index: number) => (
                 <ListItem key={item.id} item={item} />
               ))
             )}

@@ -69,7 +69,8 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
       )
     }
 
-    const filePath = `${fileType}/${user_uuid}/${Date.now()}`
+    const fileExtension = file.name.split('.').pop()
+    const filePath = `${fileType}/${user_uuid}/${Date.now()}.${fileExtension}`
 
     const uploadParams = {
       Bucket: BUCKET_NAME, // Supabase Storage에서 사용 중인 버킷 이름
@@ -88,15 +89,9 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     // Insert record into image table
 
     if (publicUrl) {
-      return NextResponse.json(
-        { publicUrl, message: 'Successfully added' },
-        { status: 200 },
-      )
+      return NextResponse.json({ publicUrl, message: 'Successfully added' }, { status: 200 })
     } else {
-      return NextResponse.json(
-        { publicUrl, message: 'Not found' },
-        { status: 400 },
-      )
+      return NextResponse.json({ publicUrl, message: 'Not found' }, { status: 400 })
     }
   } else {
     return NextResponse.json({

@@ -23,6 +23,10 @@ type QueryDataType = {
   user_id: string | null
 }
 
+export type RefinedContentsType = {
+  type: 'images' | 'videos' | 'text' | 'interval' | 'map'
+  uuid: string
+}
 export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
   // req의 body에서 값을 받아오도록 변경
 
@@ -34,17 +38,13 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     // contents,
     custom_url,
     date,
-    post_number,
     primary_image,
     title,
     user_id,
   } = jsonRequest || {}
 
   if (!title || !user_id) {
-    return NextResponse.json(
-      { message: '필수 항목이 없습니다.' },
-      { status: 400 },
-    )
+    return NextResponse.json({ message: '필수 항목이 없습니다.' }, { status: 400 })
   }
 
   const uuid = randomUUID()
@@ -54,10 +54,8 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
       uuid: string
     }[] = []
 
-    const contentPromises = JSON.parse(jsonRequest.contents).map(
-      async (item: any) => {
-        console.log(1111)
-
+    await Promise.all(
+      JSON.parse(jsonRequest.contents).map(async (item: ContentDataType) => {
         if (item.type === 'image') {
           const { isImageUrlsValid } = judgeImageAndVideoValid({
             image_urls: item.urls,
@@ -82,7 +80,6 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
             .select('id')
             .single()
 
-          console.log(imageData, 'hmmm????')
           if (imageError) {
             return NextResponse.json(
               {
@@ -228,13 +225,10 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
           }
         }
         return refinedContents
-      },
+      }),
     )
 
     // Promise.all을 사용하여 모든 콘텐츠 처리가 완료될 때까지 기다립니다.
-    refinedContents = (await Promise.all(contentPromises)).filter(Boolean)
-
-    console.log(2222, refinedContents)
 
     // invitation 테이블에 데이터 삽입
     const { data, error } = await supabase
@@ -246,7 +240,6 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
           custom_url,
           date,
           id: uuid,
-          post_number,
           primary_image,
           title,
           user_id,
@@ -255,15 +248,10 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
       .select('id')
       .single()
 
-    console.log(333, data, error)
-
     if (error || !data) {
       return NextResponse.json(error, { status: 500 })
     }
-    return NextResponse.json(
-      { id: uuid, message: 'Successfully added' },
-      { status: 200 },
-    )
+    return NextResponse.json({ id: uuid, message: 'Successfully added' }, { status: 200 })
   } catch (error) {
     return NextResponse.json(
       { message: '초대장 생성 중 오류가 발생했습니다.', error: error },
@@ -275,35 +263,23 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
 export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   // req의 body에서 값을 받아오도록 변경
   const jsonRequest = await req.json()
+  const uuid = randomUUID()
 
   // next.js14에서는 body에서 데이터를 받아옵니다.
-  const {
-    background_image,
-    contents,
-    custom_url,
-    date,
-    post_number,
-    primary_image,
-    title,
-    user_id,
-    id,
-  } = jsonRequest || {}
+  const { background_image, contents, custom_url, date, primary_image, title, user_id, id } =
+    jsonRequest || {}
 
   if (!id || !user_id) {
-    return NextResponse.json(
-      { message: 'id field is missing' },
-      { status: 400 },
-    )
+    return NextResponse.json({ message: 'id field is missing' }, { status: 400 })
   }
-
-  const uuid = randomUUID()
 
   let refinedContents: {
     type: 'images' | 'videos' | 'text' | 'interval' | 'map'
     uuid: string
   }[] = []
-  const contentPromises = JSON.parse(jsonRequest.contents).map(
-    async (item: any) => {
+
+  await Promise.all(
+    JSON.parse(jsonRequest.contents).map(async (item: any) => {
       if (item.type === 'image') {
         const { isImageUrlsValid } = judgeImageAndVideoValid({
           image_urls: item.urls,
@@ -328,6 +304,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
           .select('id')
           .single()
 
+        console.log('imageData.id', imageError)
         if (imageError) {
           return NextResponse.json(
             {
@@ -343,15 +320,6 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
             type: 'images',
             uuid: imageData.id,
           })
-        }
-        if (imageError) {
-          return NextResponse.json(
-            {
-              success: false,
-              error: '이미지 데이터 삽입 중 오류가 발생했습니다.',
-            },
-            { status: 500 },
-          )
         }
       } else if (item.type === 'video') {
         const { isVideoUrlValid } = judgeImageAndVideoValid({
@@ -402,6 +370,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
           })
           .select('id')
           .single()
+        console.log(item, 'textData.id', textError)
 
         if (textError) {
           return NextResponse.json(
@@ -473,12 +442,13 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
           })
         }
       }
-    },
+      return refinedContents
+    }),
   )
-  refinedContents = (await Promise.all(contentPromises)).filter(Boolean)
 
   const { data, error } = await supabase
     .from('invitation')
+
     .update({
       ...jsonRequest,
 
@@ -486,21 +456,17 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
       contents: refinedContents ?? jsonRequest.contents,
       custom_url: custom_url ?? jsonRequest.custom_url,
       date: date ?? jsonRequest.date,
-      id: uuid,
-      post_number: post_number ?? jsonRequest.post_number,
       primary_image: primary_image ?? jsonRequest.primary_image,
       title: title ?? jsonRequest.title,
-      user_id: user_id ?? jsonRequest.user_id,
     })
     .eq('id', id as string)
+    .eq('user_id', user_id as string)
+    .select()
 
   if (error || !data) {
     return NextResponse.json(error, { status: 500 })
   }
-  return NextResponse.json(
-    { id: uuid, message: 'Successfully added' },
-    { status: 200 },
-  )
+  return NextResponse.json({ id, message: 'Successfully updated' }, { status: 200 })
 }
 
 export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
@@ -517,38 +483,39 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
   let queryBuilder = supabase.from('invitation').select('*')
   //Limit이 있을 경우 페이지네이션 로직을 추가, 기본 값은 10
 
-  if (invitation_id) {
-    queryBuilder = queryBuilder.eq('id', invitation_id)
-  }
   queryBuilder = queryBuilder.range(
     Number(start || 0),
     Number(start || 0) + Number(limit || 10) - 1,
   )
-
+  if (invitation_id) {
+    queryBuilder = queryBuilder.eq('id', invitation_id)
+  }
   // userid가 있을 경우 해당 유저의 초대장 리스트를 조회
   if (user_id) {
     queryBuilder = queryBuilder.eq('user_id', user_id.toString())
   }
 
-  const { data, error } = await queryBuilder.single()
+  const { data, error } = await queryBuilder.select('*')
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
 
-  let contents = []
-  if (
-    data &&
-    data?.contents &&
-    JSON.parse(data?.contents as string).length > 0
-  ) {
-    contents = await Promise.all(
-      JSON.parse(data?.contents as string)?.map(async (content: any) => {
+  const response = []
+
+  for (const item of data) {
+    const contents = []
+
+    if (item.contents && Array.isArray(item.contents)) {
+      for (const content of item.contents as RefinedContentsType[]) {
         let contentData
-        switch (content.type) {
+        switch (content?.type) {
           case 'images':
             const { data: imageData } = await supabase
               .from('images')
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = imageData
+            contentData = { type: 'images', ...imageData }
             break
           case 'videos':
             const { data: videoData } = await supabase
@@ -556,7 +523,7 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = videoData
+            contentData = { type: 'videos', ...videoData }
             break
           case 'text':
             const { data: textData } = await supabase
@@ -564,7 +531,7 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = textData
+            contentData = { type: 'text', ...textData }
             break
           case 'interval':
             const { data: intervalData } = await supabase
@@ -572,7 +539,7 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = intervalData
+            contentData = { type: 'interval', ...intervalData }
             break
           case 'map':
             const { data: mapData } = await supabase
@@ -580,44 +547,43 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = mapData
+            contentData = { type: 'map', ...mapData }
             break
         }
-        return contentData
-      }),
-    )
+        if (contentData) {
+          contents.push(contentData)
+        }
+      }
+    }
+
+    response.push({ ...item, contents })
   }
 
   if (error) {
     return NextResponse.json(error, { status: 500 })
   }
 
-  return NextResponse.json(
-    {
-      invitations: { ...data, contents },
-      message: 'Successfully retrieved invitations',
-    },
-    { status: 200 },
-  )
+  return NextResponse.json(response, { status: 200 })
 }
 
 export const DELETE = async (req: NextRequest, res: NextResponse<Data>) => {
   const searchParams = req.nextUrl.searchParams
-  const query = searchParamsToObject<QueryDataType>(searchParams)
-  const { id, user_id } = query!
+  const query = searchParamsToObject<{
+    user_id: string
+    invitation_id: string
+  }>(searchParams)
 
-  if (!id || !user_id) {
-    return NextResponse.json(
-      { message: 'id와 user_id 필드가 누락되었습니다' },
-      { status: 400 },
-    )
+  const { user_id, invitation_id } = query!
+
+  if (!invitation_id || !user_id) {
+    return NextResponse.json({ message: 'id와 user_id 필드가 누락되었습니다' }, { status: 400 })
   }
 
   // invitation 테이블에서 데이터 삭제
   const { error } = await supabase
     .from('invitation')
     .delete()
-    .eq('id', id)
+    .eq('id', invitation_id)
     .eq('user_id', user_id)
 
   if (error) {
@@ -627,8 +593,5 @@ export const DELETE = async (req: NextRequest, res: NextResponse<Data>) => {
     )
   }
 
-  return NextResponse.json(
-    { message: '초대장이 성공적으로 삭제되었습니다' },
-    { status: 200 },
-  )
+  return NextResponse.json({ message: '초대장이 성공적으로 삭제되었습니다' }, { status: 200 })
 }
