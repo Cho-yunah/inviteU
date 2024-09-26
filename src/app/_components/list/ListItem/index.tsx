@@ -3,18 +3,15 @@ import { IoIosLink } from "react-icons/io";
 import { CiCalendar, CiShare2,CiTrash } from "react-icons/ci";
 import { InvitationStateType } from '@/lib/features/invitation/invitationSlice';
 import axios from 'axios';
-import { useToast } from '@/hooks/use-toast';
-
+import { toast } from 'react-toastify';
 
 const ListItem = ({ item }: { item: InvitationStateType }) => {
-  const { toast } = useToast();
 
   const handleClickShare= async() => {
     console.log('share click', item.custom_url)
-    toast({ title : '클립보드에 링크가 복사되었습니다.'});
     try {
       await navigator.clipboard.writeText(item.custom_url);
-      // alert('클립보드에 링크가 복사되었습니다.');
+      toast.success('클립보드에 링크가 복사되었습니다.');
     } catch (e) {
       alert('복사에 실패하였습니다');
     }

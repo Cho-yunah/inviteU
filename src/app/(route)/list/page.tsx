@@ -10,7 +10,7 @@ import Loader from '@/app/_components/common/Loader';
 import { useRouter } from 'next/navigation';
 import { HiOutlineArchiveBoxXMark } from "react-icons/hi2";
 import { useAuthState } from '@/app/_components/common/AuthContext';
-// import { toast } from '@/components/ui/use-toast';
+import { toast } from 'react-toastify';
 
 const List = () => {
   const dispatch = useDispatch();
@@ -34,9 +34,7 @@ const List = () => {
       }
     } catch(error) {
       console.error('초대장 정보 조회 실패', error)
-      // toast({
-      //   description: "초대장 정보 조회에 실패했습니다.",
-      // })    
+      toast.error( "초대장 정보 조회에 실패했습니다.")    
     } finally {
       setLoading(false); // 로딩 상태 업데이트
     }

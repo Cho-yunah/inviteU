@@ -7,8 +7,9 @@ import ReduxProvider from "./StoreProvider";
 import Header from './_components/common/Header';
 import ModalSetup from './_components/common/modal/ModalSetup';
 import AuthContext from "./_components/common/AuthContext";
-import ErrorBoundary from "./_components/common/errorBoundary/Errorboundary";
-import { Toaster } from '@/components/ui/toaster';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import ErrorBoundary from "./_components/common/ErrorBoundary/Errorboundary";
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -39,7 +40,11 @@ export default async function RootLayout({
                         </ReduxProvider>
                       </main>
                       <ModalSetup />
-                    <Toaster />
+                    <ToastContainer 
+                      position="top-center"
+                      autoClose={500}
+                      hideProgressBar
+                    />
                     </div>
               </AuthContext>
             </SupabaseProvider>
