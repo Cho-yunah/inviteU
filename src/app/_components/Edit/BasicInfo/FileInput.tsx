@@ -72,7 +72,7 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
         }, 500); // Simulated 500ms delay per chunk
       });
     };
-  
+    
     const previewFiles = (files: FileList) => {
       const previews: string[] = [];
       Array.from(files).forEach((file) => {
@@ -86,16 +86,13 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
     };
   
     const handleDeletePreview = () => {
-      // const updatedPreviews = [...filePreviews];
-      // updatedPreviews.splice(index, 1);
       setFilePreviews([]);
     };
 
     /* Multipart/formdata Upload */
     const handleFileUpload= async(file: File) => {
       const form = new FormData();
-      form.append('file', field.value[0]);
-      console.log(file)
+      form.append('file', file);
       if(!!id && !!form) {
         const response = await fetch(`/api/files?user_uuid=${id}`, {
           method: 'POST',
@@ -145,10 +142,6 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
           <label htmlFor="img-input" className='cursor-pointer'>
             <p className='rounded-[3px] bg-black text-white py-2 px-8 text-xs'>파일 선택</p>
           </label>
-            {/* <label htmlFor="profile" >파일 선택
-              <input type="file" id="profile" accept="image/png, image/jpeg" />
-            </label> */}
-
         </div>
         }
     </div>

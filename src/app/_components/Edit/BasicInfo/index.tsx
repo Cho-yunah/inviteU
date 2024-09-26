@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input"
 import { DatePickerForm } from './DatePicker'
 import { TimePickerCustom } from './TimePicker'
 import FileInput from './FileInput'
-import EditButton from '../EditButton/EditButton'
+import { useEffect } from 'react'
 
 export default function BaseInfo({form, formSchema}: {form: any, formSchema: any}) {
   const [date, setDate] = useState<Date>();
@@ -24,15 +24,23 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
 };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('values', values)
-    
+    // e.preventDefault();
+    // console.log(date)
+    console.log('values', values, form.getValues())
+    // form.handleSubmit(onSubmit)
   }
-
+  
+  // const values = form.getValues();
+    
+  // useEffect(() => {
+  //   form.setValue('date', date)
+  // },[date])
+  
   return (
     <div >
       <h2 className='text-black-400 text-base font-bold pb-2'>기본정보</h2>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
+        <FormField
             control={form.control}
             name="title"
             render={({ field }) => (
@@ -74,7 +82,7 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
                   <span className='text-red-600 self-start pl-1'>*</span>
                 </div>
                 <FormControl >
-                  <DatePickerForm field={field} formSchema={formSchema} date={date} setDate={setDate} />
+                  <DatePickerForm field={field} formSchema={formSchema} date={date} setDate={setDate}  />
                 </FormControl>
                 <FormMessage className='text-xs text-red-400 p-1' />
               </FormItem>
@@ -98,7 +106,7 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
           />
           <FormField
             control={form.control}
-            name="represent_img"
+            name="primary_image"
             render={({ field }) => (
               <FormItem className='grid w-full max-w-sm gap-0 space-y-0'>
                 <div className='flex leading-7 items-center my-0'>
@@ -112,7 +120,8 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
               </FormItem>
             )}
           />
-          <button type="submit"  className='absolute top-[-10px] right-2 z-1000' >저장</button>
+          <button type="submit"  className='absolute top-[-5px] right-2 z-1000' >저장</button>
+
         </form>
     </div>
   )

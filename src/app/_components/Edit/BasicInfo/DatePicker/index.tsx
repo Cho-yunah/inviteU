@@ -19,20 +19,24 @@ interface DatePickerProps {
   setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
 }
 
-export function DatePickerForm({ date, setDate }: DatePickerProps) {
+export function DatePickerForm({ field, date, setDate }: DatePickerProps) {
   // Popover 상태 관리
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectDate = (date: Date | undefined) => {
-    if(date) {
-      setDate(date);
+  // const selectDate = (date: Date | undefined) => {
+  //   if(date) {
+  //     setDate(date);
+  //     setIsOpen(false); // 날짜 선택 후 Popover 닫기
+  //   }
+  // }
+
+  const selectDate = (selectedDate: Date | undefined) => {
+    if (selectedDate) {
+      setDate(selectedDate);
+      field.onChange(selectedDate);  // React Hook Form과 연결
       setIsOpen(false); // 날짜 선택 후 Popover 닫기
     }
-  }
-
-  // useEffect(() => {
-  //   console.log('Date:', date)
-  // }, [date])
+  };
 
   return (
     <>

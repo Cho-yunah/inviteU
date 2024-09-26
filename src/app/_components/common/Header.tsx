@@ -16,7 +16,7 @@ const getTitle = (path: string) => {
       return '초대장 목록';
     case '/invitation/new':
       return '초대장 생성'
-    case 'invitation/[id]':
+    case `/invitation/${path.split('/')[2]}`:
       return '초대장 수정'
     case '/mypage':
       return '마이페이지';

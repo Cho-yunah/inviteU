@@ -9,7 +9,9 @@ import Background from '@/app/_components/edit/Background'
 import {Form} from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
+import { date, z } from 'zod'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
 const formSchema = z.object({
   user_id: z.string().min(10),
@@ -23,9 +25,10 @@ const formSchema = z.object({
   }).refine (value => /^[a-z-]+$/g.test(value), {
     message: "커스텀 주소는 영어 소문자로 입력해주세요.",
   }),
+  // date: z.date().nullable().refine(value => value !== null, { 
+  //   message: "날짜(또는 시간)를 입력해주세요." 
+  // }),  
   date: z.string().min(6, {message: "날짜(또는 시간)를 입력해주세요."}),
-  // date: z.string().min(4, {message: "날짜(또는 시간)를 입력해주세요."}),
-  time: z.string().time("날짜(또는 시간)를 입력해주세요."),
   primary_image: z.string().min(3, {
     message: "이미지 URL을 넣어주세요.",
   }),
@@ -36,19 +39,24 @@ const formSchema = z.object({
 })
 
 const Edit = () => {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       user_id:"",
       title: "",
       custom_url:"",
-      date:  "",
-      // time: new Time().toString()
+      date: '',
       primary_image:'',
       background_image: '',
       contents: []
     },
   })
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log('values', values, form.getValues())
+    // form.handleSubmit(onSubmit)
+  }
+
 
   return (
     <div className='w-[375px] min-h-[375px] overflow-hidden'>
@@ -58,7 +66,9 @@ const Edit = () => {
             <TabsTrigger className={styles.tabTrigger} value="contents">콘텐츠</TabsTrigger>
             <TabsTrigger className={styles.tabTrigger} value="backgrond">배경</TabsTrigger>
         </TabsList>
-        <Form {...form}>
+        <Form {...form} >
+        {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> */}
+
           <TabsContent className='px-6 py-2' value="basic">
             <BaseInfo form={form} formSchema={formSchema}/>
           </TabsContent>
@@ -68,6 +78,9 @@ const Edit = () => {
           <TabsContent className='px-6 py-2' value="backgrond">
             <Background />
           </TabsContent>
+          {/* <button type="submit"  className='absolute top-[-5px] right-2 z-1000' >저장</button> */}
+
+          {/* </form> */}
         </Form>
        </Tabs>
     </div>
