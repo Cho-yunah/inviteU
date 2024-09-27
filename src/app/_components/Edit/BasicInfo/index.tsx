@@ -13,13 +13,11 @@ import { Input } from "@/components/ui/input"
 import { DatePickerForm } from './DatePicker'
 import { TimePickerCustom } from './TimePicker'
 import FileInput from './FileInput'
-import { useEffect } from 'react'
 
-export default function BaseInfo({form, formSchema}: {form: any, formSchema: any}) {
-  const [date, setDate] = useState<Date>();
+export default function BaseInfo({form, formSchema, date, setDate}: {form: any, formSchema: any, date: Date, setDate: any}) {
+  // const [date, setDate] = useState<Date>();
 
-
-  const handleFileUpload = (files: FileList) => {
+  const handleFileUpload = (files: any) => {
     console.log("Uploaded files:", files);
 };
 
@@ -30,16 +28,10 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
     // form.handleSubmit(onSubmit)
   }
   
-  // const values = form.getValues();
-    
-  // useEffect(() => {
-  //   form.setValue('date', date)
-  // },[date])
-  
   return (
     <div >
       <h2 className='text-black-400 text-base font-bold pb-2'>기본정보</h2>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> */}
         <FormField
             control={form.control}
             name="title"
@@ -120,9 +112,9 @@ export default function BaseInfo({form, formSchema}: {form: any, formSchema: any
               </FormItem>
             )}
           />
-          <button type="submit"  className='absolute top-[-5px] right-2 z-1000' >저장</button>
+          {/* <button type="submit"  className='absolute top-[-5px] right-2 z-1000' >저장</button> */}
 
-        </form>
+        {/* </form> */}
     </div>
   )
 }

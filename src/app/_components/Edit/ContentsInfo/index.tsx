@@ -103,11 +103,19 @@ export default function EditContents() {
     setComponents((prevComponents) => prevComponents.filter((component) => component.id !== id));
   };
 
+  const handlePreview=() => {
+    console.log('preview')
+
+  }
+
   return (
     <div >
       <div className='w-full'>
-        <button onClick={handleShowDrawer} className='mt-5 bg-black w-full rounded-md text-base text-white p-3 flex items-center justify-center'>
+        <button onClick={handleShowDrawer} className='mt-5 bg-black w-full rounded-md text-base text-white p-2 border-2 border-black flex items-center justify-center'>
           <span>콘텐츠 추가하기 + </span>
+        </button>
+        <button onClick={handlePreview} className='mt-3 bg-white w-full rounded-md text-base text-black border-2 p-2'>
+          <span>미리보기</span>
         </button>
         <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={components} strategy={verticalListSortingStrategy}>

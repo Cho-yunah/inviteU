@@ -30,7 +30,6 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
         setIsDragging(false);
         
         const files = e.dataTransfer.files;
-        console.log(files)
       if (files.length > 0) {
         uploadFiles(files);
         previewFiles(files);
@@ -66,7 +65,6 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
             clearInterval(uploadInterval);
             setTimeout(() => {
               setUploadProgress(null);
-              // onFileUpload(files);
             }, 500); // Delay for visual feedback
           }
         }, 500); // Simulated 500ms delay per chunk
@@ -98,7 +96,10 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
           method: 'POST',
           body: form,
         })
-        console.log(await response.json(), 'onSubmitImage_response')
+        const responseData = await response.json();
+        // console.log(responseData, 'onSubmitImage_response');
+        field.onChange(responseData?.publicUrl); // field value에 파일 정보 전달
+        onFileUpload(responseData?.publicUrl); // 상위 컴포넌트로 파일 정보 전달
       }
     }
 
