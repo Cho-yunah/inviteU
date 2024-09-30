@@ -5,7 +5,7 @@ import { ContainerProps } from '@/app/_types/editTypes';
 import Accordion from '@/app/_components/common/Accordion';
 import { VideoUpload } from './VideoUpload';
 
-export default function VideoContainer({setComponents,id}: ContainerProps) {
+export default function VideoContainer({id, onDelete}: ContainerProps) {
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
@@ -13,10 +13,6 @@ export default function VideoContainer({setComponents,id}: ContainerProps) {
   const handleChange = (e: any) => {
         console.log(e)
   }
-
-  const handleDeleteComponent = (id: number) => {
-    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
-  };
 
   return (
     <Accordion >
@@ -47,7 +43,7 @@ export default function VideoContainer({setComponents,id}: ContainerProps) {
                     </div>
                 </div>      
             </div>
-             <button onClick={() => handleDeleteComponent(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
+             <button onClick={() => onDelete && onDelete(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
                 <p>삭제</p>
                 <RiDeleteBin6Line className='size-4 text-gray-600 ml-1' />
               </button>

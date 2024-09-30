@@ -5,7 +5,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri';
 import { FileUpload } from './FileUpload';
 import Accordion from '@/app/_components/common/Accordion';
 
-export default function ImageContainer({setComponents,id}: ContainerProps) {
+export default function ImageContainer({id, onDelete}: ContainerProps) {
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);
@@ -13,11 +13,6 @@ export default function ImageContainer({setComponents,id}: ContainerProps) {
   const handleChange = (e:any) => {
         console.log(e)
   }
-
-  const handleDeleteComponent = (id : number) => {
-    console.log('image',id)
-    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
-  };
 
   return (
     <Accordion>
@@ -27,9 +22,7 @@ export default function ImageContainer({setComponents,id}: ContainerProps) {
             {/* <ImageContainer /> */}
             <div className='mt-4 pb-1'>
                 <p className='font-bold text-sm text-[#333] pb-1'>이미지 추가*</p>      
-                {/* <button onClick={() => console.log('hi')} className='bg-black text-white text-sm p-1 rounded-md'>삭제</button> */}
                 <FileUpload onFileUpload={handleFileUpload} />
-
                 <p className='font-bold text-sm text-[#333] pb-1'>레이아웃*</p>
                 <div className='flex gap-3 my-2'>
                     <div className="flex flex-1 items-center space-x-1 ">
@@ -64,7 +57,7 @@ export default function ImageContainer({setComponents,id}: ContainerProps) {
                     </div>
                 </div>      
             </div>
-            <button onClick={() => handleDeleteComponent(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
+            <button onClick={(e) => onDelete && onDelete(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
                 <p>삭제</p>
                 <RiDeleteBin6Line className='size-4 text-gray-600 ml-1' />
             </button>

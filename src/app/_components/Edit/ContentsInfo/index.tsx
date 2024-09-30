@@ -1,59 +1,19 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
+import { v4 as uuidv4 } from 'uuid';
 import { DndContext, closestCenter } from '@dnd-kit/core';
-import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import ImageContainer from './ImagesContainer';
-import VideoContainer from './VideoContainer';
-import MapContainer from './MapContainer'
-import IntervalContainer from './IntervalContainer'
-import TextContainer from './TextContainer'
+import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import BottomDrawer from '../../common/BottomDrawer';
+import SortableItem from './SortableItem';
+import { ContentsComponentType } from '@/app/_types/contentsInfoTypes';
 
-interface Component {
-  id: string;
-  content: JSX.Element;
-}
 
-const initialComponents: Component[] = [];
-
-interface SortableItemProps {
-  id: string;
-  content: JSX.Element;
-  handleDeleteComponent: (id: string) => void;
-}
-
-function SortableItem(props: SortableItemProps) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: props.id });
-  const style: React.CSSProperties = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    position: "relative",
-    margin: "4px 0px"
-  };
-  
-  return (
-    <div ref={setNodeRef} style={style} {...attributes} className='absolute'>
-      {/* 드래그 핸들 버튼 */}
-      <button
-        {...listeners}
-        style={{
-          position: "absolute",
-          top: "13px",
-          left: "8px",
-          cursor: "grab",
-        }}
-      >
-        <Image src="./Drag.svg" alt='move button' width={24} height={24} />
-      </button>
-      {props.content}
-    </div>
-  );
-}
+const initialComponents: ContentsComponentType[] = [];
 
 export default function EditContents() {
   const [showDrawer, setShowDrawer] = useState(false);
   const [components, setComponents] = useState(initialComponents);
+  
 
   const handleShowDrawer = () => {
     setShowDrawer(true);
@@ -72,59 +32,35 @@ export default function EditContents() {
   };
 
   const handleAddComponent = (name: string) => {
-    // 선택한 컴포넌트 추가
-    const switchComponent = () => {
-      switch (name) {
-        case 'Image':
-          return <ImageContainer setComponents={setComponents} id={components.length+1} />;
-        case 'Video':
-          return <VideoContainer setComponents={setComponents} id={components.length+1} />;
-        case 'Map':
-          return <MapContainer setComponents={setComponents} id={components.length+1} />;
-        case 'Text':
-          return <TextContainer setComponents={setComponents} id={components.length+1} />;
-        case 'Interval':
-          return <IntervalContainer setComponents={setComponents} id={components.length+1} />;
-        default:
-          return <ImageContainer setComponents={setComponents} id={components.length+1} />;
-      }
-    }
-
     const newComponent = {
-        id: `${components.length + 1}`,
-        content: switchComponent(), // 새로운 컴포넌트 유형을 원하는 대로 설정할 수 있습니다.
+        id: uuidv4(),  // UUID 사용
+        type: name, 
     };
     setComponents((prevComponents) => [...prevComponents, newComponent]);
   };
 
-
-  const handleDeleteComponent = (id: string) => {
-    console.log('delete', id)
-    setComponents((prevComponents) => prevComponents.filter((component) => component.id !== id));
-  };
-
   const handlePreview=() => {
     console.log('preview')
-
   }
 
   return (
-    <div >
+    <div>
       <div className='w-full'>
         <button onClick={handleShowDrawer} className='mt-5 bg-black w-full rounded-md text-base text-white p-2 border-2 border-black flex items-center justify-center'>
           <span>콘텐츠 추가하기 + </span>
         </button>
-        <button onClick={handlePreview} className='mt-3 bg-white w-full rounded-md text-base text-black border-2 p-2'>
+        <button onClick={handlePreview} className='mt-3 bg-white w-full rounded-md text-base text-black border-[1px] p-2'>
           <span>미리보기</span>
         </button>
-        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd} modifiers={[restrictToVerticalAxis]}>
           <SortableContext items={components} strategy={verticalListSortingStrategy}>
             {components.map((component) => (
-              <SortableItem 
+              <SortableItem
                 key={component.id} 
                 id={component.id} 
-                content={component.content}
-                handleDeleteComponent={handleDeleteComponent} />
+                setComponents={setComponents}
+                type={component.type || ''}
+              />
             ))}
           </SortableContext>
         </DndContext>
@@ -133,4 +69,3 @@ export default function EditContents() {
     </div>
   );
 }
-

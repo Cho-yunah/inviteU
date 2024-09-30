@@ -6,16 +6,11 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/Accordion'
 
 
-export default function TextContainer({setComponents, id}: ContainerProps) {
+export default function TextContainer({id, onDelete}: ContainerProps) {
 
   const handleChange = (e:any) => {
         console.log(e)
   }
-
-  const handleDeleteComponent = (id: number) => {
-    console.log('text', id)
-    setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
-  };
 
   return (
     <Accordion>
@@ -78,7 +73,7 @@ export default function TextContainer({setComponents, id}: ContainerProps) {
                     </div>
                 </div>      
             </div>
-            <button onClick={() => handleDeleteComponent(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
+            <button onClick={() => onDelete && onDelete(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
                 <p>삭제</p>
                 <RiDeleteBin6Line className='size-4 text-gray-600 ml-1' />
             </button>

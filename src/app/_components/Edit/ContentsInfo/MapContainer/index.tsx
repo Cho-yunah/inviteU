@@ -4,7 +4,7 @@ import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/Accordion'
 import SearchPostCode from './SearchPostcode'
 
-const MapContainer = ({setComponents, id}: ContainerProps) => {
+const MapContainer = ({id, onDelete}: ContainerProps) => {
     const [showModal, setShowModal] = useState<boolean>(false)
     const [address, setAddress] = useState<string>('')
     const [detailAddress, setDetailAddress] = useState<string>('')
@@ -12,10 +12,6 @@ const MapContainer = ({setComponents, id}: ContainerProps) => {
     const handleInputClick = () => {
         setShowModal(true)
     }
-
-    const handleDeleteComponent = (id: number) => {
-      setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
-    };
 
   return (
     <Accordion>
@@ -43,7 +39,7 @@ const MapContainer = ({setComponents, id}: ContainerProps) => {
                     />
                 }
             </div>
-            <button onClick={() => handleDeleteComponent(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
+            <button onClick={() => onDelete && onDelete(id)} className='relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2'>
                 <p>삭제</p>
                 <RiDeleteBin6Line className='size-4 text-gray-600 ml-1' />
             </button>

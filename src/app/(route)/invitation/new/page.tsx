@@ -12,7 +12,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { SubmitHandler } from 'react-hook-form';
 
-
 const formSchema = z.object({
   user_id: z.string().min(10),
   title: z.string().min(7, {
@@ -57,8 +56,6 @@ const Edit = () => {
     },
   })
 
-  
-  
   // function onSubmit(e:any, values: z.infer<typeof formSchema>) {
   //   e.preventDefault();
   //   form.setValue('date', date) 
@@ -93,9 +90,8 @@ const Edit = () => {
             <button type="submit"  className='absolute top-[-9px] right-2 z-1000 bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold' >저장</button>
           </form>
         </Form>
-       </Tabs>
+      </Tabs>
     </div>
   )
 }
-
 export default Edit

@@ -1,4 +1,7 @@
 export interface ContainerProps {
-    setComponents: (component: any) => void;
-    id: number;
+    id: string;
+    type?: string;
+    components?: any;
+    setComponents?: (component: any) => void;
+    onDelete?: (id: string) => void;
 }

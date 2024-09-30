@@ -1,4 +1,5 @@
 'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import cx from 'classnames'
@@ -17,7 +18,7 @@ const Header = ({children, className}: AccordionHeaderProps) => {
     return (
         <div className={styles.contentHeader}>
             <Switch id="contents-switch" defaultChecked={false} checked={active} onCheckedChange={toggle} />
-            <Label htmlFor="contents-switch" className='pl-2 font-bold text-gray-800'>{children}</Label>
+            <Label htmlFor="contents-switch" className='pl-2 font-bold text-gray-800 border-none'>{children}</Label>
             <button
             type="button"
             className={cx(styles.toggleButton, {
@@ -25,7 +26,7 @@ const Header = ({children, className}: AccordionHeaderProps) => {
             })}
             onClick={toggle}
             >
-            <Image src="./Chevron.svg" alt='Chevron' width={24} height={24} />
+            <Image src="/Chevron.svg" alt='Chevron' width={24} height={24} />
             </button>
         </div>
     )

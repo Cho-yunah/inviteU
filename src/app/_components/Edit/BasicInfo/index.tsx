@@ -23,7 +23,6 @@ export default function BaseInfo({form, formSchema, date, setDate}: {form: any, 
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // e.preventDefault();
-    // console.log(date)
     console.log('values', values, form.getValues())
     // form.handleSubmit(onSubmit)
   }
