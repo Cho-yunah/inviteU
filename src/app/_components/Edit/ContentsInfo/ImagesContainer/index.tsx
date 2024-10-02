@@ -2,25 +2,23 @@ import React, { useEffect } from 'react'
 import styles from '../../edit.module.scss'
 import { RiDeleteBin6Line } from 'react-icons/ri';
 import { FileUpload } from './FileUpload';
-import Accordion from '@/app/_components/common/Accordion';
-
-import { ImageType } from '@/lib/types'; 
 import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes';
+import Accordion from '@/app/_components/common/accordion';
 
-const initialImageData: ImageType = {
+const initialImageData = {
   type: 'image',
   layout: 'vertical',
   ratio: 3/4,
-  urls: [] as string[]
+  urls: [] as string[],
 }
 
 export default function ImageContainer({id, onDelete, handleUpdateContent}: ContentsContainerProps) {
   const [imageData, setImageData] = React.useState(initialImageData);
 
   const handleFileUpload = (files: any) => {
-      const updatedImageData = { ...imageData, urls: [...files] };
-      setImageData(updatedImageData);
-      handleUpdateContent && handleUpdateContent(updatedImageData);  // 상위 컴포넌트로 업데이트된 content 전달
+    const fileUrls = Array.from(files).map((file: any) => file); // 파일 이름을 배열로 추가
+    // const updatedImageData = { ...imageData, urls: [...imageData.urls, ...fileUrls] }; // 기존 urls 배열에 파일 추가
+    setImageData({...imageData, urls: files});
   };
 
   const handleChange = (e:any) => {
@@ -29,6 +27,23 @@ export default function ImageContainer({id, onDelete, handleUpdateContent}: Cont
       [e.target.name]: e.target.value
     })
   }
+
+   // 이미지 데이터가 변경될 때마다 상위 컴포넌트에 업데이트된 값을 전달
+  useEffect(() => {
+    if (handleUpdateContent && imageData.urls.length > 0) {
+      // urls 배열을 쉼표로 구분된 문자열로 변환
+      const updatedContent = {
+        ...imageData,
+        urls: imageData.urls.join(','), // urls 배열을 그대로 유지
+      };
+      handleUpdateContent(updatedContent); // 상위로 업데이트된 데이터를 전달
+    }
+    else {
+      const updatedContent = {...imageData, urls: ''}
+      handleUpdateContent(updatedContent)
+    }
+  }, [imageData]);
+
 
   return (
     <Accordion>
