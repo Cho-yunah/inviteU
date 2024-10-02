@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React from 'react'
 import { z } from "zod"
 import {
   FormControl,
@@ -14,7 +14,7 @@ import { DatePickerForm } from './DatePicker'
 import { TimePickerCustom } from './TimePicker'
 import FileInput from './FileInput'
 
-export default function BaseInfo({form, formSchema, date, setDate}: {form: any, formSchema: any, date: Date, setDate: any}) {
+export default function BaseInfo({form, formSchema, date, setDate}: {form: any, formSchema: any, date?: Date, setDate?: any}) {
   // const [date, setDate] = useState<Date>();
 
   const handleFileUpload = (files: any) => {
@@ -29,7 +29,7 @@ export default function BaseInfo({form, formSchema, date, setDate}: {form: any, 
   
   return (
     <div >
-      <h2 className='text-black-400 text-base font-bold pb-2'>기본정보</h2>
+      <h2 className='text-black text-base font-bold pb-2'>기본정보</h2>
         {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> */}
         <FormField
             control={form.control}

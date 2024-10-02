@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../../edit.module.scss'
 import { Select, SelectContent, SelectItem,SelectTrigger, SelectValue } from '@/components/ui/select'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import Accordion from '@/app/_components/common/Accordion'
+import Accordion from '@/app/_components/common/accordion'
 import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 
 

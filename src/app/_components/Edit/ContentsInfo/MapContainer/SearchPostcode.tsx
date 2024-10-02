@@ -21,7 +21,7 @@ const SearchPostCode = ({showModal, setShowModal, address, setAddress}: SearchPo
     };
 
 	return (
-        <div  className='fixed bg-slate-500/35 w-full h-full z-10 left-0 top-0' >
+        <div  className='fixed bg-slate-500/35 size-full z-10 left-0 top-0' >
             <DaumPostcode autoClose onComplete={handleComplete} />
         </div>
 	)

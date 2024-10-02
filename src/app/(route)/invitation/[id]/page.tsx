@@ -9,9 +9,7 @@ import Background from '@/app/_components/edit/Background'
 import {Form} from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { date, z } from 'zod'
-import { useEffect } from 'react'
-import { useState } from 'react'
+import { z } from 'zod'
 
 const formSchema = z.object({
   user_id: z.string().min(10),
@@ -52,10 +50,10 @@ const Edit = () => {
       contents: []
     },
   })
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('values', values, form.getValues())
-    // form.handleSubmit(onSubmit)
-  }
+  // function onSubmit(values: z.infer<typeof formSchema>) {
+  //   console.log('values', values, form.getValues())
+  //   // form.handleSubmit(onSubmit)
+  // }
 
 
   return (
@@ -73,7 +71,7 @@ const Edit = () => {
             <BaseInfo form={form} formSchema={formSchema}/>
           </TabsContent>
           <TabsContent className='px-6 py-2' value="contents">
-            <ContentsInfo/>
+            <ContentsInfo />
           </TabsContent>
           <TabsContent className='px-6 py-2' value="backgrond">
             <Background />

@@ -10,7 +10,7 @@ import {Form} from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { SubmitHandler } from 'react-hook-form';
+// import { SubmitHandler } from 'react-hook-form';
 
 const formSchema = z.object({
   user_id: z.string().min(10),
@@ -87,7 +87,7 @@ const Edit = () => {
             <TabsContent className='px-6 py-2' value="backgrond">
               <Background />
             </TabsContent>
-            <button type="submit"  className='absolute top-[-9px] right-2 z-1000 bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold' >저장</button>
+            <button type="submit"  className='absolute top-[-9px] right-2 z-100 bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold' >저장</button>
           </form>
         </Form>
       </Tabs>

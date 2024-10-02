@@ -48,7 +48,7 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
     };
   
     const uploadFiles = (files: FileList) => {
-      Array.from(files).forEach((file, index) => {
+      Array.from(files).forEach((file) => {
         const totalSize = file.size;
         const chunkSize = 1024 * 1024; 
         let uploaded = 0;

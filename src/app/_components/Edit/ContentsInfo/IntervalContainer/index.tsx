@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import Accordion from '@/app/_components/common/Accordion'
+import Accordion from '@/app/_components/common/accordion'
 import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 
 export default function IntervalContainer({id, onDelete, handleUpdateContent}: ContentsContainerProps) {

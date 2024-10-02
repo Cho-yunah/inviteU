@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { useAccordion } from './index';
 import { cx } from 'class-variance-authority';
 import styles from './accordion.module.scss';
+import { useAccordion } from '../accordion/index';
 
 interface Props {
   children: React.ReactNode;

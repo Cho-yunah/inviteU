@@ -45,7 +45,6 @@ export default function Slider({slideArr, checkedSlide, setCheckedSlide}: slideP
       <Swiper 
         pagination={{clickable: true}} 
         modules={[Pagination, Navigation]} 
-        className="mySwiper"  
         onSlideChange={onSlideChange}
       >
         {slideArr?.map((slide) => ( 

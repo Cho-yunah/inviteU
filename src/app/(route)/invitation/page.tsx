@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from "../../page.module.css";
 import ListItem from '@/app/_components/list/ListItem';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { setInvitationList } from '@/lib/features/invitation/invitationSlice';
 import Loader from '@/app/_components/common/Loader';
@@ -71,7 +71,7 @@ const List = () => {
                 <p className='text-sm text-gray-500'>저장된 초대장이 없습니다.</p>
               </div>
             ) : (
-              listData?.map((item: any, index: number) => (
+              listData?.map((item: any) => (
                 <ListItem key={item.id} item={item} />
               ))
             )}

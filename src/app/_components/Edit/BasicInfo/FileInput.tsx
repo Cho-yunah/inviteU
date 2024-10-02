@@ -44,13 +44,9 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
         handleFileUpload(files[0])
       }
     };
-
-    const clickTest = () => {
-      console.log('click')
-    }
   
     const uploadFiles = (files: FileList) => {
-      Array.from(files).forEach((file, index) => {
+      Array.from(files).forEach((file) => {
         const totalSize = file.size;
         const chunkSize = 1024 * 1024; 
         let uploaded = 0;
@@ -112,7 +108,7 @@ export default function FileInput({ field, onFileUpload, ...props }:FileUploadPr
       onDrop={handleDrop}
       >
         {filePreviews.length != 0? 
-          <div className="relative flex flex-wrap p- border-[1px] rounded-md border-gray-300">
+          <div className="relative flex flex-wrap border-[1px] rounded-md border-gray-300">
             <img
               src={filePreviews[0]}
               alt={`File Preview`}

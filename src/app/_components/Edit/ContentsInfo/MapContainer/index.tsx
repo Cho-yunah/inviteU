@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { RiDeleteBin6Line } from 'react-icons/ri'
-import Accordion from '@/app/_components/common/Accordion'
+import Accordion from '@/app/_components/common/accordion'
 import SearchPostCode from './SearchPostcode'
 import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 

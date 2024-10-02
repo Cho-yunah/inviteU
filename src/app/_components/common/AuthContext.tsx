@@ -1,9 +1,9 @@
 'use client'
 
 import { supabase } from '@/supabase/browser'
-import type { Session } from '@supabase/auth-helpers-nextjs'
+// import type { Session } from '@supabase/auth-helpers-nextjs'
 import { useUser } from '@supabase/auth-helpers-react'
-import { createBrowserClient } from '@supabase/ssr'
+// import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState, useEffect } from 'react'
 

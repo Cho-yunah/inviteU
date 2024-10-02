@@ -115,7 +115,7 @@ export const VideoUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props 
                         color="danger"
                         size='sm'
                         onClick={handleDeletePreview}
-                        className="absolute top-1 right-2 w-5 h-5 p-0 bg-slate-300"
+                        className="absolute top-1 right-2 size-5 p-0 bg-slate-300"
                         >
                             <IoClose />
                     </Button>
@@ -130,7 +130,7 @@ export const VideoUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props 
                         accept=".mov, .mp4"
                     />
                     <label htmlFor={"video-input"}
-                        className="cursor-pointer text-gray-500 w-full h-full flex flex-col items-center justify-center"
+                        className="cursor-pointer text-gray-500 size-full flex flex-col items-center justify-center"
                     >
                         <img src='/plus.svg' width='24' height='24' alt='plus icon' />
                     </label>

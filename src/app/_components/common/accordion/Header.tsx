@@ -6,14 +6,14 @@ import cx from 'classnames'
 import styles from './accordion.module.scss'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
-import { useAccordion } from './index'
+import { useAccordion } from '../accordion/index'
 
 interface AccordionHeaderProps {
     children: string | React.ReactNode;
     className?: string;
 }
 
-const Header = ({children, className}: AccordionHeaderProps) => {
+const Header = ({children}: AccordionHeaderProps) => {
     const {active, toggle} = useAccordion();
     return (
         <div className={styles.contentHeader}>

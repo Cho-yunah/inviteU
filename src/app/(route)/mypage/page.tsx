@@ -9,6 +9,7 @@ const Mypage = () => {
 
   const handleLogout = async() => {
     const { error } = await supabase.auth.signOut();
+    console.log('error', error)
     alert('로그아웃 되었습니다');
   }
 
