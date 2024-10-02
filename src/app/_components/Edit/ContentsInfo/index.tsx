@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { DndContext, closestCenter } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
-import BottomDrawer from '../../common/BottomDrawer';
-import SortableItem from './SortableItem';
 import { ContentsComponentType } from '@/app/_types/contentsInfoTypes';
-
+import SortableItem from './SortableItem';
+import BottomDrawer from '../../common/BottomDrawer';
+import { ContentDataType } from '@/lib/types';
 
 const initialComponents: ContentsComponentType[] = [];
 
 export default function EditContents() {
   const [showDrawer, setShowDrawer] = useState(false);
   const [components, setComponents] = useState(initialComponents);
-  
+  const [contentInfo, setContentInfo] = useState<ContentDataType[]|[]>([]);
 
   const handleShowDrawer = () => {
     setShowDrawer(true);
@@ -35,6 +35,7 @@ export default function EditContents() {
     const newComponent = {
         id: uuidv4(),  // UUID 사용
         type: name, 
+        content: {}
     };
     setComponents((prevComponents) => [...prevComponents, newComponent]);
   };
@@ -42,6 +43,10 @@ export default function EditContents() {
   const handlePreview=() => {
     console.log('preview')
   }
+
+  useEffect(() => {
+    console.log('컴포넌트 변경', components)  
+  },[components])
 
   return (
     <div>

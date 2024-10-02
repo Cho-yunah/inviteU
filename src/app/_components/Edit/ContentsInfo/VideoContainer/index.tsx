@@ -1,11 +1,11 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
 import { RiDeleteBin6Line } from 'react-icons/ri';
-import { ContainerProps } from '@/app/_types/editTypes';
 import Accordion from '@/app/_components/common/Accordion';
 import { VideoUpload } from './VideoUpload';
+import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes';
 
-export default function VideoContainer({id, onDelete}: ContainerProps) {
+export default function VideoContainer({id, onDelete, handleUpdateContent}: ContentsContainerProps) {
 
   const handleFileUpload = (files: FileList) => {
         console.log("Uploaded files:", files);

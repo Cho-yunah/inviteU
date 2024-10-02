@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { ContainerProps } from '@/app/_types/editTypes'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/Accordion'
 import SearchPostCode from './SearchPostcode'
+import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 
-const MapContainer = ({id, onDelete}: ContainerProps) => {
+const MapContainer = ({id, onDelete, handleUpdateContent}: ContentsContainerProps) => {
     const [showModal, setShowModal] = useState<boolean>(false)
     const [address, setAddress] = useState<string>('')
     const [detailAddress, setDetailAddress] = useState<string>('')

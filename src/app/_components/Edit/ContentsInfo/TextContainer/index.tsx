@@ -1,12 +1,12 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
 import { Select, SelectContent, SelectItem,SelectTrigger, SelectValue } from '@/components/ui/select'
-import { ContainerProps } from '@/app/_types/editTypes'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/Accordion'
+import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 
 
-export default function TextContainer({id, onDelete}: ContainerProps) {
+export default function TextContainer({id, onDelete, handleUpdateContent}: ContentsContainerProps) {
 
   const handleChange = (e:any) => {
         console.log(e)

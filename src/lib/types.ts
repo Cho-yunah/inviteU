@@ -2,7 +2,7 @@ export type ImageType = {
   type: 'image'
   layout: 'vertical' | 'horizontal'
   ratio: number
-  urls: string
+  urls: string[]
 }
 export type VideoType = {
   type: 'video'
@@ -30,11 +30,11 @@ export type MapType = {
 export type ContentDataType = ImageType | VideoType | TextType | IntervalType | MapType
 
 export const exampleContents: ContentDataType[] = [
-  {
+  { 
     type: 'image',
     layout: 'vertical',
     ratio: 1.5,
-    urls: 'https://hjjneamnafhopugmpfpu.supabase.co/storage/v1/object/public/inviteU/image/a9542077-f708-481b-b72f-7fec5ca4ff55/1727196501845.svg',
+    urls: ['https://hjjneamnafhopugmpfpu.supabase.co/storage/v1/object/public/inviteU/image/a9542077-f708-481b-b72f-7fec5ca4ff55/1727196501845.svg'],
   },
   {
     type: 'video',

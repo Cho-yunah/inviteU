@@ -1,3 +1,4 @@
+import { ContentDataType } from '@/lib/types';
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export type EditInvitationStateType = {
@@ -7,14 +8,17 @@ export type EditInvitationStateType = {
     image_urls: string;
 }
 
-const initialState: EditInvitationStateType[] = [];
+const initialState: ContentDataType[] = [];
 
 export const editInvitationSlice = createSlice({
     name: 'editInvitation',
     initialState,
     reducers: {
-        setEditInvitation: (state, action: PayloadAction<EditInvitationStateType[]>) => {
+        setBaseInfo: (state, action: PayloadAction<ContentDataType[]>) => {
             return action.payload;
         },
+        setContensInfo: (state, action: PayloadAction<ContentDataType[]>) => { 
+            return action.payload;
+        }
     },
 });

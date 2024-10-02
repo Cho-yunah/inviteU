@@ -1,15 +1,19 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from '@/components/ui/input'
 import { Button } from "@/components/ui/button";
 import { IoClose } from "react-icons/io5";
+import { useUser } from "@supabase/auth-helpers-react";
 
 interface FileUploadProps  {
-    onFileUpload: (files: FileList) => void;
+    onFileUpload: (files: any) => void;
 }
   
 export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }) => {
+    const {id} = useUser() || {};
+
+    const [filesUrl, setFilesUrl] = useState<string[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
     const [filePreviews, setFilePreviews] = useState<string[]>([]);
@@ -29,7 +33,6 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
         setIsDragging(false);
         
         const files = e.dataTransfer.files;
-        console.log(files)
       if (files.length > 0) {
         uploadFiles(files);
         previewFiles(files);
@@ -53,16 +56,16 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
         const uploadInterval = setInterval(() => {
           uploaded += chunkSize;
           const progress = (uploaded / totalSize) * 100;
-  
           setUploadProgress(progress);
   
           if (progress >= 100) {
             clearInterval(uploadInterval);
             setTimeout(() => {
               setUploadProgress(null);
-              onFileUpload(files);
             }, 500); // Delay for visual feedback
           }
+          // onFileUpload(files);
+          handleFileUpload(file);
         }, 500); // Simulated 500ms delay per chunk
       });
     };
@@ -83,7 +86,30 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, ...props }
       const updatedPreviews = [...filePreviews];
       updatedPreviews.splice(index, 1);
       setFilePreviews(updatedPreviews);
+
+      filesUrl.splice(index, 1);
+      onFileUpload(filesUrl);
     };
+
+    /* Multipart/formdata Upload */
+    const handleFileUpload= async(file: File) => {
+      const form = new FormData();
+      form.append('file', file);
+      if(!!id && !!form) {
+        const response = await fetch(`/api/files?user_uuid=${id}`, {
+          method: 'POST',
+          body: form,
+        })
+        const responseData = await response.json();
+        setFilesUrl([...filesUrl, responseData?.publicUrl]);
+        // field.onChange(responseData?.publicUrl); // field value에 파일 정보 전달
+        // onFileUpload(responseData?.publicUrl); // 상위 컴포넌트로 파일 정보 전달
+      }
+    }
+
+    useEffect(() => {
+      onFileUpload(filesUrl); // 상위 컴포넌트로 파일 정보 전달
+    },[filesUrl])
   
     return (
         <div className={`grid grid-cols-2 grid-rows-auto gap-x-4 gap-y-3 px-2 py-1 mb-4 ${isDragging && 'shadow-[0_0px_0px_5px_rgba(135,211,248,0.5)_inset]'}`}>

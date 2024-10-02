@@ -2,16 +2,14 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { CSS } from '@dnd-kit/utilities';
 import { useSortable } from '@dnd-kit/sortable';
-import { SortableItemProps } from '@/app/_types/contentsInfoTypes';
+import { ContentsContainerProps, SortableItemProps } from '@/app/_types/contentsInfoTypes';
 import ImageContainer from '../ImagesContainer';
 import VideoContainer from '../VideoContainer';
 import MapContainer from '../MapContainer';
 import TextContainer from '../TextContainer';
 import IntervalContainer from '../IntervalContainer';
-import { ContainerProps } from '@/app/_types/editTypes';
 
-
-function SortableItem({id, setComponents, type}: SortableItemProps) {
+function SortableItem({id, type, setComponents}: SortableItemProps) {
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
     const style: React.CSSProperties = {
         transform: CSS.Transform.toString(transform),
@@ -20,13 +18,16 @@ function SortableItem({id, setComponents, type}: SortableItemProps) {
         margin: "4px 0px"
     };
 
-    const onDelete = (id :string) => {
-        setComponents((prevComponents:  ContainerProps[]) => prevComponents.filter((component) => component.id != id));
+    const handleUpdateContent = (updatedContent : any) => {
+        setComponents((prevComponents: SortableItemProps[]) =>
+            prevComponents.map((component) =>
+            component.id === id ? { ...component, content: updatedContent } : component
+        ));
     };
 
-    useEffect(()=> {
-        console.log(type)
-    }, [type])
+    const onDelete = (id :string) => {
+        setComponents((prevComponents: SortableItemProps[]) => prevComponents.filter((component) => component.id != id));
+    };
     
     return (
         <div ref={setNodeRef} style={style} {...attributes} className='absolute'>
@@ -42,8 +43,7 @@ function SortableItem({id, setComponents, type}: SortableItemProps) {
             >
                 <Image src="/Drag.svg" alt='move button' width={24} height={24} />
             </button>
-            {/* {props.content} */}
-            {switchComponent({ id, type, setComponents, onDelete})} 
+            {switchComponent({ id, type, onDelete, handleUpdateContent})} 
         </div>
     );
 }
@@ -51,19 +51,19 @@ function SortableItem({id, setComponents, type}: SortableItemProps) {
 export default SortableItem;
 
 // 선택한 컴포넌트 추가
-const switchComponent = ({id, type, onDelete}: SortableItemProps) => {
+const switchComponent = ({id, type, onDelete, handleUpdateContent}: ContentsContainerProps) => {
     switch (type) {
         case 'Image':
-            return <ImageContainer  type='image' id={id} onDelete={onDelete}/>;
+            return <ImageContainer id={id} onDelete={onDelete} handleUpdateContent={handleUpdateContent}/>;
         case 'Video':
-            return <VideoContainer  type='video' id={id} onDelete={onDelete} />;
+            return <VideoContainer id={id} onDelete={onDelete} handleUpdateContent={handleUpdateContent}/>;
         case 'Map':
-            return <MapContainer  type='map' id={id} onDelete={onDelete} />;
+            return <MapContainer id={id} onDelete={onDelete} handleUpdateContent={handleUpdateContent}/>;
         case 'Text':
-            return <TextContainer type='text' id={id} onDelete={onDelete} />;
+            return <TextContainer id={id} onDelete={onDelete} handleUpdateContent={handleUpdateContent}/>;
         case 'Interval':
-            return <IntervalContainer  type='interval' id={id} onDelete={onDelete} />;
+            return <IntervalContainer id={id} onDelete={onDelete} handleUpdateContent={handleUpdateContent}/>;
         default:
-            return <ImageContainer  type='image' id={id} onDelete={onDelete} />;
+            return <ImageContainer id={id} onDelete={onDelete} handleUpdateContent={handleUpdateContent}/>;
     }
 }

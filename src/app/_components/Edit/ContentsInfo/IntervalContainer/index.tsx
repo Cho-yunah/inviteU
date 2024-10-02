@@ -1,10 +1,10 @@
 import React from 'react'
 import styles from '../../edit.module.scss'
-import { ContainerProps } from '@/app/_types/editTypes'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/Accordion'
+import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 
-export default function IntervalContainer({id, onDelete}: ContainerProps) {
+export default function IntervalContainer({id, onDelete, handleUpdateContent}: ContentsContainerProps) {
 
   const handleChange = (e: any) => {
         console.log(e)
