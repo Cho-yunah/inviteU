@@ -1,8 +1,9 @@
 'use client';
+import React from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { useState } from 'react';
-import { createBrowserClient } from '@supabase/ssr';
+// import { createBrowserClient } from '@supabase/ssr';
 
 interface SupabaseProviderProp {
 	children: React.ReactNode;
