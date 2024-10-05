@@ -29,7 +29,7 @@ const BottomDrawer = ({showDrawer, setShowDrawer, handleAddComponent}: BottomDra
         setShowDrawer(false);
     };
 
-    const handleClickDrawerItem = (e: any) => {
+    const handleClickDrawerItem = (e) => {
         // console.log(e.currentTarget.id);
         handleAddComponent(e.currentTarget.id);
         setIsClosing(true);
