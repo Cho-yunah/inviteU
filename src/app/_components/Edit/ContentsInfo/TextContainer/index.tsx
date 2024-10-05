@@ -68,11 +68,21 @@ export default function TextContainer({
                   <SelectValue placeholder="글씨체를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
-                  <SelectItem value="나눔명조">나눔명조 - Nanum Myeongjo</SelectItem>
-                  <SelectItem value="고운바탕">고운바탕 - Gowun Batang</SelectItem>
-                  <SelectItem value="김정철명조">김정철명조 - Kimjungchul Myungjo</SelectItem>
-                  <SelectItem value="잉크립퀴드체">잉크립퀴드체 - Ink lipquid</SelectItem>
-                  <SelectItem value="온글잎">온글잎 누카 - Ownglyph Nuka</SelectItem>
+                  <SelectItem className="font-naMyeongjo" value="나눔명조">
+                    나눔명조 - Nanum Myeongjo
+                  </SelectItem>
+                  <SelectItem className="font-batang" value="고운바탕">
+                    고운바탕 - Gowun Batang
+                  </SelectItem>
+                  <SelectItem className="font-kimMyeonjo" value="김정철명조">
+                    김정철명조 - Kimjungchul Myungjo
+                  </SelectItem>
+                  <SelectItem className="font-inklipquid" value="잉크립퀴드체">
+                    잉크립퀴드체 - Ink lipquid
+                  </SelectItem>
+                  <SelectItem className="font-noocar" value="온글잎누카">
+                    온글잎 누카 - Ownglyph Nuka
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <Select onValueChange={(e) => handleSelectChange(e, 'font_size')} name="font_type">
@@ -83,12 +93,24 @@ export default function TextContainer({
                   />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
-                  <SelectItem value="8">8pt</SelectItem>
-                  <SelectItem value="10">10pt</SelectItem>
-                  <SelectItem value="12">12pt</SelectItem>
-                  <SelectItem value="16">16pt</SelectItem>
-                  <SelectItem value="20">20pt</SelectItem>
-                  <SelectItem value="24">24pt</SelectItem>
+                  <SelectItem value="8" className="text-[8px]">
+                    8pt
+                  </SelectItem>
+                  <SelectItem value="10" className="text-[10px]">
+                    10pt
+                  </SelectItem>
+                  <SelectItem value="12" className="text-[12px]">
+                    12pt
+                  </SelectItem>
+                  <SelectItem value="16" className="text-[16px]">
+                    16pt
+                  </SelectItem>
+                  <SelectItem value="20" className="text-[20px]">
+                    20pt
+                  </SelectItem>
+                  <SelectItem value="24" className="text-[24px]">
+                    24pt
+                  </SelectItem>
                   {/* <SelectItem value="36">36pt</SelectItem> */}
                 </SelectContent>
               </Select>
@@ -101,7 +123,7 @@ export default function TextContainer({
                   value="left"
                   id="text_left"
                   className={styles.radioItem}
-                  name="arrangement"
+                  name="layout"
                   onChange={handleChange}
                   defaultChecked
                 />
@@ -128,7 +150,7 @@ export default function TextContainer({
                   value="right"
                   id="text_right"
                   className={styles.radioItem}
-                  name="arrangement"
+                  name="layout"
                   onChange={handleChange}
                 />
                 <label htmlFor="text_right" onClick={handleChange} className={styles.label}>
