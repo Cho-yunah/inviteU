@@ -11,18 +11,6 @@ type Data = {
   error?: string
 }
 
-type QueryDataType = {
-  contents: string //ContentDataType[]
-  background_image: string | null
-  custom_url: string
-  date: string | null
-  id: string
-  post_number: string | null
-  primary_image: string | null
-  title: string
-  user_id: string | null
-}
-
 export type RefinedContentsType = {
   type: 'images' | 'videos' | 'text' | 'interval' | 'map'
   uuid: string
@@ -38,6 +26,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     // contents,
     custom_url,
     date,
+    time,
     primary_image,
     title,
     user_id,
@@ -239,6 +228,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
           contents: refinedContents,
           custom_url,
           date,
+          time,
           id: uuid,
           primary_image,
           title,
@@ -266,7 +256,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   const uuid = randomUUID()
 
   // next.js14에서는 body에서 데이터를 받아옵니다.
-  const { background_image, contents, custom_url, date, primary_image, title, user_id, id } =
+  const { background_image, contents, custom_url, date, time, primary_image, title, user_id, id } =
     jsonRequest || {}
 
   if (!id || !user_id) {
@@ -456,6 +446,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
       contents: refinedContents ?? jsonRequest.contents,
       custom_url: custom_url ?? jsonRequest.custom_url,
       date: date ?? jsonRequest.date,
+      time: time ?? jsonRequest.time,
       primary_image: primary_image ?? jsonRequest.primary_image,
       title: title ?? jsonRequest.title,
     })
