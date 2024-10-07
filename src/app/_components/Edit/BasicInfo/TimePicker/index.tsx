@@ -10,35 +10,63 @@ import TimeSelect from './TimeSelect'
 import { MINUTES, PERIOD, HOURS } from '@/constants/edit'
 import dayjs from 'dayjs'
 
-interface TimePickerDemoProps {
-  time: string
-  setTime: any
+interface TimePickerProps {
   field: any
-  formSchema: any
+  formSchema?: any
 }
 
-export function TimePickerCustom({ time, setTime, field, formSchema }: TimePickerDemoProps) {
-  const [hours, setHours] = useState('')
-  const [minutes, setMinutes] = useState('')
-  const [period, setPeriod] = useState('')
+export function TimePickerCustom({ field }: TimePickerProps) {
+  const [timeState, setTimeState] = useState({ hours: '', minutes: '', period: '' })
+  const [initialized, setInitialized] = useState(false) // 초기화 상태 확인용
 
-  useEffect(() => {
-    if (hours && minutes && period) {
-      const convertHour = convert12HourTo24Hour(parseInt(hours), period as Period)
-      const tempDate = new Date()
+  const initializeTimeState = (value: string) => {
+    console.log(value)
+    if (value && !initialized) {
+      const [initialHours, initialMinutes] = value.split(':')
 
-      tempDate.setHours(convertHour)
-      tempDate.setMinutes(parseInt(minutes, 10))
+      // 24시간 형식에서 12시간 형식으로 변환
+      const hoursIn24 = parseInt(initialHours)
+      const formattedHour =
+        hoursIn24 > 12
+          ? (hoursIn24 - 12).toString().padStart(2, '0')
+          : hoursIn24.toString().padStart(2, '0')
+      const formattedPeriod = hoursIn24 >= 12 ? 'PM' : 'AM'
 
-      const formattedTime = dayjs(tempDate).format('HH:mm')
-      setTime(formattedTime)
-      field.onChange(formattedTime) // React Hook Form과 연결
+      setTimeState({
+        hours: formattedHour,
+        minutes: initialMinutes,
+        period: formattedPeriod,
+      })
+      console.log('timeState 초기화', timeState)
     }
-  }, [hours, minutes, period])
+    setInitialized(true) // 초기화 완료
+  }
 
-  // useEffect(() => {
-  //   console.log('time:', time)
-  // }, [time])
+  // field.value 가 존재할때, 초기 상태 설정
+  useEffect(() => {
+    initializeTimeState(field.value)
+  }, [field.value])
+
+  // 시간 선택 시 상태 업데이트 및 필드와 연동
+  const handleTimeChange = (key: string, value: string) => {
+    console.log('timeState 변경')
+    setTimeState((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }))
+  }
+
+  // 상태가 변경될 때 필드에 저장
+  useEffect(() => {
+    const { hours, minutes, period } = timeState
+    console.log('timeState', timeState, hours, minutes, period, initialized)
+    if (hours && minutes && initialized) {
+      const convertHour = convert12HourTo24Hour(parseInt(hours), period as Period)
+      const formattedTime = dayjs().hour(convertHour).minute(parseInt(minutes)).format('HH:mm')
+      console.log('formattedTime', formattedTime)
+      field.onChange(formattedTime) // 필드와 연결된 값 저장
+    }
+  }, [timeState, initialized])
 
   return (
     <>
@@ -52,8 +80,8 @@ export function TimePickerCustom({ time, setTime, field, formSchema }: TimePicke
                 !field.value && 'text-muted-foreground',
               )}
             >
-              {time ? (
-                <span className="text-left">{`${hours} : ${minutes} ${period}`}</span>
+              {field.value ? (
+                <span className="text-left">{`${timeState.hours} : ${timeState.minutes} ${timeState.period}`}</span>
               ) : (
                 <label htmlFor="selectTime" className="text-slate-400 text-left">
                   Select Time
@@ -65,13 +93,28 @@ export function TimePickerCustom({ time, setTime, field, formSchema }: TimePicke
         <PopoverContent className="w-[335px] p-2 flex justify-center bg-white" align="start">
           <div className=" h-[120px] w-full flex justify-center overflow-hidden">
             <div className="mx-1">
-              <TimeSelect id={'hours'} arr={HOURS} item={hours} setItem={setHours} />
+              <TimeSelect
+                id="hours"
+                options={HOURS}
+                value={timeState.hours}
+                onChange={(val) => handleTimeChange('hours', val)}
+              />
             </div>
             <div className="mx-1">
-              <TimeSelect id={'minutes'} arr={MINUTES} item={minutes} setItem={setMinutes} />
+              <TimeSelect
+                id="minutes"
+                options={MINUTES}
+                value={timeState.minutes}
+                onChange={(val) => handleTimeChange('minutes', val)}
+              />
             </div>
             <div className="mx-1">
-              <TimeSelect id={'period'} arr={PERIOD} item={period} setItem={setPeriod} />
+              <TimeSelect
+                id="period"
+                options={PERIOD}
+                value={timeState.period}
+                onChange={(val) => handleTimeChange('period', val)}
+              />
             </div>
           </div>
         </PopoverContent>

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -11,13 +11,12 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 interface DatePickerProps {
   field: any
   formSchema: any
-  date: Date | undefined
-  setDate: React.Dispatch<React.SetStateAction<Date | undefined>>
 }
 
-export function DatePickerForm({ field, date, setDate }: DatePickerProps) {
+export function DatePickerForm({ field }: DatePickerProps) {
   // Popover 상태 관리
   const [isOpen, setIsOpen] = useState(false)
+  const [date, setDate] = useState<Date | undefined>()
 
   const selectDate = (selectedDate: Date | undefined) => {
     if (selectedDate) {
@@ -39,8 +38,8 @@ export function DatePickerForm({ field, date, setDate }: DatePickerProps) {
                 !date && 'text-muted-foreground',
               )}
             >
-              {date ? (
-                format(date, 'yyyy-MM-dd')
+              {field.value ? (
+                format(field.value, 'yyyy-MM-dd')
               ) : (
                 <span className="text-slate-400">Select a Date</span>
               )}

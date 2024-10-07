@@ -8,21 +8,7 @@ import { DatePickerForm } from './DatePicker'
 import { TimePickerCustom } from './TimePicker'
 import FileInput from './FileInput'
 
-export default function BaseInfo({
-  form,
-  formSchema,
-  date,
-  setDate,
-  time,
-  setTime,
-}: {
-  form: any
-  formSchema: any
-  date?: Date
-  setDate?: any
-  time?: string
-  setTime: any
-}) {
+export default function BaseInfo({ form, formSchema }: { form: any; formSchema: any }) {
   const handleFileUpload = (files: any) => {
     console.log('Uploaded files:', files)
   }
@@ -95,7 +81,7 @@ export default function BaseInfo({
               <span className="text-red-600 self-start pl-1">*</span>
             </div>
             <FormControl>
-              <DatePickerForm field={field} formSchema={formSchema} date={date} setDate={setDate} />
+              <DatePickerForm field={field} formSchema={formSchema} />
             </FormControl>
             {errors.title ? (
               <FormMessage className="text-xs text-red-400 p-1" />
@@ -115,12 +101,7 @@ export default function BaseInfo({
               <span className="text-red-600 self-start pl-1">*</span>
             </div>
             <FormControl>
-              <TimePickerCustom
-                field={field}
-                formSchema={formSchema}
-                time={time}
-                setTime={setTime}
-              />
+              <TimePickerCustom field={field} formSchema={formSchema} />
             </FormControl>
             {errors.title ? (
               <FormMessage className="text-xs text-red-400 p-1" />

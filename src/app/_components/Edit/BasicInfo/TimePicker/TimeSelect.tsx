@@ -1,29 +1,29 @@
-import React from 'react';
+import React from 'react'
 import styles from '../../edit.module.scss'
 
 export interface TimeSelectProps {
-    id?: string;
-    arr: string[];
-    item:string;
-    setItem: React.Dispatch<React.SetStateAction<string>>;
-  }
-  
-const TimeSelect = ({id, arr, item, setItem }: TimeSelectProps) => {
-  
-    const handleClick = (e: any) => {
-      setItem(e.currentTarget.innerText)
-    }
-  
-    return (
-      <div className="flex flex-col p-1 h-[135px] overflow-auto">
-        {
-          arr.map(i =>(
-            <span className={`${styles.timeItem} ${i==item && styles.active}`} key={i} onClick={handleClick}>{i}</span>
-          ))
-        }
-      </div>
-  
-    )
-  }
+  id: string
+  options: string[]
+  value: string
+  onChange: (value: string) => void
+}
 
-export default TimeSelect;
+const TimeSelect = ({ id, options, value, onChange }: TimeSelectProps) => {
+  return (
+    <div className="flex flex-col p-1 h-[135px] overflow-auto">
+      {options.map((option) => (
+        <button
+          key={option}
+          className={`py-1 px-2 m-1 rounded-md ${
+            value === option ? 'bg-blue-400 text-white' : 'bg-white text-black'
+          }`}
+          onClick={() => onChange(option)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+export default TimeSelect

@@ -10,6 +10,8 @@ import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import { ContentDataType } from '@/lib/types'
+import { useUser } from '@supabase/auth-helpers-react'
 
 const formSchema = z.object({
   user_id: z.string().min(10),
@@ -45,14 +47,14 @@ const formSchema = z.object({
 })
 
 const Edit = () => {
-  const [date, setDate] = useState()
-  const [time, setTime] = useState()
+  const { id } = useUser() || {}
+  const [contentInfo, setContentInfo] = useState<ContentDataType[] | []>([])
   const [checkedSlide, setCheckedSlide] = useState(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      user_id: '',
+      user_id: id,
       title: '',
       custom_url: '',
       date: new Date(),
@@ -96,14 +98,7 @@ const Edit = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <TabsContent className="px-6 py-2" value="basic">
-              <BaseInfo
-                form={form}
-                formSchema={formSchema}
-                date={date}
-                setDate={setDate}
-                time={time}
-                setTime={setTime}
-              />
+              <BaseInfo form={form} formSchema={formSchema} />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="contents">
               <ContentsInfo />
