@@ -78,6 +78,7 @@ export type Database = {
           date: string | null
           id: string
           primary_image: string | null
+          time: string | null
           title: string
           user_id: string | null
         }
@@ -89,6 +90,7 @@ export type Database = {
           date?: string | null
           id?: string
           primary_image?: string | null
+          time?: string | null
           title: string
           user_id?: string | null
         }
@@ -100,6 +102,7 @@ export type Database = {
           date?: string | null
           id?: string
           primary_image?: string | null
+          time?: string | null
           title?: string
           user_id?: string | null
         }
