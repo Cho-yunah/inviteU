@@ -6,7 +6,7 @@
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  /* background: pink; */
+  // /* background: pink; */
 
   /* Center slide text vertically */
   display: flex;
@@ -16,30 +16,37 @@
 
 .swiper-slide img {
   display: block;
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
   object-fit: cover;
 }
 
-input[type="checkbox"]{
+input[type='checkbox'] {
   display: none;
 }
-input[type="checkbox"] + label{
+input[type='checkbox'] + label {
   display: inline-block;
   width: 28px;
   height: 28px;
-  border:1.5px solid #bababa;
+  border: 1.5px solid #bababa;
   border-radius: 5px;
-  position: relative;
+  background-color: #f5f5f5;
+  cursor: pointer;
 }
-input[id="check"]:checked + label::after{
-  content:'✔';
-  color: #343333;
+
+input[id='check']:checked + label {
+  background-color: rgba(209, 231, 248, 0.87);
+  border-color: rgb(176, 215, 249);
+}
+
+input[id='check']:checked + label::after {
+  content: '✔';
+  color: #02125b;
   font-size: 22px;
   width: 22px;
   height: 22px;
   text-align: center;
   position: absolute;
-  left: 1px;
-  top:-3px;
+  left: 2px;
+  top: -2px;
 }

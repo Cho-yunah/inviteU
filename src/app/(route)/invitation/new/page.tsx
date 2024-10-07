@@ -47,6 +47,7 @@ const formSchema = z.object({
 const Edit = () => {
   const [date, setDate] = useState()
   const [time, setTime] = useState()
+  const [checkedSlide, setCheckedSlide] = useState(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -75,8 +76,8 @@ const Edit = () => {
   }
 
   useEffect(() => {
-    console.log('date:', date, '//', 'time:', time)
-  }, [date, time])
+    console.log('values', form.getValues())
+  }, [form.formState])
 
   return (
     <div className="w-[375px] min-h-[375px] overflow-hidden">
@@ -88,7 +89,7 @@ const Edit = () => {
           <TabsTrigger className={styles.tabTrigger} value="contents">
             콘텐츠
           </TabsTrigger>
-          <TabsTrigger className={styles.tabTrigger} value="backgrond">
+          <TabsTrigger className={styles.tabTrigger} value="background">
             배경
           </TabsTrigger>
         </TabsList>
@@ -108,7 +109,11 @@ const Edit = () => {
               <ContentsInfo />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="background">
-              <Background />
+              <Background
+                form={form}
+                checkedSlide={checkedSlide}
+                setCheckedSlide={setCheckedSlide}
+              />
             </TabsContent>
             <button
               type="submit"
