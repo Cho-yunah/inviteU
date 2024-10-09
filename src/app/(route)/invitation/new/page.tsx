@@ -3,15 +3,15 @@
 import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import styles from '../edit.module.scss'
+import { z } from 'zod'
 import BaseInfo from '@/app/_components/edit/BasicInfo'
 import ContentsInfo from '@/app/_components/edit/ContentsInfo'
 import Background from '@/app/_components/edit/Background'
 import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { ContentDataType } from '@/lib/types'
 import { useUser } from '@supabase/auth-helpers-react'
+import { ContentDataType } from '@/lib/types'
 
 const formSchema = z.object({
   user_id: z.string().min(10),
@@ -47,14 +47,14 @@ const formSchema = z.object({
 })
 
 const Edit = () => {
-  const { id } = useUser() || {}
-  const [contentInfo, setContentInfo] = useState<ContentDataType[] | []>([])
+  const data = useUser()
+  const [contentsInfo, setContentsInfo] = useState<ContentDataType[] | []>([])
   const [checkedSlide, setCheckedSlide] = useState(null)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      user_id: id,
+      user_id: '',
       title: '',
       custom_url: '',
       date: new Date(),
@@ -79,7 +79,12 @@ const Edit = () => {
 
   useEffect(() => {
     console.log('values', form.getValues())
+    console.log('contentsInfo', contentsInfo)
   }, [form.formState])
+
+  useEffect(() => {
+    data && form.setValue('user_id', data.id)
+  }, [data && data.id])
 
   return (
     <div className="w-[375px] min-h-[375px] overflow-hidden">
@@ -101,7 +106,7 @@ const Edit = () => {
               <BaseInfo form={form} formSchema={formSchema} />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="contents">
-              <ContentsInfo />
+              <ContentsInfo contentsInfo={contentsInfo} setContentsInfo={setContentsInfo} />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="background">
               <Background

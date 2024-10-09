@@ -22,7 +22,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        naMyeonjo: ['NanumMyeonjo', 'sans-serif'],
+        naMyeonjo: ['NanumMyeongjo', 'sans-serif'],
         batang: ['GowunBatang', 'sans-serif'],
         kimMyeonjo: ['KimMyengjo', 'sans-serif'],
         inkLipquid: ['InkLipquid', 'sans-serif'],

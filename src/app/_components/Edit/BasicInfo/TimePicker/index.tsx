@@ -20,7 +20,6 @@ export function TimePickerCustom({ field }: TimePickerProps) {
   const [initialized, setInitialized] = useState(false) // 초기화 상태 확인용
 
   const initializeTimeState = (value: string) => {
-    console.log(value)
     if (value && !initialized) {
       const [initialHours, initialMinutes] = value.split(':')
 
@@ -37,7 +36,6 @@ export function TimePickerCustom({ field }: TimePickerProps) {
         minutes: initialMinutes,
         period: formattedPeriod,
       })
-      console.log('timeState 초기화', timeState)
     }
     setInitialized(true) // 초기화 완료
   }
@@ -49,7 +47,6 @@ export function TimePickerCustom({ field }: TimePickerProps) {
 
   // 시간 선택 시 상태 업데이트 및 필드와 연동
   const handleTimeChange = (key: string, value: string) => {
-    console.log('timeState 변경')
     setTimeState((prevState) => ({
       ...prevState,
       [key]: value,
@@ -59,11 +56,9 @@ export function TimePickerCustom({ field }: TimePickerProps) {
   // 상태가 변경될 때 필드에 저장
   useEffect(() => {
     const { hours, minutes, period } = timeState
-    console.log('timeState', timeState, hours, minutes, period, initialized)
     if (hours && minutes && initialized) {
       const convertHour = convert12HourTo24Hour(parseInt(hours), period as Period)
       const formattedTime = dayjs().hour(convertHour).minute(parseInt(minutes)).format('HH:mm')
-      console.log('formattedTime', formattedTime)
       field.onChange(formattedTime) // 필드와 연결된 값 저장
     }
   }, [timeState, initialized])

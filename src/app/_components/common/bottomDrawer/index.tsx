@@ -57,31 +57,31 @@ const BottomDrawer = ({ showDrawer, setShowDrawer, handleAddComponent }: BottomD
             </div>
           </div>
           <div className={styles.drawerContent}>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="Image">
+            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="image">
               <div className={styles.icon}>
                 <FaRegImage className="size-8" />
               </div>
               <p>Image</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="Video">
+            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="video">
               <div>
                 <FaRegFileVideo className="size-8" />
               </div>
               <p>Video</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="Text">
+            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="text">
               <div>
                 <IoText className="size-8" />
               </div>
               <p>Text</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="Interval">
+            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="interval">
               <div>
                 <RxTextAlignMiddle className="size-8" />
               </div>
               <p>Interval</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="Map">
+            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="map">
               <div>
                 <FaMapLocationDot className="size-8" />
               </div>
