@@ -11,7 +11,6 @@ import {
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/accordion'
 import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
-import { text } from 'micro'
 
 export default function TextContainer({
   id,
@@ -28,10 +27,9 @@ export default function TextContainer({
   })
 
   const handleChange = (e: any) => {
-    console.log(e)
     setTextData({
       ...textData,
-      [e.target.name]: e.target.value,
+      [e.target.name.split('_')[0]]: e.target.value, // name에서 layout_을 제거하고 처리
     })
   }
 
@@ -97,7 +95,7 @@ export default function TextContainer({
                 name="font_size"
                 value={textData.font_size}
               >
-                <SelectTrigger className="text-sm  placeholder-red-300 ">
+                <SelectTrigger className="text-sm placeholder-red-300 ">
                   <SelectValue
                     placeholder="글 사이즈를 선택해주세요"
                     className="placeholder-red-400"
@@ -131,42 +129,42 @@ export default function TextContainer({
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
-                  name="layout"
+                  name={`layout_${id}`} // 동일한 id 기반 name 사용
                   id="text_left"
                   value="left" // 각 라디오 버튼에 고유한 value 값 설정
                   className={styles.radioItem}
-                  checked={textData.layout === 'left'} // 현재 선택된 값과 비교하여 체크 상태 설정
+                  checked={textData.layout == 'left'} // 현재 선택된 값과 비교하여 체크 상태 설정
                   onChange={handleChange}
                 />
-                <label htmlFor="text_left" onClick={handleChange} className={styles.label}>
+                <label htmlFor="text_left" className={styles.label}>
                   Left
                 </label>
               </div>
-              <div className="flex flex-1 items-center space-x-1">
+              <div className="flex flex-1 items-center space-x-1 pointer">
                 <input
                   type="radio"
-                  name="layout"
+                  name={`layout_${id}`} // 동일한 id 기반 name 사용
                   id="text_center"
                   value="center"
                   className={styles.radioItem}
-                  checked={textData.layout === 'center'}
+                  checked={textData.layout == 'center'}
                   onChange={handleChange}
                 />
-                <label htmlFor="text_center" onClick={handleChange} className={styles.label}>
+                <label htmlFor="text_center" className={styles.label}>
                   Center{' '}
                 </label>
               </div>
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
-                  name="layout"
+                  name={`layout_${id}`} // 동일한 id 기반 name 사용
                   id="text_right"
                   value="right"
                   className={styles.radioItem}
-                  checked={textData.layout === 'right'}
+                  checked={textData.layout == 'right'}
                   onChange={handleChange}
                 />
-                <label htmlFor="text_right" onClick={handleChange} className={styles.label}>
+                <label htmlFor="text_right" className={styles.label}>
                   Right{' '}
                 </label>
               </div>
