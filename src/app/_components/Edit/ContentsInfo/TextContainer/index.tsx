@@ -11,18 +11,20 @@ import {
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/accordion'
 import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
+import { text } from 'micro'
 
 export default function TextContainer({
   id,
+  content,
   onDelete,
   handleUpdateContent,
 }: ContentsContainerProps) {
   const [textData, setTextData] = useState({
     type: 'text',
-    text: '',
-    font_type: '',
-    font_size: '',
-    layout: 'left',
+    text: content.text || '',
+    font_type: content.font_type || '',
+    font_size: content.font_size || '16',
+    layout: content.layout || 'left',
   })
 
   const handleChange = (e: any) => {
@@ -59,16 +61,21 @@ export default function TextContainer({
                 placeholder="내용을 입력해주세요"
                 name="text"
                 onChange={handleChange}
+                value={textData.text}
               ></textarea>
             </div>
             <p className="font-bold text-sm text-[#333] pb-1 mt-2">폰트 및 사이즈*</p>
             <div className="gap-2 my-2">
-              <Select onValueChange={(e) => handleSelectChange(e, 'font_type')} name="font_type">
+              <Select
+                onValueChange={(e) => handleSelectChange(e, 'font_type')}
+                name="font_type"
+                value={textData.font_type}
+              >
                 <SelectTrigger className="my-2 text-sm">
                   <SelectValue placeholder="글씨체를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
-                  <SelectItem className="font-naMyeongjo" value="나눔명조">
+                  <SelectItem className="font-naMyeonjo" value="나눔명조">
                     나눔명조 - Nanum Myeongjo
                   </SelectItem>
                   <SelectItem className="font-batang" value="고운바탕">
@@ -85,7 +92,11 @@ export default function TextContainer({
                   </SelectItem>
                 </SelectContent>
               </Select>
-              <Select onValueChange={(e) => handleSelectChange(e, 'font_size')} name="font_type">
+              <Select
+                onValueChange={(e) => handleSelectChange(e, 'font_size')}
+                name="font_size"
+                value={textData.font_size}
+              >
                 <SelectTrigger className="text-sm  placeholder-red-300 ">
                   <SelectValue
                     placeholder="글 사이즈를 선택해주세요"
@@ -120,12 +131,12 @@ export default function TextContainer({
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
-                  value="left"
-                  id="text_left"
-                  className={styles.radioItem}
                   name="layout"
+                  id="text_left"
+                  value="left" // 각 라디오 버튼에 고유한 value 값 설정
+                  className={styles.radioItem}
+                  checked={textData.layout === 'left'} // 현재 선택된 값과 비교하여 체크 상태 설정
                   onChange={handleChange}
-                  defaultChecked
                 />
                 <label htmlFor="text_left" onClick={handleChange} className={styles.label}>
                   Left
@@ -134,10 +145,11 @@ export default function TextContainer({
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
-                  value="center"
-                  id="text_center"
-                  className={styles.radioItem}
                   name="layout"
+                  id="text_center"
+                  value="center"
+                  className={styles.radioItem}
+                  checked={textData.layout === 'center'}
                   onChange={handleChange}
                 />
                 <label htmlFor="text_center" onClick={handleChange} className={styles.label}>
@@ -147,10 +159,11 @@ export default function TextContainer({
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
-                  value="right"
-                  id="text_right"
-                  className={styles.radioItem}
                   name="layout"
+                  id="text_right"
+                  value="right"
+                  className={styles.radioItem}
+                  checked={textData.layout === 'right'}
                   onChange={handleChange}
                 />
                 <label htmlFor="text_right" onClick={handleChange} className={styles.label}>
