@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useUser } from '@supabase/auth-helpers-react'
 import { ContentDataType } from '@/lib/types'
+import axios from 'axios'
 
 const formSchema = z.object({
   user_id: z.string().min(10),
@@ -65,21 +66,23 @@ const Edit = () => {
     },
   })
 
-  // function onSubmit(e:any, values: z.infer<typeof formSchema>) {
-  //   e.preventDefault();
-  //   form.setValue('date', date)
-  //   console.log(e);
-  //   console.log('values', values, form.getValues());
-  //   // form.handleSubmit(onSubmit)
-  // };
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('values', values, form.getValues())
+  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    const values = form.getValues()
+    console.log('values', values)
+    if (data && values) {
+      try {
+        const response = await axios.post('/api/invitation', values)
+        console.log(response, 'onSubmitImage_response')
+      } catch (error) {
+        console.error('초대장 저장 실패', error)
+      }
+    }
   }
 
   useEffect(() => {
-    console.log('values', form.getValues())
-    console.log('contentsInfo', contentsInfo)
+    form.setValue('contents', contentsInfo)
+    // console.log('contentsInfo', contentsInfo)
   }, [form.formState])
 
   useEffect(() => {
@@ -101,7 +104,7 @@ const Edit = () => {
           </TabsTrigger>
         </TabsList>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4">
             <TabsContent className="px-6 py-2" value="basic">
               <BaseInfo form={form} formSchema={formSchema} />
             </TabsContent>
@@ -119,7 +122,7 @@ const Edit = () => {
               type="submit"
               className="absolute top-[-9px] right-2 z-100 bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold"
             >
-              저장
+              저장함
             </button>
           </form>
         </Form>

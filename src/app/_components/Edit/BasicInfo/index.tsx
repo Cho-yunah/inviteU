@@ -22,7 +22,6 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
   return (
     <div>
       <h2 className="text-black text-base font-bold pb-2">기본정보</h2>
-      {/* <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4"> */}
       <FormField
         control={form.control}
         name="title"
@@ -128,8 +127,6 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
         )}
       />
       {/* <button type="submit"  className='absolute top-[-5px] right-2 z-1000' >저장</button> */}
-
-      {/* </form> */}
     </div>
   )
 }

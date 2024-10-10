@@ -34,7 +34,7 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
     } else {
       setCheckedSlide(null)
     }
-    field.onChange(activeSlide)
+    field.onChange(`${activeSlide}`)
     console.log(checkedSlide)
   }
 
