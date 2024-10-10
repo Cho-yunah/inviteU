@@ -2,29 +2,23 @@ import React, { useEffect } from 'react'
 import DaumPostcode, { Address } from 'react-daum-postcode'
 
 interface SearchPostCodeProps {
-  showModal: boolean
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>
-  address: string
-  setAddress: React.Dispatch<React.SetStateAction<string>>
-  postNumber: string
-  setPostNumber: React.Dispatch<React.SetStateAction<string>>
+  setMapData: React.Dispatch<React.SetStateAction<any>>
+  mapData: any
 }
 
-const SearchPostCode = ({
-  setShowModal,
-  address,
-  setAddress,
-  setPostNumber,
-}: SearchPostCodeProps) => {
+const SearchPostCode = ({ setShowModal, mapData, setMapData }: SearchPostCodeProps) => {
   const handleComplete = (data: Address) => {
     let fullAddress = data.address
     let bname = data.bname
     let buildingName = data.buildingName
 
-    console.log(`${fullAddress} (${bname}, ${buildingName})`) // e.g. '서울 성동구 왕십리로2길 20 (성수동1가)'
-    setAddress(`${fullAddress} (${bname}, ${buildingName})`)
     setShowModal(false)
-    setPostNumber(data.zonecode)
+    setMapData({
+      ...mapData,
+      main_address: `${fullAddress} (${bname}, ${buildingName})`,
+      post_number: data.zonecode,
+    })
   }
 
   return (

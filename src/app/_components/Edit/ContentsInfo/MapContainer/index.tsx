@@ -4,26 +4,31 @@ import Accordion from '@/app/_components/common/accordion'
 import SearchPostCode from './SearchPostcode'
 import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 
-const MapContainer = ({ id, onDelete, handleUpdateContent }: ContentsContainerProps) => {
+const MapContainer = ({ id, content, onDelete, handleUpdateContent }: ContentsContainerProps) => {
   const [showModal, setShowModal] = useState<boolean>(false)
-  const [address, setAddress] = useState<string>('')
-  const [detailAddress, setDetailAddress] = useState<string>('')
-  const [postNumber, setPostNumber] = useState<string>('')
+  const [mapData, setMapData] = useState({
+    type: 'map',
+    main_address: content.main_address || '',
+    detail_address: content.detail_address || '',
+    post_number: content.post_number || '',
+  })
 
   const handleInputClick = () => {
     setShowModal(true)
   }
 
+  const handleChange = (e: any) => {
+    setMapData({
+      ...mapData,
+      [e.target.name]: e.target.value,
+    })
+  }
+
   useEffect(() => {
-    if (handleUpdateContent && address.length > 0) {
-      const updatedContent = {
-        main_address: address,
-        detail_address: detailAddress,
-        post_number: postNumber,
-      }
-      handleUpdateContent(updatedContent)
+    if (handleUpdateContent) {
+      handleUpdateContent(mapData)
     }
-  }, [address, detailAddress])
+  }, [mapData])
 
   return (
     <Accordion>
@@ -34,27 +39,26 @@ const MapContainer = ({ id, onDelete, handleUpdateContent }: ContentsContainerPr
             <p className="font-bold text-sm text-[#333] pb-1">위치 검색*</p>
             <div className="flex w-full" onClick={handleInputClick}>
               <input
-                placeholder="주소를 검색해주세요"
                 className="border-[1px] border-gray-300 rounded-l-md p-2 w-10/12"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                placeholder="주소를 검색해주세요"
+                name="main_address"
+                onChange={handleChange}
+                value={mapData.main_address}
               />
               <button className="bg-black text-white p-2 rounded-r-md w-2/12">검색</button>
             </div>
             <input
-              placeholder="상세 주소를 입력해주세요"
               className="border-[1px] border-gray-300 rounded-md py-2 px-4 w-full mt-3"
-              value={detailAddress}
-              onChange={(e) => setDetailAddress(e.target.value)}
+              placeholder="상세 주소를 입력해주세요"
+              name="detail_address"
+              onChange={handleChange}
+              value={mapData.detail_address}
             />
             {showModal && (
               <SearchPostCode
-                showModal={showModal}
                 setShowModal={setShowModal}
-                address={address}
-                setAddress={setAddress}
-                postNumber={postNumber}
-                setPostNumber={setPostNumber}
+                setMapData={setMapData}
+                mapData={mapData}
               />
             )}
           </div>
