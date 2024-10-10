@@ -43,15 +43,15 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
   }, [])
 
   return (
-    <div className="">
-      <div className="absolute top-3 right-5 z-50">
+    <div className="mt-1">
+      <div className="absolute top-0 right-1 z-50">
         <input
           type="checkbox"
           id="check"
           checked={checkedSlide == activeSlide ? true : false}
           onChange={checkHandler}
         />
-        <label htmlFor="check" className=" left-[300px]"></label>
+        <label htmlFor="check" className="left-[300px]"></label>
       </div>
       <Swiper
         pagination={{ clickable: true }}
@@ -61,9 +61,9 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
         {slideArr?.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
-              className={`p-0 shadow-md flex justify-center ${checkedSlide == slide.id && 'shadow-[0_0px_3px_5px_rgba(135,211,248,0.5)]'}`}
+              className={`p-0 m-0 flex justify-center w-full ${checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
             >
-              <Image src={slide.url} alt={slide.title} width={310} height={500} />
+              <Image src={slide.url} alt={slide.title} width={300} height={480} />
             </div>
           </SwiperSlide>
         ))}

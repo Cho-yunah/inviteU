@@ -35,7 +35,6 @@ export default function ImageContainer({
       ...imageData,
       urls: imageData.urls.length > 0 ? imageData.urls.join(',') : '',
     }
-    console.log(updatedContent)
     handleUpdateContent(updatedContent) // 상위로 업데이트된 데이터를 전달
   }, [imageData])
 

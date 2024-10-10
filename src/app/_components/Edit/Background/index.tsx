@@ -1,7 +1,6 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import Slider from '../../common/Slider'
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
-import { Form } from 'react-hook-form'
 
 const slideArr = [
   { id: 1, title: 'Slide 1', color: 'bg-blue-100', url: '/img/background_1.png' },
@@ -41,7 +40,6 @@ const Background = ({
               slideArr={slideArr}
               checkedSlide={checkedSlide}
               setCheckedSlide={setCheckedSlide}
-              //   {...field}
             />
           </FormControl>
         </FormItem>

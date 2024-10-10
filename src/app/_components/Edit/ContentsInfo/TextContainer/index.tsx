@@ -57,7 +57,7 @@ export default function TextContainer({
               <textarea
                 className="w-full h-24 p-2 border-[1px] border-gray-200 rounded-md"
                 placeholder="내용을 입력해주세요"
-                name="text"
+                name={`text_${id}`} // 동일한 id 기반 name 사용
                 onChange={handleChange}
                 value={textData.text}
               ></textarea>
