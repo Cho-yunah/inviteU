@@ -6,23 +6,27 @@ import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
 
 export default function IntervalContainer({
   id,
+  content,
   onDelete,
   handleUpdateContent,
 }: ContentsContainerProps) {
-  const [intervalData, setIntervalData] = React.useState({
+  const [sizeData, setSizeData] = React.useState({
     type: 'interval',
-    interval: 'small',
+    size: content.size || 'small',
   })
 
   const handleChange = (e: any) => {
-    setIntervalData({ ...intervalData, interval: e.target.value })
+    setSizeData({
+      ...sizeData,
+      [e.target.name.split('_')[0]]: e.target.value, // name에서 layout_을 제거하고 처리
+    })
   }
 
   useEffect(() => {
     if (handleUpdateContent) {
-      handleUpdateContent(intervalData)
+      handleUpdateContent(sizeData)
     }
-  }, [intervalData])
+  }, [sizeData])
 
   return (
     <Accordion>
@@ -35,40 +39,42 @@ export default function IntervalContainer({
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
+                  name={`size_${id}`}
+                  id="size_sm"
                   value="small"
-                  id="interval_sm"
                   className={styles.radioItem}
-                  name="arrangement"
+                  checked={sizeData.size === 'small'}
                   onChange={handleChange}
-                  defaultChecked
                 />
-                <label htmlFor="interval_sm" onClick={handleChange} className={styles.label}>
+                <label htmlFor="size_sm" className={styles.label}>
                   Small
                 </label>
               </div>
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
+                  name={`size_${id}`}
+                  id="size_md"
                   value="medium"
-                  id="interval_md"
                   className={styles.radioItem}
-                  name="arrangement"
+                  checked={sizeData.size === 'medium'}
                   onChange={handleChange}
                 />
-                <label htmlFor="interval_md" onClick={handleChange} className={styles.label}>
+                <label htmlFor="size_md" className={styles.label}>
                   Medium{' '}
                 </label>
               </div>
               <div className="flex flex-1 items-center space-x-1">
                 <input
                   type="radio"
+                  name={`size_${id}`}
+                  id="size_big"
                   value="big"
-                  id="interval_lg"
                   className={styles.radioItem}
-                  name="arrangement"
+                  checked={sizeData.size === 'big'}
                   onChange={handleChange}
                 />
-                <label htmlFor="interval_lg" onClick={handleChange} className={styles.label}>
+                <label htmlFor="size_big" className={styles.label}>
                   Large{' '}
                 </label>
               </div>
