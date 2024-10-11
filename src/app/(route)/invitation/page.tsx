@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import styles from '../../page.module.scss'
-import ListItem from '@/app/_components/list/ListItem'
+import ListItem from '@/app/_components/list/listItem'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import { setInvitationList } from '@/lib/features/invitation/invitationSlice'

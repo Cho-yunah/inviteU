@@ -4,7 +4,7 @@ import { DndContext, closestCenter } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
 import { ContentsComponentType } from '@/app/_types/contentsInfoTypes'
-import SortableItem from './SortableItem'
+import SortableItem from './sortableItem'
 import BottomDrawer from '../../common/BottomDrawer'
 import { ContentDataType } from '@/lib/types'
 

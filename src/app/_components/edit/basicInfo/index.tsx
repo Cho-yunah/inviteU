@@ -4,8 +4,8 @@ import React from 'react'
 import { z } from 'zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { DatePickerForm } from './DatePicker'
-import { TimePickerCustom } from './TimePicker'
+import { DatePickerForm } from './datePicker'
+import { TimePickerCustom } from './timePicker'
 import FileInput from './FileInput'
 
 export default function BaseInfo({ form, formSchema }: { form: any; formSchema: any }) {

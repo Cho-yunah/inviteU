@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { CSS } from '@dnd-kit/utilities'
 import { useSortable } from '@dnd-kit/sortable'
 import { ContentsContainerProps, SortableItemProps } from '@/app/_types/contentsInfoTypes'
-import ImageContainer from '../ImagesContainer'
-import VideoContainer from '../VideoContainer'
-import MapContainer from '../MapContainer'
-import TextContainer from '../TextContainer'
-import IntervalContainer from '../IntervalContainer'
+import ImageContainer from '../imagesContainer'
+import VideoContainer from '../videoContainer'
+import MapContainer from '../mapContainer'
+import TextContainer from '../textContainer'
+import IntervalContainer from '../intervalContainer'
 
 function SortableItem({ id, type, setComponents, content }: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
