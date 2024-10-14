@@ -9,7 +9,7 @@ import ModalSetup from './_components/common/modal/ModalSetup'
 import AuthContext from './_components/common/AuthContext'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import ErrorBoundary from '@/app/_components/common/errorBoundary/Errorboundary'
+import ErrorBoundary from '@/app/_components/common/errorBoundary'
 
 const inter = Inter({ subsets: ['latin'] })
 
