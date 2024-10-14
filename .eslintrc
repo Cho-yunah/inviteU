@@ -1,4 +1,20 @@
 {
-  "extends":[ "next/core-web-vitals", "plugin:tailwindcss/recommended" ] 
+  "rules": {
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never",
+        "js": "never"
+      }
+    ]
+  },
+  "extends": [
+    "plugin:react/recommended",         // React 관련 권장 설정
+    "next/core-web-vitals",
+    "plugin:tailwindcss/recommended",  // TailwindCSS 관련 설정
+    "prettier"
+  ],
+  "plugins": ["prettier", "tailwindcss"]  // 플러그인 추가
 }
-

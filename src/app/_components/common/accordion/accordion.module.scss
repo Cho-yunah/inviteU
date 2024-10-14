@@ -1,0 +1,107 @@
+.contents {
+  padding-bottom: 15px;
+}
+
+.contentStep {
+  border-radius: 4px;
+  border: 1px solid #999;
+  padding: 10px 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.contentHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 4px;
+  // background-color: pink;
+  margin-left: 12px;
+
+  Label {
+    align-content: center !important;
+    padding: 0 10px !important;
+    border: none !important;
+    width: 120px !important
+  }
+}
+
+.contentsTitle {
+  font-size: 12px;
+  font-weight: 700;
+  padding-bottom: 6px;
+}
+
+.headerTitle {
+  padding-left: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #222;
+}
+
+.contentDesc {
+  padding-top: 8px;
+}
+
+.contentRefStyle {
+  display: none;
+  animation-name: accordionUp;
+  animation-duration: 3s;
+  transition: "all 0.5s ease-in" 
+  
+}
+
+.active{
+  display: block;
+  animation-name: accordionDown;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 0.5s ease-in;
+}
+
+.inactive{
+  display: none;
+  animation-name: accordionUp;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: all 0.5s ease-in; 
+}
+
+@keyframes accordionDown {
+  from { height: 0 }
+  to { height: 100% }
+}
+@keyframes accordionUp {
+  from { height: 100% }
+  to { height: 0 }
+}
+
+.animate {
+  transition: max-height 0.3s ease-out;
+  overflow: hidden;
+}
+.inanimate {
+  transition: 0 0.3s ease-out;
+  overflow: hidden;
+}
+
+.star {
+  color: #eb5757;
+  padding-left: 3px;
+}
+
+.toggleButton {
+  position: absolute;
+  right: 0;
+}
+
+.toggleIsClosed {
+  transform: rotate(180deg);
+}
+
+.description {
+  color: #777;
+  font-size: 13px;
+  font-weight: 400;
+  margin-bottom: 20px;
+}

@@ -17,6 +17,8 @@
         "name": "next"
       }
     ],
+    "allowImportingTsExtensions": true, // 확장자 명시 허용\
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }

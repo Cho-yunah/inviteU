@@ -25,7 +25,7 @@ const customStyles = {
 };
 
 const LoginModal = ({isOpen,setIsOpen}: any) => {
-  const data = useUser()
+  // const data = useUser()
 
   const logInWithKakao = async () => {
     try {
@@ -33,10 +33,13 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
       });
+      console.log(data)
+      
       if (error) throw new Error(error.message);
+      // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
+      // console.log(sessionData)
       
       // 인증 완료 후 세션 정보를 가져오기
-      // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       // if (sessionError) throw new Error(sessionError.message);
     
     } catch (error) {
@@ -59,17 +62,17 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
         // onAfterOpen={afterOpenModal}
         // appElement={document.getElementById('root') as HTMLElement}
       >
-        <div className='text-center py-3'>
-          <div className='flex p-2 items-center justify-center'>
-            <Image src={Logo} alt='logo' width='28' className='p-1'/>
-            <p className='p-1 text-gray-600 font-semibold'>Invite U</p>
+        <div className='py-3 text-center'>
+          <div className='flex items-center justify-center p-2'>
+            <Image src={Logo} alt='logo' width='28' height='26' className='p-1'/>
+            <p className='p-1 font-semibold text-gray-600'>Invite U</p>
           </div>
           <p className='text-sm text-gray-600'>간편한 카카오 로그인으로 시작해보세요!</p>
         </div>
-        <IoMdClose color='#4c4b4b' className='absolute top-3 right-3 size-5' onClick={closeModal}/>
+        <IoMdClose color='#4c4b4b' className='absolute right-3 top-3 size-5' onClick={closeModal}/>
         <button
         onClick={logInWithKakao}
-        className="w-full bg-[#FEE500] h-[50px] my-1 flex items-center justify-center gap-2 rounded-lg"
+        className="my-1 flex h-[50px] w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500]"
         >
           <Image
             width={18}
@@ -78,7 +81,7 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
             src="./kakao-logo.svg"
             className=" fill-black"
           ></Image>
-          <p className="text-black text-sm font-semibold">카카오로 바로 시작하기</p>
+          <p className="text-sm font-semibold text-black">카카오로 바로 시작하기</p>
         </button>
       </Modal>
   </div>
