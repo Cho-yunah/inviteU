@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
-import Slider from '../../common/Slider'
+import Slider from '../../common/slider'
 import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
 const slideArr = [
