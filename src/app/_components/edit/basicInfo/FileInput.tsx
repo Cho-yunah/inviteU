@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+'use client'
+
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { IoClose } from 'react-icons/io5'
@@ -13,10 +15,10 @@ interface ImageFileProps {
 }
 
 // 이미지 파일을 미리보기로 생성하는 함수
-const generateImagePreview = (file: File, callback: (previewUrl: string) => void) => {
+const generateImagePreview = (file: File, callback?: (previewUrl: string) => void) => {
   const reader = new FileReader()
   reader.onload = () => {
-    callback(reader.result as string)
+    callback && callback(reader.result as string)
   }
   reader.readAsDataURL(file)
 }
@@ -73,7 +75,6 @@ export default function FileInput({ field, onFileUpload, ...props }: FileUploadP
           body: form,
         })
         const responseData = await response.json()
-        console.log(responseData, 'onSubmitImage_response')
         setImageFile((prev) => prev && { ...prev, url: responseData?.publicUrl })
         field.onChange(responseData?.publicUrl) // field value에 파일 정보 전달
         onFileUpload(responseData?.publicUrl) // 상위 컴포넌트로 업로드된 파일 URL 전달
@@ -87,6 +88,10 @@ export default function FileInput({ field, onFileUpload, ...props }: FileUploadP
     setImageFile(null)
     field.onChange('') // field value 초기화
   }
+
+  useEffect(() => {
+    field.value && setImageFile({ url: field.value })
+  }, [])
 
   return (
     <div

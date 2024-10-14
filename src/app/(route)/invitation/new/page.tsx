@@ -66,9 +66,7 @@ const Edit = () => {
     },
   })
 
-  async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const values = form.getValues()
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log('values', values)
     if (data && values) {
       try {
@@ -81,9 +79,9 @@ const Edit = () => {
   }
 
   useEffect(() => {
-    form.setValue('contents', contentsInfo)
     // console.log('contentsInfo', contentsInfo)
-  }, [form.formState])
+    form.setValue('contents', contentsInfo)
+  }, [contentsInfo])
 
   useEffect(() => {
     data && form.setValue('user_id', data.id)
@@ -104,7 +102,7 @@ const Edit = () => {
           </TabsTrigger>
         </TabsList>
         <Form {...form}>
-          <form onSubmit={onSubmit} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <TabsContent className="px-6 py-2" value="basic">
               <BaseInfo form={form} formSchema={formSchema} />
             </TabsContent>

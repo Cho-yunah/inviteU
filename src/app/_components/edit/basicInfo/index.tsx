@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { z } from 'zod'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -11,12 +11,6 @@ import FileInput from './FileInput'
 export default function BaseInfo({ form, formSchema }: { form: any; formSchema: any }) {
   const handleFileUpload = (files: any) => {
     console.log('Uploaded files:', files)
-  }
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // e.preventDefault();
-    console.log('values', values, form.getValues())
-    // form.handleSubmit(onSubmit)
   }
 
   return (
