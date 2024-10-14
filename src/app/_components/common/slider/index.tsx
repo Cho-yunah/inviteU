@@ -63,7 +63,7 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
             <div
               className={`p-0 m-0 flex justify-center w-full ${checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
             >
-              <Image src={slide.url} alt={slide.title} width={300} height={480} />
+              <Image src={slide.url} alt={slide.title} width={300} height={550} />
             </div>
           </SwiperSlide>
         ))}
