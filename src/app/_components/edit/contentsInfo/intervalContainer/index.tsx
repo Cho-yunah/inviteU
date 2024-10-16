@@ -40,13 +40,13 @@ export default function IntervalContainer({
                 <input
                   type="radio"
                   name={`size_${id}`}
-                  id="size_sm"
+                  id={`size_sm_${id}`}
                   value="small"
                   className={styles.radioItem}
                   checked={sizeData.size === 'small'}
                   onChange={handleChange}
                 />
-                <label htmlFor="size_sm" className={styles.label}>
+                <label htmlFor={`size_sm_${id}`} className={styles.label}>
                   Small
                 </label>
               </div>
@@ -54,13 +54,13 @@ export default function IntervalContainer({
                 <input
                   type="radio"
                   name={`size_${id}`}
-                  id="size_md"
+                  id={`size_md_${id}`}
                   value="medium"
                   className={styles.radioItem}
                   checked={sizeData.size === 'medium'}
                   onChange={handleChange}
                 />
-                <label htmlFor="size_md" className={styles.label}>
+                <label htmlFor={`size_md_${id}`} className={styles.label}>
                   Medium{' '}
                 </label>
               </div>
@@ -68,13 +68,13 @@ export default function IntervalContainer({
                 <input
                   type="radio"
                   name={`size_${id}`}
-                  id="size_big"
+                  id={`size_big_${id}`}
                   value="big"
                   className={styles.radioItem}
                   checked={sizeData.size === 'big'}
                   onChange={handleChange}
                 />
-                <label htmlFor="size_big" className={styles.label}>
+                <label htmlFor={`size_big_${id}`} className={styles.label}>
                   Large{' '}
                 </label>
               </div>

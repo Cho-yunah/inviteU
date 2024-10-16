@@ -66,13 +66,17 @@ export default function VideoContainer({
                 <input
                   type="radio"
                   name={`ratio_${id}`}
-                  id="videoRatio_1/1"
+                  id={`videoRatio_1/1_${id}`}
                   value={1 / 1}
                   className={styles.radioItem}
                   checked={videoData.ratio == 1 / 1}
                   onChange={handleChange}
                 />
-                <label htmlFor="videoRatio_1/1" onClick={handleChange} className={styles.label}>
+                <label
+                  htmlFor={`videoRatio_1/1_${id}`}
+                  onClick={handleChange}
+                  className={styles.label}
+                >
                   1:1{' '}
                 </label>
               </div>
@@ -80,13 +84,17 @@ export default function VideoContainer({
                 <input
                   type="radio"
                   name={`ratio_${id}`}
-                  id="videoRatio_4/3"
+                  id={`videoRatio_4/3_${id}`}
                   value={4 / 3}
                   className={styles.radioItem}
                   checked={videoData.ratio == 4 / 3}
                   onChange={handleChange}
                 />
-                <label htmlFor="videoRatio_4/3" onClick={handleChange} className={styles.label}>
+                <label
+                  htmlFor={`videoRatio_4/3_${id}`}
+                  onClick={handleChange}
+                  className={styles.label}
+                >
                   4:3{' '}
                 </label>
               </div>

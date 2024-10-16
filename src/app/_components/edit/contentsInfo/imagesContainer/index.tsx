@@ -52,13 +52,13 @@ export default function ImageContainer({
                 <input
                   type="radio"
                   name={`layout_${id}`}
-                  id="vertical"
+                  id={`vertical_${id}`}
                   value="vertical"
                   className={styles.radioItem}
                   checked={imageData.layout === 'vertical'}
                   onChange={handleChange} // input에만 onChange 이벤트 설정
                 />
-                <label htmlFor="vertical" className={styles.label}>
+                <label htmlFor={`vertical_${id}`} className={styles.label}>
                   세로 나열형
                 </label>
               </div>
@@ -66,13 +66,13 @@ export default function ImageContainer({
                 <input
                   type="radio"
                   name={`layout_${id}`}
-                  id="horizontal"
+                  id={`horizontal_${id}`}
                   value="horizontal"
                   className={styles.radioItem}
                   checked={imageData.layout === 'horizontal'}
                   onChange={handleChange}
                 />
-                <label htmlFor="horizontal" className={styles.label}>
+                <label htmlFor={`horizontal_${id}`} className={styles.label}>
                   가로 나열형{' '}
                 </label>
               </div>
@@ -83,13 +83,13 @@ export default function ImageContainer({
                 <input
                   type="radio"
                   name={`ratio_${id}`}
-                  id="ratio_3/4"
+                  id={`ratio_3/4_${id}`}
                   value={3 / 4}
                   className={styles.radioItem}
                   checked={imageData.ratio == 3 / 4}
                   onChange={handleChange}
                 />
-                <label htmlFor="ratio_3/4" className={styles.label}>
+                <label htmlFor={`ratio_3/4_${id}`} className={styles.label}>
                   3:4
                 </label>
               </div>
@@ -97,13 +97,13 @@ export default function ImageContainer({
                 <input
                   type="radio"
                   name={`ratio_${id}`}
-                  id="ratio_1/1"
+                  id={`ratio_1/1_${id}`}
                   value={1 / 1}
                   className={styles.radioItem}
                   checked={imageData.ratio == 1 / 1}
                   onChange={handleChange}
                 />
-                <label htmlFor="ratio_1/1" className={styles.label}>
+                <label htmlFor={`ratio_1/1_${id}`} className={styles.label}>
                   1:1{' '}
                 </label>
               </div>
@@ -111,13 +111,13 @@ export default function ImageContainer({
                 <input
                   type="radio"
                   name={`ratio_${id}`}
-                  id="ratio_4/3"
+                  id={`ratio_4/3_${id}`}
                   value={4 / 3}
                   className={styles.radioItem}
                   checked={imageData.ratio == 4 / 3}
                   onChange={handleChange}
                 />
-                <label htmlFor="ratio_4/3" className={styles.label}>
+                <label htmlFor={`ratio_4/3_${id}`} className={styles.label}>
                   4:3{' '}
                 </label>
               </div>

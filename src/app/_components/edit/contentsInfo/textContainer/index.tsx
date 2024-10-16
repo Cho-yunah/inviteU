@@ -73,19 +73,19 @@ export default function TextContainer({
                   <SelectValue placeholder="글씨체를 선택해주세요" />
                 </SelectTrigger>
                 <SelectContent className="bg-white">
-                  <SelectItem className="font-naMyeonjo" value="나눔명조">
+                  <SelectItem className="font-naMyeonjo" value="naMyeonjo">
                     나눔명조 - Nanum Myeongjo
                   </SelectItem>
-                  <SelectItem className="font-batang" value="고운바탕">
+                  <SelectItem className="font-batang" value="batang">
                     고운바탕 - Gowun Batang
                   </SelectItem>
-                  <SelectItem className="font-kimMyeonjo" value="김정철명조">
+                  <SelectItem className="font-kimMyeonjo" value="kimMyeonjo">
                     김정철명조 - Kimjungchul Myungjo
                   </SelectItem>
-                  <SelectItem className="font-inklipquid" value="잉크립퀴드체">
+                  <SelectItem className="font-inklipquid" value="inklipquid">
                     잉크립퀴드체 - Ink lipquid
                   </SelectItem>
-                  <SelectItem className="font-noocar" value="온글잎누카">
+                  <SelectItem className="font-noocar" value="noocar">
                     온글잎 누카 - Ownglyph Nuka
                   </SelectItem>
                 </SelectContent>
@@ -130,13 +130,13 @@ export default function TextContainer({
                 <input
                   type="radio"
                   name={`layout_${id}`} // 동일한 id 기반 name 사용
-                  id="text_left"
+                  id={`text_left_${id}`}
                   value="left" // 각 라디오 버튼에 고유한 value 값 설정
                   className={styles.radioItem}
                   checked={textData.layout == 'left'} // 현재 선택된 값과 비교하여 체크 상태 설정
                   onChange={handleChange}
                 />
-                <label htmlFor="text_left" className={styles.label}>
+                <label htmlFor={`text_left_${id}`} className={styles.label}>
                   Left
                 </label>
               </div>
@@ -144,13 +144,13 @@ export default function TextContainer({
                 <input
                   type="radio"
                   name={`layout_${id}`} // 동일한 id 기반 name 사용
-                  id="text_center"
+                  id={`text_center_${id}`}
                   value="center"
                   className={styles.radioItem}
                   checked={textData.layout == 'center'}
                   onChange={handleChange}
                 />
-                <label htmlFor="text_center" className={styles.label}>
+                <label htmlFor={`text_center_${id}`} className={styles.label}>
                   Center{' '}
                 </label>
               </div>
@@ -158,13 +158,13 @@ export default function TextContainer({
                 <input
                   type="radio"
                   name={`layout_${id}`} // 동일한 id 기반 name 사용
-                  id="text_right"
+                  id={`text_right_${id}`}
                   value="right"
                   className={styles.radioItem}
                   checked={textData.layout == 'right'}
                   onChange={handleChange}
                 />
-                <label htmlFor="text_right" className={styles.label}>
+                <label htmlFor={`text_right_${id}`} className={styles.label}>
                   Right{' '}
                 </label>
               </div>
