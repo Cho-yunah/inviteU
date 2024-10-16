@@ -13,12 +13,16 @@ const SearchPostCode = ({ setShowModal, mapData, setMapData }: SearchPostCodePro
     let bname = data.bname
     let buildingName = data.buildingName
 
-    setShowModal(false)
-    setMapData({
-      ...mapData,
+    console.log(fullAddress)
+
+    // 함수형 업데이트로 mapData를 안전하게 업데이트
+    setMapData((prevMapData: any) => ({
+      ...prevMapData,
       main_address: `${fullAddress} (${bname}, ${buildingName})`,
       post_number: data.zonecode,
-    })
+    }))
+
+    setShowModal(false)
   }
 
   return (

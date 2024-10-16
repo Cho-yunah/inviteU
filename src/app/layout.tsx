@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ErrorBoundary from '@/app/_components/common/errorBoundary'
 import Head from 'next/head'
+import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 

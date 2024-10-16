@@ -5,6 +5,8 @@ import Modal from 'react-modal'
 import { ContentDataType, ImageType, IntervalType, MapType, TextType, VideoType } from '@/lib/types'
 import styles from './previewModal.module.scss'
 import { IoMdClose } from 'react-icons/io'
+import Map from './Map'
+import Script from 'next/script'
 
 // 이미지 컴포넌트
 const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
@@ -46,13 +48,16 @@ const IntervalComponent = ({ size }: IntervalType) => (
 )
 
 // 지도 컴포넌트
-const MapComponent = ({ main_address, detail_address, post_number }: MapType) => (
-  <div className="map-container">
-    <p>{main_address}</p>
-    <p>{detail_address}</p>
-    <p>{post_number}</p>
-  </div>
-)
+const MapComponent = ({ main_address, detail_address, post_number }: MapType) => {
+  return (
+    <div className="map-container">
+      <p>{main_address}</p>
+      <p>{detail_address}</p>
+      <p>{post_number}</p>
+      <Map address={main_address} />
+    </div>
+  )
+}
 
 const PreviewModal = ({
   form,
