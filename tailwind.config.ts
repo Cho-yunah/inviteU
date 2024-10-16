@@ -22,11 +22,11 @@ const config = {
     },
     extend: {
       fontFamily: {
-        naMyeonjo: ['NanumMyeongjo', 'sans-serif'],
-        batang: ['GowunBatang', 'sans-serif'],
-        kimMyeonjo: ['KimMyengjo', 'sans-serif'],
-        inkLipquid: ['InkLipquid', 'sans-serif'],
-        noocar: ['OwnglyphNoocar', 'sans-serif'],
+        naMyeonjo: ['naMyeonjo', 'sans-serif'],
+        batang: ['batang', 'sans-serif'],
+        kimMyeonjo: ['kimMyeonjo', 'sans-serif'],
+        inkLipquid: ['inklipquid', 'sans-serif'],
+        noocar: ['noocar', 'sans-serif'],
       },
       colors: {
         border: 'hsl(var(--border))',

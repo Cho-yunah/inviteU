@@ -20,10 +20,6 @@ const Background = ({
   checkedSlide: null | number
   setCheckedSlide: Dispatch<SetStateAction<null>>
 }) => {
-  useEffect(() => {
-    console.log('checkedSlide:', checkedSlide)
-  }, [checkedSlide])
-
   return (
     <FormField
       control={form.control}

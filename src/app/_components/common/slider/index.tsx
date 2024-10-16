@@ -35,12 +35,7 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
       setCheckedSlide(null)
     }
     field.onChange(`${activeSlide}`)
-    console.log(checkedSlide)
   }
-
-  useEffect(() => {
-    console.log(field.value)
-  }, [])
 
   return (
     <div className="mt-1">

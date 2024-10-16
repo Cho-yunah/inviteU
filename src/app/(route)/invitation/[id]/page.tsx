@@ -3,9 +3,9 @@
 import React, { useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import styles from '../edit.module.scss'
-import BaseInfo from '@/app/_components/edit/basicInfo/index'
-import ContentsInfo from '@/app/_components/edit/contentsInfo/index'
-import Background from '@/app/_components/edit/background/index'
+import BaseInfo from '@/app/_components/edit/basicInfo'
+import ContentsInfo from '@/app/_components/edit/contentsInfo'
+import Background from '@/app/_components/edit/background'
 import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -84,7 +84,7 @@ const Edit = () => {
             <BaseInfo form={form} formSchema={formSchema} />
           </TabsContent>
           <TabsContent className="px-6 py-2" value="contents">
-            <ContentsInfo contentsInfo={contentsInfo} setContentsInfo={setContentsInfo} />
+            {/* <ContentsInfo contentsInfo={contentsInfo} setContentsInfo={setContentsInfo} /> */}
           </TabsContent>
           <TabsContent className="px-6 py-2" value="background">
             <Background form={form} checkedSlide={checkedSlide} setCheckedSlide={setCheckedSlide} />

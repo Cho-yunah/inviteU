@@ -4,15 +4,16 @@ import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import styles from '../edit.module.scss'
 import { z } from 'zod'
-import BaseInfo from '@/app/_components/edit/basicInfo/index'
-import ContentsInfo from '@/app/_components/edit/contentsInfo/index'
-import Background from '@/app/_components/edit/background/index'
+import BaseInfo from '@/app/_components/edit/basicInfo'
+import ContentsInfo from '@/app/_components/edit/contentsInfo'
+import Background from '@/app/_components/edit/background'
 import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useUser } from '@supabase/auth-helpers-react'
 import { ContentDataType } from '@/lib/types'
 import axios from 'axios'
+import PreviewModal from '@/app/_components/edit/previewModal'
 
 const formSchema = z.object({
   user_id: z.string().min(10),
@@ -51,6 +52,11 @@ const Edit = () => {
   const data = useUser()
   const [contentsInfo, setContentsInfo] = useState<ContentDataType[] | []>([])
   const [checkedSlide, setCheckedSlide] = useState(null)
+  const [showPreviewModal, setShowPreviewModal] = useState(false)
+
+  const onClosePreviewModal = () => {
+    setShowPreviewModal(false)
+  }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -107,7 +113,12 @@ const Edit = () => {
               <BaseInfo form={form} formSchema={formSchema} />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="contents">
-              <ContentsInfo contentsInfo={contentsInfo} setContentsInfo={setContentsInfo} />
+              <ContentsInfo
+                contentsInfo={contentsInfo}
+                setContentsInfo={setContentsInfo}
+                setShowPreviewModal={setShowPreviewModal}
+                onClose={onClosePreviewModal}
+              />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="background">
               <Background
@@ -125,6 +136,7 @@ const Edit = () => {
           </form>
         </Form>
       </Tabs>
+      <PreviewModal form={form} isOpen={showPreviewModal} onClose={onClosePreviewModal} />
     </div>
   )
 }
