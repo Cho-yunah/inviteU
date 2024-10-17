@@ -6,19 +6,18 @@ import { ContentDataType, ImageType, IntervalType, MapType, TextType, VideoType 
 import styles from './previewModal.module.scss'
 import { IoMdClose } from 'react-icons/io'
 import Map from './Map'
-import Script from 'next/script'
 
 // 이미지 컴포넌트
 const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
   console.log('ImageComponent:', layout, ratio, urls.split(','))
   return (
-    <div className={`image-container ${layout} p-2 ratio-${3 / 4}`}>
+    <div className={`image-container ${layout} p-3 `}>
       {urls.split(',').map((url, index) => (
         <img
           key={index}
           src={url}
           alt="Content Image"
-          style={{ aspectRatio: ratio, objectFit: 'contain' }}
+          style={{ aspectRatio: ratio, objectFit: 'cover' }}
         />
       ))}
       {/* <img src={urls} alt="Content Image" style={{ aspectRatio: ratio, objectFit: 'cover' }} /> */}
@@ -37,7 +36,13 @@ const VideoComponent = ({ ratio, urls }: VideoType) => (
 
 // 텍스트 컴포넌트
 const TextComponent = ({ font_size, font_type, layout, text }: TextType) => (
-  <div className={`text-container text-${layout} text-[${font_size}px] font-${font_type}`}>
+  <div
+    className={`text-container text-${layout} text-[${font_size}px] font-${font_type} whitespace-pre-wrap overflow-wrap-break-word`}
+    style={{
+      wordBreak: 'keep-all', // 한글 단어가 중간에 끊기지 않도록 설정
+      wordWrap: 'break-word', // 단어가 긴 경우 자동 줄바꿈
+    }}
+  >
     <p>{text}</p>
   </div>
 )
@@ -48,12 +53,12 @@ const IntervalComponent = ({ size }: IntervalType) => (
 )
 
 // 지도 컴포넌트
-const MapComponent = ({ main_address, detail_address, post_number }: MapType) => {
+const MapComponent = ({ main_address, detail_address }: MapType) => {
   return (
-    <div className="map-container">
-      <p>{main_address}</p>
-      <p>{detail_address}</p>
-      <p>{post_number}</p>
+    <div className="text-xs text-slate-500">
+      <p>
+        {main_address}, {detail_address}
+      </p>
       <Map address={main_address} />
     </div>
   )
