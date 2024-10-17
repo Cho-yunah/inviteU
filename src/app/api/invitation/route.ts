@@ -263,18 +263,18 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   await Promise.all(
     JSON.parse(jsonRequest.contents).map(async (item: any) => {
       if (item.type === 'image') {
-        const { isImageUrlsValid } = judgeImageAndVideoValid({
-          image_urls: item.urls,
-        })
-        if (!isImageUrlsValid) {
-          return NextResponse.json(
-            {
-              message:
-                '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
-            },
-            { status: 400 },
-          )
-        }
+        // const { isImageUrlsValid } = judgeImageAndVideoValid({
+        //   image_urls: item.urls,
+        // })
+        // if (!isImageUrlsValid) {
+        //   return NextResponse.json(
+        //     {
+        //       message:
+        //         '적절한 이미지 url이 아닙니다. 공백없이 쉼표로 나누어서 문자열로 보내주세요.',
+        //     },
+        //     { status: 400 },
+        //   )
+        // }
 
         const { data: imageData, error: imageError } = await supabase
           .from('images')

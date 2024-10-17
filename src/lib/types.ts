@@ -25,12 +25,12 @@ export type MapType = {
   type: 'map'
   main_address: string
   detail_address: string
-  post_number: number
+  post_number: string
 }
 export type ContentDataType = ImageType | VideoType | TextType | IntervalType | MapType
 
 export const exampleContents: ContentDataType[] = [
-  { 
+  {
     type: 'image',
     layout: 'vertical',
     ratio: 1.5,
@@ -56,6 +56,6 @@ export const exampleContents: ContentDataType[] = [
     type: 'map',
     main_address: '서울특별시 강남구',
     detail_address: '테헤란로 123',
-    post_number: 12345,
+    post_number: string,
   },
 ]
