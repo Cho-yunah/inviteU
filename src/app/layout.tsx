@@ -10,14 +10,30 @@ import AuthContext from './_components/common/AuthContext'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ErrorBoundary from '@/app/_components/common/errorBoundary'
-import Head from 'next/head'
-import Script from 'next/script'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Invite U',
   description: 'Service for creating invitations',
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/img/logo.png', // 브라우저의 즐겨찾기 아이콘
+  },
+  openGraph: {
+    title: 'Invite U',
+    description: 'Create personalized invitations with ease.',
+    url: 'https://invite-u.vercel.app',
+    siteName: 'Invite U',
+    images: [
+      {
+        url: 'http://invite-u.com/og-image.jpg',
+        width: 600,
+        height: 700,
+      },
+    ],
+    type: 'website',
+  },
 }
 
 export default async function RootLayout({
@@ -26,11 +42,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <Head>
-        <link rel="icon" href="/img/favicon.ico" />
-        <title>Invite U</title>
-      </Head>
+    <html>
       <body className={inter.className}>
         <ErrorBoundary>
           <SupabaseProvider>
