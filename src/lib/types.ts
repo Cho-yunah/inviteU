@@ -30,7 +30,7 @@ export type MapType = {
 export type ContentDataType = ImageType | VideoType | TextType | IntervalType | MapType
 
 export const exampleContents: ContentDataType[] = [
-  {
+  { 
     type: 'image',
     layout: 'vertical',
     ratio: 1.5,

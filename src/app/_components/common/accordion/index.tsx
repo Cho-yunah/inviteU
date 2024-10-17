@@ -1,8 +1,8 @@
 import React, { createContext } from 'react'
-import Header from './Header';
-import Content from './Content';
+import Header from '../accordion/Header';
+import Content from '../accordion/Content';
 import styles from './accordion.module.scss'
-import AnimationAccordion from './AnimationAccordion';
+import AnimationAccordion from '../accordion/AnimationAccordion';
 
 interface AccordionContextProps {
     active: boolean;

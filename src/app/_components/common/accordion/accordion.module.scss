@@ -5,7 +5,7 @@
 .contentStep {
   border-radius: 4px;
   border: 1px solid #999;
-  padding: 12px 16px;
+  padding: 10px 16px;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -16,7 +16,14 @@
   align-items: center;
   padding: 4px;
   // background-color: pink;
-  margin-left: 9px
+  margin-left: 12px;
+
+  Label {
+    align-content: center !important;
+    padding: 0 10px !important;
+    border: none !important;
+    width: 120px !important
+  }
 }
 
 .contentsTitle {

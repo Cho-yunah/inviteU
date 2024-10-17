@@ -25,7 +25,7 @@ const customStyles = {
 };
 
 const LoginModal = ({isOpen,setIsOpen}: any) => {
-  const data = useUser()
+  // const data = useUser()
 
   const logInWithKakao = async () => {
     try {
@@ -33,6 +33,7 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
       });
+      console.log(data)
       
       if (error) throw new Error(error.message);
       // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();

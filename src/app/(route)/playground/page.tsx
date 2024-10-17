@@ -2,7 +2,7 @@
 
 import { exampleContents } from '@/lib/types'
 import axios from 'axios'
-import { MouseEvent, useState } from 'react'
+import { useState } from 'react'
 
 const FormPage = () => {
   //image

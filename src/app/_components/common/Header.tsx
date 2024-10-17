@@ -28,7 +28,7 @@ const getTitle = (path: string) => {
 
 
 const Header = () => {
-  const data = useUser();
+  // const data = useUser();
   const router = useRouter();
   const pathName = usePathname();
   const {session} = useAuthState();
@@ -75,7 +75,7 @@ const Header = () => {
               <img
                 src="/img/logo.png"
                 alt="logo"
-                className="w-6 h-6" 
+                className="size-6" 
               />
               <p className="px-3">Invite U</p>
             </div>
