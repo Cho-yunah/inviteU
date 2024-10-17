@@ -4,19 +4,34 @@ import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { IoIosLink } from 'react-icons/io'
 import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
-import { InvitationStateType } from '@/lib/features/invitation/invitationSlice'
 import { toast } from 'react-toastify'
 import dayjs from 'dayjs'
+import { useDispatch } from 'react-redux'
+import { InvitationStateType } from '@/lib/features/invitation/invitationSlice'
+import { setCurrentInvitation } from '@/lib/features/invitation/editInvitationSlice'
 
 const ListItem = ({ item }: { item: InvitationStateType }) => {
+  const dispatch = useDispatch()
   const router = useRouter()
 
-  const handleClickMove = () => {
-    router.push(`/invitation/${item.id}`)
+  const handleMoveEdit = () => {
+    if (!item || !item.id) {
+      console.error('아이템 정보가 올바르지 않습니다.', item) // 디버깅 로그
+      toast.error('아이템 정보가 올바르지 않습니다.\n 초대장 정보 조회에 실패했습니다.', {
+        style: { whiteSpace: 'pre-line' },
+      })
+      return
+    }
+
+    if (item?.id) {
+      dispatch(setCurrentInvitation(item))
+      router.push(`/invitation/${item.id}`)
+    } else {
+      console.error('아이템 ID가 없습니다.')
+    }
   }
 
   const handleClickShare = async () => {
-    console.log('share click', item.custom_url)
     try {
       await navigator.clipboard.writeText(`https://invite-u.vercel.app/${item.custom_url}`)
       toast.success('클립보드에 링크가 복사되었습니다.')
@@ -26,19 +41,20 @@ const ListItem = ({ item }: { item: InvitationStateType }) => {
   }
 
   const handleClickDelete = async () => {
-    console.log('삭제 요청')
     try {
       const res = await axios.delete(
         `/api/invitation/user_id=${item.user_id}&invitation_id=${item.id}`,
       )
-      console.log(res)
     } catch (error) {
       console.error('삭제 실패', error)
     }
   }
 
   return (
-    <div onClick={handleClickMove} className="relative m-5 rounded-md bg-gray-50 shadow-md">
+    <div
+      onClick={handleMoveEdit}
+      className="relative m-5 rounded-md bg-gray-50 shadow-md cursor-pointer"
+    >
       <p className="absolute h-full w-2 rounded-l-md bg-red-400"></p>
       <div className="p-3 pl-5">
         <p className="text-sm py-1 font-bold text-gray-800">{item.title}</p>

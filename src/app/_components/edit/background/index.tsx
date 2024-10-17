@@ -17,9 +17,10 @@ const Background = ({
   setCheckedSlide,
 }: {
   form: any
-  checkedSlide: null | number
+  checkedSlide: number
   setCheckedSlide: Dispatch<SetStateAction<null>>
 }) => {
+  console.log(checkedSlide)
   return (
     <FormField
       control={form.control}

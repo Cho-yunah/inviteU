@@ -20,7 +20,7 @@ const List = () => {
   const [loading, setLoading] = useState(true)
   const [listData, setListData] = useState([])
 
-  const handleMoveEditPage = () => {
+  const handleMoveNewPage = () => {
     router.push('/invitation/new')
   }
 
@@ -55,7 +55,7 @@ const List = () => {
       </div>
       <div className="w-full text-center">
         <button
-          onClick={handleMoveEditPage}
+          onClick={handleMoveNewPage}
           className={[styles.mainButton, 'rounded-[10px]', 'text-sm', 'shadow-sm'].join(' ')}
         >
           + 초대장 만들기

@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import invitationReducer from './features/invitation/invitationSlice'
+import editInvitationReducer from './features/invitation/editInvitationSlice'
+
 export const makeStore = () => {
   return configureStore({
     reducer: {
       invitation: invitationReducer,
+      editInvitation: editInvitationReducer,
     },
   })
 }

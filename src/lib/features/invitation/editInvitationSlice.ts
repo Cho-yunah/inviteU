@@ -1,24 +1,31 @@
-import { ContentDataType } from '@/lib/types';
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-export type EditInvitationStateType = {
-    title: string;
-    custom_url: string;
-    date: string;
-    image_urls: string;
+export type InvitationType = {
+  id: string
+  title: string
+  custom_url: string
+  date: Date
+  background_image: number
+  primary_image: string
 }
 
-const initialState: ContentDataType[] = [];
+const initialState = {
+  list: [] as InvitationType[],
+  currentInvitation: null as InvitationType | null,
+}
 
 export const editInvitationSlice = createSlice({
-    name: 'editInvitation',
-    initialState,
-    reducers: {
-        setBaseInfo: (state, action: PayloadAction<ContentDataType[]>) => {
-            return action.payload;
-        },
-        setContensInfo: (state, action: PayloadAction<ContentDataType[]>) => { 
-            return action.payload;
-        }
+  name: 'editInvitation',
+  initialState,
+  reducers: {
+    setInvitationList: (state, action: PayloadAction<InvitationType[]>) => {
+      state.list = action.payload
     },
-});
+    setCurrentInvitation: (state, action: PayloadAction<InvitationType>) => {
+      state.currentInvitation = action.payload
+    },
+  },
+})
+
+export const { setInvitationList, setCurrentInvitation } = editInvitationSlice.actions
+export default editInvitationSlice.reducer

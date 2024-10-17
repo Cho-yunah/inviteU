@@ -14,7 +14,7 @@ import { Navigation, Pagination } from 'swiper/modules'
 
 interface slideProps {
   slideArr?: Array<{ id: number; title: string; color: string; url: any }>
-  checkedSlide: null | number
+  checkedSlide: number
   setCheckedSlide: any
   field?: any
 }

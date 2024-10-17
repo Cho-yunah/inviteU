@@ -44,7 +44,7 @@ export default async function RootLayout({
                   </ReduxProvider>
                 </main>
                 <ModalSetup />
-                <ToastContainer position="top-center" autoClose={500} hideProgressBar />
+                <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
               </div>
             </AuthContext>
           </SupabaseProvider>

@@ -21,16 +21,8 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
   const jsonRequest = await req.json()
   //
   // next.js14에서는 body에서 데이터를 받아옵니다.
-  const {
-    background_image,
-    // contents,
-    custom_url,
-    date,
-    time,
-    primary_image,
-    title,
-    user_id,
-  } = jsonRequest || {}
+  const { background_image, contents, custom_url, date, time, primary_image, title, user_id } =
+    jsonRequest || {}
 
   if (!title || !user_id) {
     return NextResponse.json({ message: '필수 항목이 없습니다.' }, { status: 400 })
