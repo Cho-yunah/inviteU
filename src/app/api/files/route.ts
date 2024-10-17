@@ -22,6 +22,21 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   // Check if invitation_id exists in invitation table
 
+  const { data: invitationData, error: invitationError } = await supabase
+    .from('invitation')
+    .select('id')
+    .eq('id', user_uuid)
+    .single()
+
+  if (invitationError || !invitationData) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: 'invitation_id와 user_id로 초대장을 찾을 수 없습니다',
+      },
+      { status: 400 },
+    )
+  }
   const { data: userData, error: userError } = await supabase
     .from('userinfo')
     .select('id')

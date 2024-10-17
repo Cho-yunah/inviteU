@@ -570,6 +570,19 @@ export const DELETE = async (req: NextRequest, res: NextResponse<Data>) => {
     return NextResponse.json({ message: 'id와 user_id 필드가 누락되었습니다' }, { status: 400 })
   }
 
+  const { data: invitationData, error: invitationError } = await supabase
+    .from('invitation')
+    .select('id')
+    .eq('id', invitation_id)
+    .eq('user_id', user_id)
+    .single()
+
+  if (invitationError || !invitationData) {
+    return NextResponse.json(
+      { message: 'user_id와 invitation_id로 초대장을 찾을 수 없습니다' },
+      { status: 400 },
+    )
+  }
   // invitation 테이블에서 데이터 삭제
   const { error } = await supabase
     .from('invitation')
