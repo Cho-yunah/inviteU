@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { FormControl } from '@/components/ui/form'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import dayjs from 'dayjs'
 
 interface DatePickerProps {
   field: any
@@ -21,7 +22,7 @@ export function DatePickerForm({ field }: DatePickerProps) {
   const selectDate = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       setDate(selectedDate)
-      field.onChange(selectedDate) // React Hook Form과 연결
+      field.onChange(dayjs(selectedDate).format('YYYY-MM-DD')) // React Hook Form과 연결
       setIsOpen(false) // 날짜 선택 후 Popover 닫기
     }
   }

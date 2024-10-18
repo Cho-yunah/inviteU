@@ -11,7 +11,7 @@ export type VideoType = {
 }
 export type TextType = {
   type: 'text'
-  font_size: number
+  font_size: string
   font_type: string
   layout: 'left' | 'center' | 'right'
   text: string
@@ -43,7 +43,7 @@ export const exampleContents: ContentDataType[] = [
   },
   {
     type: 'text',
-    font_size: 16,
+    font_size: '16',
     font_type: '나눔고딕',
     layout: 'center',
     text: '안녕하세요, 이것은 예시 텍스트입니다.',
@@ -56,6 +56,6 @@ export const exampleContents: ContentDataType[] = [
     type: 'map',
     main_address: '서울특별시 강남구',
     detail_address: '테헤란로 123',
-    post_number: string,
+    post_number: '12345',
   },
 ]
