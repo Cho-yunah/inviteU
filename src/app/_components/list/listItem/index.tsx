@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux'
 import { InvitationStateType } from '@/lib/features/invitation/invitationSlice'
 import { setCurrentInvitation } from '@/lib/features/invitation/editInvitationSlice'
 
-const ListItem = ({ item }: { item: InvitationStateType }) => {
+const ListItem = ({ item, onDelete }: { item: InvitationStateType; onDelete: () => void }) => {
   const dispatch = useDispatch()
   const router = useRouter()
 
@@ -31,7 +31,8 @@ const ListItem = ({ item }: { item: InvitationStateType }) => {
     }
   }
 
-  const handleClickShare = async () => {
+  const handleClickShare = async (e: React.MouseEvent) => {
+    e.stopPropagation() // 이벤트 전파 차단
     try {
       await navigator.clipboard.writeText(`https://invite-u.vercel.app/${item.custom_url}`)
       toast.success('클립보드에 링크가 복사되었습니다.')
@@ -40,12 +41,18 @@ const ListItem = ({ item }: { item: InvitationStateType }) => {
     }
   }
 
-  const handleClickDelete = async () => {
+  const handleClickDelete = async (e: React.MouseEvent) => {
+    e.stopPropagation()
     try {
       const res = await axios.delete(
-        `/api/invitation/user_id=${item.user_id}&invitation_id=${item.id}`,
+        `/api/invitation?user_id=${item.user_id}&invitation_id=${item.id}`,
       )
+      if (res.status === 200) {
+        toast.success('해당 항목이 삭제되었습니다.')
+        onDelete() // 부모 컴포넌트에 알림
+      }
     } catch (error) {
+      toast.error('해당 항목 삭제에 실패했습니다.')
       console.error('삭제 실패', error)
     }
   }

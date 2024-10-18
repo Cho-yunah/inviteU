@@ -1,4 +1,3 @@
-import { configureStore } from '@reduxjs/toolkit'
 export interface ContentsComponentType {
   id: string
   type: string

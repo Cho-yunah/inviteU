@@ -3,9 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import styles from '../../page.module.scss'
 import ListItem from '@/app/_components/list/listItem'
-import { useDispatch } from 'react-redux'
 import axios from 'axios'
-import { setInvitationList } from '@/lib/features/invitation/invitationSlice'
 import Loader from '@/app/_components/common/Loader'
 import { useRouter } from 'next/navigation'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
@@ -13,12 +11,12 @@ import { useAuthState } from '@/app/_components/common/AuthContext'
 import { toast } from 'react-toastify'
 
 const List = () => {
-  const dispatch = useDispatch()
-  const router = useRouter()
   const { session } = useAuthState()
+  const router = useRouter()
 
   const [loading, setLoading] = useState(true)
   const [listData, setListData] = useState([])
+  console.log('listData', listData)
 
   const handleMoveNewPage = () => {
     router.push('/invitation/new')
@@ -28,7 +26,6 @@ const List = () => {
     try {
       const { data } = await axios.get(`/api/invitation`)
       if (data) {
-        dispatch(setInvitationList(data))
         setListData(data)
         localStorage.setItem('invitationCount', data?.length)
       }
@@ -41,7 +38,7 @@ const List = () => {
   }
 
   useEffect(() => {
-    if (session?.access_token != null) {
+    if (session?.access_token) {
       getInvitationInfo()
     } else {
       setLoading(false)
@@ -66,14 +63,16 @@ const List = () => {
       ) : (
         // 로딩이 완료되면 리스트 데이터 렌더
         <div>
-          {listData?.length === 0 ? (
+          {listData.length === 0 ? (
             <div className="my-10 mx-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl">
               <HiOutlineArchiveBoxXMark size={35} color="gray" />
               <br />
               <p className="text-sm text-gray-500">저장된 초대장이 없습니다.</p>
             </div>
           ) : (
-            listData?.map((item: any) => <ListItem key={item.id} item={item} />)
+            listData?.map((item: any) => (
+              <ListItem key={item.id} item={item} onDelete={getInvitationInfo} />
+            ))
           )}
         </div>
       )}
