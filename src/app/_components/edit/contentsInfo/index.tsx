@@ -86,12 +86,14 @@ export default function ContentsInfo({
     <div>
       <div className="w-full">
         <button
+          type="button"
           onClick={handleShowDrawer}
           className="mt-5 bg-black w-full rounded-md text-base text-white p-2 border-2 border-black flex items-center justify-center"
         >
           <span>콘텐츠 추가하기 + </span>
         </button>
         <button
+          type="button"
           onClick={handlePreview}
           className="mt-3 bg-white w-full rounded-md text-base text-black border-[1px] p-2"
         >

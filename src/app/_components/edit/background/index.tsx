@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react'
 import Slider from '../../common/slider'
-import { FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
 const slideArr = [
   { id: 1, title: 'Slide 1', color: 'bg-blue-100', url: '/img/background_1.png' },
@@ -31,6 +31,7 @@ const Background = ({
             <FormLabel className="justify-center font-semibold">배경 선택</FormLabel>
             <span className="text-red-600 self-start pl-1">*</span>
           </div>
+          <FormMessage className="text-xs text-red-400 p-1" />
           <FormControl className="relative">
             <Slider
               field={field}

@@ -9,9 +9,8 @@ import Map from './Map'
 
 // 이미지 컴포넌트
 const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
-  console.log('ImageComponent:', layout, ratio, urls.split(','))
   return (
-    <div className={`image-container ${layout} p-3 `}>
+    <div className={`image-container ${layout} px-0 py-1`}>
       {urls.split(',').map((url, index) => (
         <img
           key={index}
@@ -20,7 +19,6 @@ const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
           style={{ aspectRatio: ratio, objectFit: 'cover' }}
         />
       ))}
-      {/* <img src={urls} alt="Content Image" style={{ aspectRatio: ratio, objectFit: 'cover' }} /> */}
     </div>
   )
 }
@@ -78,10 +76,8 @@ const PreviewModal = ({
 
   useEffect(() => {
     let formData = form.getValues()
-    console.log('formData:', formData)
     setContentsData(formData?.contents)
     setBackground(Number(formData?.background_image) + 1)
-    console.log(background)
   }, [form.getValues()])
 
   const renderContent = (content: ContentDataType, index: number) => {
@@ -144,7 +140,7 @@ const PreviewModal = ({
       <div
         style={{
           backgroundImage: `url('/img/background_${background}.png')`,
-          paddingTop: background % 2 === 1 ? '9rem' : '1.5rem', // 홀수일 때 더 많은 마진
+          paddingTop: background % 2 === 1 ? '9rem' : '0.5rem', // 홀수일 때 더 많은 마진
           backgroundRepeat: background % 2 === 1 ? 'no-repeat' : 'repeat-y',
           backgroundAttachment: 'scroll', // background가 스크롤과 함께 움직이도록 설정
         }}

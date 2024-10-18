@@ -27,8 +27,6 @@ export default function FileInput({ field, onFileUpload, ...props }: FileUploadP
   const { id } = useUser() || {}
   const [imageFile, setImageFile] = useState<ImageFileProps | null>(null)
   const [isDragging, setIsDragging] = useState(false)
-  // const [uploadProgress, setUploadProgress] = useState<number | null>(null)
-  const [filePreviews, setFilePreviews] = useState<string[]>([])
 
   const handleDragEnter = (e: React.DragEvent<HTMLInputElement>) => {
     e.preventDefault()
@@ -43,7 +41,6 @@ export default function FileInput({ field, onFileUpload, ...props }: FileUploadP
   const handleDrop = (e: React.DragEvent<HTMLInputElement>) => {
     e.preventDefault()
     setIsDragging(false)
-
     const files = e.dataTransfer.files
     if (files.length > 0) {
       handleFileInput(files[0])
@@ -103,7 +100,7 @@ export default function FileInput({ field, onFileUpload, ...props }: FileUploadP
       onDrop={handleDrop}
     >
       {imageFile?.url ? (
-        <div className="relative flex flex-wrap border-[1px] rounded-md border-gray-300">
+        <div className="relative flex flex-wrap justify-center border-[1px] rounded-md border-gray-300 min-w-[300px] min-h-[150px]">
           <img
             src={imageFile.url}
             alt={`File Preview`}

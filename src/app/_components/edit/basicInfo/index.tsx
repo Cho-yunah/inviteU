@@ -44,7 +44,7 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
         control={form.control}
         name="custom_url"
         render={({ field, formState: { errors } }) => (
-          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-1">
+          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-0">
             <div className="flex leading-7 items-center my-0">
               <FormLabel className="justify-center font-semibold">링크 생성</FormLabel>
               <span className="text-red-600 self-start pl-1">*</span>
@@ -68,7 +68,7 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
         control={form.control}
         name="date"
         render={({ field, formState: { errors } }) => (
-          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-1">
+          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-0">
             <div className="flex leading-7 items-center my-0">
               <FormLabel className="justify-center font-semibold">날짜</FormLabel>
               <span className="text-red-600 self-start pl-1">*</span>
@@ -88,7 +88,7 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
         control={form.control}
         name="time"
         render={({ field, formState: { errors } }) => (
-          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-1">
+          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-0">
             <div className="flex leading-7 items-center my-0">
               <FormLabel className="justify-center font-semibold">시간</FormLabel>
               <span className="text-red-600 self-start pl-1">*</span>
@@ -108,12 +108,15 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
         control={form.control}
         name="primary_image"
         render={({ field }) => (
-          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-3">
+          <FormItem className="grid w-full max-w-sm gap-0 space-y-0 mt-2">
             <div className="flex leading-7 items-center my-0">
               <FormLabel className="justify-center font-semibold">대표 이미지</FormLabel>
               <span className="text-red-600 self-start pl-1">*</span>
               <FormMessage className="text-xs text-red-400 py-1 px-3" />
             </div>
+            <p className="text-[10px] text-slate-400">
+              카카오톡 공유 시 보여지는 썸네일 이미지입니다.
+            </p>
             <FormControl>
               <FileInput field={field} onFileUpload={handleFileUpload} />
             </FormControl>
