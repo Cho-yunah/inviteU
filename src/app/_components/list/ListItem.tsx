@@ -1,61 +1,66 @@
 'use client'
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useDispatch } from 'react-redux'
 import axios from 'axios'
+import dayjs from 'dayjs'
+import { toast } from 'react-toastify'
 import { IoIosLink } from 'react-icons/io'
 import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
-import { toast } from 'react-toastify'
-import dayjs from 'dayjs'
-import { useDispatch } from 'react-redux'
-import { InvitationStateType } from '@/lib/features/invitation/invitationSlice'
 import { setCurrentInvitation } from '@/lib/features/invitation/editInvitationSlice'
 
-const ListItem = ({ item, onDelete }: { item: InvitationStateType; onDelete: () => void }) => {
-  const dispatch = useDispatch()
+interface ListItemProps {
+  item: any
+  onRemove: (id: string) => void
+}
+
+const ListItem = React.memo(({ item, onRemove }: ListItemProps) => {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
+  const dispatch = useDispatch()
 
-  const handleMoveEdit = () => {
-    if (!item || !item.id) {
-      console.error('아이템 정보가 올바르지 않습니다.', item) // 디버깅 로그
-      toast.error('아이템 정보가 올바르지 않습니다.\n 초대장 정보 조회에 실패했습니다.', {
-        style: { whiteSpace: 'pre-line' },
-      })
-      return
-    }
+  // 수정 페이지로 이동하는 핸들러
+  const handleMoveEdit = useCallback(() => {
+    dispatch(setCurrentInvitation(item))
+    router.push(`/invitation/${item.id}`)
+  }, [dispatch, item, router])
 
-    if (item?.id) {
-      dispatch(setCurrentInvitation(item))
-      router.push(`/invitation/${item.id}`)
-    } else {
-      console.error('아이템 ID가 없습니다.')
-    }
-  }
-
-  const handleClickShare = async (e: React.MouseEvent) => {
-    e.stopPropagation() // 이벤트 전파 차단
-    try {
-      await navigator.clipboard.writeText(`https://invite-u.vercel.app/${item.custom_url}`)
-      toast.success('클립보드에 링크가 복사되었습니다.')
-    } catch (e) {
-      alert('복사에 실패하였습니다')
-    }
-  }
-
-  const handleClickDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation()
-    try {
-      const res = await axios.delete(
-        `/api/invitation?user_id=${item.user_id}&invitation_id=${item.id}`,
-      )
-      if (res.status === 200) {
-        toast.success('해당 항목이 삭제되었습니다.')
-        onDelete() // 부모 컴포넌트에 알림
+  const handleClickShare = useCallback(
+    async (e: React.MouseEvent) => {
+      e.stopPropagation() // 이벤트 전파 차단
+      setLoading(true)
+      try {
+        await navigator.clipboard.writeText(`https://invite-u.vercel.app/${item.custom_url}`)
+        toast.success('클립보드에 링크가 복사되었습니다.')
+      } catch (e) {
+        alert('복사에 실패하였습니다')
       }
-    } catch (error) {
-      toast.error('해당 항목 삭제에 실패했습니다.')
-      console.error('삭제 실패', error)
-    }
-  }
+    },
+    [item.custom_url],
+  )
+
+  const handleClickDelete = useCallback(
+    async (e: React.MouseEvent) => {
+      e.stopPropagation()
+      setLoading(true)
+
+      try {
+        const res = await axios.delete(
+          `/api/invitation?user_id=${item.user_id}&invitation_id=${item.id}`,
+        )
+        if (res.status != 200) throw new Error('삭제 실패')
+
+        toast.success('해당 초대장이 삭제되었습니다.')
+        onRemove(item.id)
+      } catch (error) {
+        toast.error('해당 항목 삭제에 실패했습니다.')
+        console.error('삭제 실패', error)
+      } finally {
+        setLoading(false)
+      }
+    },
+    [item.id, item.user_id, onRemove],
+  )
 
   return (
     <div
@@ -97,6 +102,6 @@ const ListItem = ({ item, onDelete }: { item: InvitationStateType; onDelete: () 
       </div>
     </div>
   )
-}
+})
 
 export default ListItem

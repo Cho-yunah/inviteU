@@ -2,29 +2,23 @@
 import { useEffect, useState } from 'react'
 import Slider from './_components/main/slider'
 import { useUser } from '@supabase/auth-helpers-react'
-import { useRouter } from 'next/navigation'
 import { useAuthState } from './_components/common/AuthContext'
+import Link from 'next/link'
 
 export default function Home() {
   const userData = useUser()
-  const router = useRouter()
   const { session } = useAuthState()
 
-  // const [loading, setLoading] = useState(true); // 로딩 상태 추가
   const [invitationCount, setInvitationCount] = useState(0)
 
-  const handleMoveEditPage = () => {
-    router.push('/invitation/new')
-  }
-  const handleMoveListPage = () => {
-    router.push('/invitation')
-  }
-
   useEffect(() => {
-    let count = localStorage.getItem('invitationCount')
-    if (session?.access_token != null) {
-      setInvitationCount(Number(count))
+    const checkSession = async () => {
+      const count = localStorage.getItem('invitationCount')
+      if (session?.access_token) {
+        setInvitationCount(Number(count))
+      }
     }
+    checkSession()
   }, [session?.access_token])
 
   return (
@@ -40,21 +34,17 @@ export default function Home() {
           <img src="/img/weddingIntro.png" width={350} height={350} className="py-4" />
         </div>
       </div>
-      <button onClick={handleMoveEditPage} className="m-4 rounded-3xl border-2 p-3 shadow-sm">
-        초대장 만들기
+      <button className="m-4 rounded-3xl border-2 p-3 shadow-sm">
+        <Link href="/invitation/new">초대장 만들기</Link>
       </button>
-      {/* <ListButton handleMoveListPage={handleMoveListPage} invitationCount={invitationCount} /> */}
       {session?.access_token && (
-        <button
-          onClick={handleMoveListPage}
-          className="m-4 mt-0 rounded-3xl border-2 border-slate-800 bg-slate-800 p-3 text-white"
-        >
-          내 초대장 {invitationCount}
+        <button className="m-4 mt-0 rounded-3xl border-2 border-slate-800 bg-slate-800 p-3 text-white">
+          <Link href="/invitation">내 초대장 {invitationCount}</Link>
         </button>
       )}
-      <div className="mt-10 h-[400px] bg-slate-100">
+      {/* <div className="mt-10 h-[400px] bg-slate-100">
         <Slider />
-      </div>
+      </div> */}
     </>
   )
 }

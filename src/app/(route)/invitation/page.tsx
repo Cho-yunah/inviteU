@@ -1,83 +1,54 @@
-'use client'
-
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styles from '../../page.module.scss'
-import ListItem from '@/app/_components/list/listItem'
-import axios from 'axios'
-import Loader from '@/app/_components/common/Loader'
-import { useRouter } from 'next/navigation'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
-import { useAuthState } from '@/app/_components/common/AuthContext'
-import { toast } from 'react-toastify'
+import ListComponent from '@/app/_components/list/List'
+import Link from 'next/link'
 
-const List = () => {
-  const { session } = useAuthState()
-  const router = useRouter()
+async function getInvitationList() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/invitation`, {
+    cache: 'no-store',
+  })
 
-  const [loading, setLoading] = useState(true)
-  const [listData, setListData] = useState([])
-  console.log('listData', listData)
-
-  const handleMoveNewPage = () => {
-    router.push('/invitation/new')
+  if (!res.ok) {
+    throw new Error('초대장 정보 조회에 실패했습니다.')
   }
+  const data = await res.json()
+  return data
+}
 
-  const getInvitationInfo = async () => {
-    try {
-      const { data } = await axios.get(`/api/invitation`)
-      if (data) {
-        setListData(data)
-        localStorage.setItem('invitationCount', data?.length)
-      }
-    } catch (error) {
-      console.error('초대장 정보 조회 실패', error)
-      toast.error('초대장 정보 조회에 실패했습니다.')
-    } finally {
-      setLoading(false) // 로딩 상태 업데이트
-    }
-  }
+interface ListProps {
+  initialData: any[]
+}
 
-  useEffect(() => {
-    if (session?.access_token) {
-      getInvitationInfo()
-    } else {
-      setLoading(false)
-    }
-  }, [session?.access_token])
+const List: React.FC<ListProps> = async ({ initialData }) => {
+  let listData: any[] = []
 
-  return (
-    <div>
-      <div className="p-4">
-        <h1 className="py-2 text-2xl font-bold text-gray-700">내 초대장</h1>
-      </div>
-      <div className="w-full text-center">
-        <button
-          onClick={handleMoveNewPage}
-          className={[styles.mainButton, 'rounded-[10px]', 'text-sm', 'shadow-sm'].join(' ')}
-        >
-          + 초대장 만들기
-        </button>
-      </div>
-      {loading ? (
-        <Loader />
-      ) : (
-        // 로딩이 완료되면 리스트 데이터 렌더
-        <div>
-          {listData.length === 0 ? (
-            <div className="my-10 mx-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl">
-              <HiOutlineArchiveBoxXMark size={35} color="gray" />
-              <br />
-              <p className="text-sm text-gray-500">저장된 초대장이 없습니다.</p>
-            </div>
-          ) : (
-            listData?.map((item: any) => (
-              <ListItem key={item.id} item={item} onDelete={getInvitationInfo} />
-            ))
-          )}
+  try {
+    listData = await getInvitationList()
+    console.log('list_Data', listData)
+  } catch (error) {
+    console.error('초대장 정보 조회 실패', error)
+    return (
+      <div className="p-2">
+        <div className="mt-6 w-full text-center">
+          <button
+            className={[styles.mainButton, 'rounded-[10px]', 'text-sm', 'shadow-sm'].join(' ')}
+          >
+            <Link href="/invitation/new">+ 초대장 만들기</Link>
+          </button>
         </div>
-      )}
-    </div>
-  )
+        <div>
+          <div className="my-10 mx-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl">
+            <HiOutlineArchiveBoxXMark size={35} color="gray" />
+            <br />
+            <p className="text-sm text-gray-500">저장된 초대장이 없습니다.</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return <ListComponent initialData={listData} />
 }
 
 export default List
