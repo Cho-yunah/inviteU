@@ -19,7 +19,7 @@ const List = () => {
 
   const fetchInvitations = async () => {
     try {
-      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/invitation`)
+      const { data } = await axios.get(`/api/invitation`)
       dispatch(setInvitationList(data)) // Redux에 리스트 저장
     } catch (error) {
       console.error('초대장 정보를 불러오지 못했습니다.', error)
@@ -29,12 +29,8 @@ const List = () => {
   }
 
   useEffect(() => {
-    if (invitationList.length === 0) {
-      fetchInvitations() // Redux에 데이터가 없을 때만 요청
-    } else {
-      setLoading(false)
-    }
-  }, [invitationList])
+    fetchInvitations()
+  }, [])
 
   const handleRemove = (id: string) => {
     // 삭제된 항목만 Redux 리스트에서 제거
