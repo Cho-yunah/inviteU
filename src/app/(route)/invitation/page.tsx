@@ -1,54 +1,68 @@
-import React from 'react'
-import styles from '../../page.module.scss'
+'use client'
+
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '@/lib/store'
+import { setInvitationList } from '@/lib/features/invitation/invitationSlice'
+import ListItem from '@/app/_components/list/ListItem'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
-import ListComponent from '@/app/_components/list/List'
 import Link from 'next/link'
+import axios from 'axios'
+import styles from '../../page.module.scss'
+import Loader from '@/app/_components/common/Loader'
 
-async function getInvitationList() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/invitation`, {
-    cache: 'no-store',
-  })
+const List = () => {
+  const dispatch = useDispatch()
+  const invitationList = useSelector((state: RootState) => state.invitation.list)
 
-  if (!res.ok) {
-    throw new Error('초대장 정보 조회에 실패했습니다.')
+  const [loading, setLoading] = useState(true)
+
+  const fetchInvitations = async () => {
+    try {
+      const { data } = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/invitation`)
+      dispatch(setInvitationList(data)) // Redux에 리스트 저장
+    } catch (error) {
+      console.error('초대장 정보를 불러오지 못했습니다.', error)
+    } finally {
+      setLoading(false)
+    }
   }
-  const data = await res.json()
-  return data
-}
 
-interface ListProps {
-  initialData: any[]
-}
+  useEffect(() => {
+    if (invitationList.length === 0) {
+      fetchInvitations() // Redux에 데이터가 없을 때만 요청
+    } else {
+      setLoading(false)
+    }
+  }, [invitationList])
 
-const List: React.FC<ListProps> = async ({ initialData }) => {
-  let listData: any[] = []
+  const handleRemove = (id: string) => {
+    // 삭제된 항목만 Redux 리스트에서 제거
+    const updatedList = invitationList.filter((item) => item.id !== id)
+    dispatch(setInvitationList(updatedList))
+  }
 
-  try {
-    listData = await getInvitationList()
-    console.log('list_Data', listData)
-  } catch (error) {
-    console.error('초대장 정보 조회 실패', error)
-    return (
-      <div className="p-2">
-        <div className="mt-6 w-full text-center">
-          <button
-            className={[styles.mainButton, 'rounded-[10px]', 'text-sm', 'shadow-sm'].join(' ')}
-          >
-            <Link href="/invitation/new">+ 초대장 만들기</Link>
-          </button>
-        </div>
-        <div>
-          <div className="my-10 mx-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl">
-            <HiOutlineArchiveBoxXMark size={35} color="gray" />
-            <br />
-            <p className="text-sm text-gray-500">저장된 초대장이 없습니다.</p>
-          </div>
-        </div>
+  return (
+    <div className="p-2">
+      <div className="mt-6 w-full text-center">
+        <button className={[styles.mainButton, 'rounded-[10px]', 'text-sm', 'shadow-sm'].join(' ')}>
+          <Link href="/invitation/new">+ 초대장 만들기</Link>
+        </button>
       </div>
-    )
-  }
-
-  return <ListComponent initialData={listData} />
+      {loading ? (
+        <div className="my-6">
+          <Loader />
+        </div>
+      ) : invitationList.length === 0 ? (
+        <div className="m-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl">
+          <HiOutlineArchiveBoxXMark size={35} color="gray" />
+          <p className="text-sm text-gray-500">저장된 초대장이 없습니다.</p>
+        </div>
+      ) : (
+        invitationList.map((item) => <ListItem key={item.id} item={item} onRemove={handleRemove} />)
+      )}
+    </div>
+  )
 }
 
 export default List

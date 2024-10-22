@@ -14,104 +14,81 @@ import { useUser } from '@supabase/auth-helpers-react'
 import { ContentDataType } from '@/lib/types'
 import axios from 'axios'
 import PreviewModal from '@/app/_components/edit/previewModal'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/lib/store'
-
-const formSchema = z.object({
-  user_id: z.string().min(10),
-  title: z
-    .string()
-    .min(7, {
-      message: '초대장 제목은 7자 이상 입력해주세요.',
-    })
-    .max(60, {
-      message: '초대장 제목은 60자 이하로 입력해주세요.',
-    }),
-  custom_url: z
-    .string()
-    .min(6, {
-      message: '6자 이상 입력해주세요.',
-    })
-    .refine((value) => /^[a-z-]+$/g.test(value), {
-      message: '커스텀 주소는 영어 소문자로 입력해주세요.',
-    }),
-  date: z.date().refine((value) => value > new Date(), {
-    message: '날짜는 오늘 이후로 선택해주세요.',
-  }),
-  time: z.string().min(5, {
-    message: '시간을 선택해주세요.',
-  }),
-  primary_image: z.string().min(3, {
-    message: '이미지 URL을 넣어주세요.',
-  }),
-  background_image: z.number().min(1, {
-    message: '배경 이미지를 선택해주세요.',
-  }),
-  contents: z.array(z.object({})).min(1, { message: '콘텐츠를 추가해주세요.' }),
-})
+import dayjs from 'dayjs'
+import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
+import { toast } from 'react-toastify'
 
 interface AsyncDefaultValues {
   user_id: string
   title: string
   custom_url: string
-  date: Date
+  date: string
   time: string
   primary_image: string
-  background_image: number
-  contents: {}[]
+  background_image: string
+  contents: ContentDataType[]
 }
 
 const Edit = () => {
-  const data = useUser()
-  const currentInvitation = useSelector(
-    (state: RootState) => state.editInvitation.currentInvitation,
-  )
-  console.log('currentInvitation', currentInvitation)
+  const user = useUser()
+  const dispatch = useDispatch()
+  const currentInvitation = useSelector((state: RootState) => state.invitation.selected)
 
-  const [contentsInfo, setContentsInfo] = useState<ContentDataType[] | []>([])
-  const [checkedSlide, setCheckedSlide] = useState<null | string>(null)
+  const [contentsInfo, setContentsInfo] = useState<ContentDataType[]>(
+    currentInvitation?.contents || [],
+  )
+  const [checkedSlide, setCheckedSlide] = useState<number>(0)
   const [showPreviewModal, setShowPreviewModal] = useState(false)
 
-  const onClosePreviewModal = () => {
-    setShowPreviewModal(false)
-  }
+  const onClosePreviewModal = () => setShowPreviewModal(false)
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues:
-      currentInvitation ||
-      ({
-        user_id: '',
-        title: '',
-        custom_url: '',
-        date: new Date(),
-        time: '',
-        primary_image: '',
-        background_image: 0,
-        contents: [],
-      } as AsyncDefaultValues),
+  const form = useForm<z.infer<typeof invitationFormSchema>>({
+    resolver: zodResolver(invitationFormSchema),
+    defaultValues: {
+      ...currentInvitation,
+      contents: currentInvitation?.contents || [],
+    },
   })
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('values', values)
-    if (data && values) {
-      try {
-        const response = await axios.post('/api/invitation', values)
-        console.log(response, 'onSubmitImage_response')
-      } catch (error) {
-        console.error('초대장 저장 실패', error)
-      }
+  useEffect(() => {
+    if (currentInvitation) {
+      form.reset({
+        ...currentInvitation,
+        contents: currentInvitation.contents || [],
+      })
     }
+  }, [currentInvitation, form])
+
+  useEffect(() => {
+    if (user) {
+      form.setValue('user_id', user.id)
+    }
+  }, [user, form])
+
+  async function onSubmit(values: z.infer<typeof invitationFormSchema>) {
+    // form.setValue('contents', [...contentsInfo])
+    //  dispatch(setInvitation(values))
+
+    const transformValues = {
+      ...values,
+      contents: JSON.stringify(values.contents),
+    }
+
+    //  if (transformValues) {
+    //    try {
+    //     //  const response = await axios.put('/api/invitation', transformValues)
+    //     //  const invitationId = response.data.id // 생성된 초대장의 ID
+
+    //      toast.success('🎉 초대장 저장에 성공했습니다 🎉')
+    //     //  router.replace(`/invitation/${invitationId}/preview`) // 미리보기 페이지로 이동
+    //    } catch (error) {
+    //      console.error('초대장 저장 실패', error)
+    //      toast.error('초대장 저장 실패')
+    //    }
+    //  }
   }
-
-  useEffect(() => {
-    // console.log('contentsInfo', contentsInfo)
-    form.setValue('contents', contentsInfo)
-  }, [contentsInfo])
-
-  useEffect(() => {
-    data && form.setValue('user_id', data.id)
-  }, [data && data.id])
 
   return (
     <div className="w-[375px] min-h-[375px] overflow-hidden">
@@ -130,7 +107,7 @@ const Edit = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <TabsContent className="px-6 py-2" value="basic">
-              <BaseInfo form={form} formSchema={formSchema} />
+              <BaseInfo form={form} formSchema={invitationFormSchema} />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="contents">
               <ContentsInfo

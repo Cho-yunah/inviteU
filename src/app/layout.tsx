@@ -7,7 +7,7 @@ import ReduxProvider from './StoreProvider'
 import Header from './_components/common/Header'
 import ModalSetup from './_components/common/modal/ModalSetup'
 import AuthContext from './_components/common/AuthContext'
-import { ToastContainer } from 'react-toastify'
+import { Slide, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ErrorBoundary from '@/app/_components/common/errorBoundary'
 
@@ -56,7 +56,13 @@ export default async function RootLayout({
                   </ReduxProvider>
                 </main>
                 <ModalSetup />
-                <ToastContainer position="top-center" autoClose={1000} hideProgressBar />
+                <ToastContainer
+                  position="top-center"
+                  autoClose={1000}
+                  hideProgressBar
+                  theme="colored"
+                  transition={Slide}
+                />
               </div>
             </AuthContext>
           </SupabaseProvider>
