@@ -14,12 +14,12 @@ export default function ContentsInfo({
   contentsInfo,
   setContentsInfo,
   setShowPreviewModal,
-  onClose,
+  // onClose,
 }: {
   contentsInfo: ContentDataType[]
   setContentsInfo: (value: ContentDataType[]) => void
   setShowPreviewModal: (value: boolean) => void
-  onClose: () => void
+  // onClose: () => void
 }) {
   const [showDrawer, setShowDrawer] = useState(false)
   const [components, setComponents] = useState(initialComponents)
@@ -55,23 +55,17 @@ export default function ContentsInfo({
 
   // components가 변경될 때 contentsInfo를 업데이트
   useEffect(() => {
-    console.log('컴포넌트 변경', components)
-
-    // 현재 components와 contentsInfo가 다를 때만 업데이트
     if (components.length > 0) {
       const contentArray: ContentDataType[] = components.map(
         (item) => item.content as ContentDataType,
       )
-      if (JSON.stringify(contentArray) !== JSON.stringify(contentsInfo)) {
-        setContentsInfo(contentArray)
-      }
+      setContentsInfo(contentArray)
     }
-  }, [components, contentsInfo, setContentsInfo])
+    // setComponents(contentsInfo)
+  }, [components])
 
-  // contentsInfo가 변경될 때 components를 업데이트
   useEffect(() => {
     if (contentsInfo.length > 0 && components.length === 0) {
-      console.log(contentsInfo)
       // 컴포넌트가 초기화되지 않은 경우에만 실행
       const updatedComponents = contentsInfo.map((info) => ({
         id: uuidv4(),
@@ -80,7 +74,7 @@ export default function ContentsInfo({
       }))
       setComponents(updatedComponents)
     }
-  }, [contentsInfo])
+  }, [])
 
   return (
     <div>

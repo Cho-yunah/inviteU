@@ -29,8 +29,8 @@ const BottomDrawer = ({ showDrawer, setShowDrawer, handleAddComponent }: BottomD
     setShowDrawer(false)
   }
 
-  const handleClickDrawerItem = (e: any) => {
-    // console.log(e.currentTarget.id);
+  const handleClickDrawerItem = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
     handleAddComponent(e.currentTarget.id)
     setIsClosing(true)
     setShowDrawer(false)

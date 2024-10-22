@@ -1,25 +1,25 @@
 'use client'
 
 import React, { useEffect, useState } from 'react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/navigation'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useUser } from '@supabase/auth-helpers-react'
 import styles from '../edit.module.scss'
+import { Form } from '@/components/ui/form'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BaseInfo from '@/app/_components/edit/basicInfo'
 import ContentsInfo from '@/app/_components/edit/contentsInfo'
-import Background from '@/app/_components/edit/background'
-import { Form } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useUser } from '@supabase/auth-helpers-react'
-import { ContentDataType } from '@/lib/types'
-import axios from 'axios'
 import PreviewModal from '@/app/_components/edit/previewModal'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/lib/store'
+import Background from '@/app/_components/edit/background'
 import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/navigation'
 import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
+import { RootState } from '@/lib/store'
+import { ContentDataType } from '@/lib/types'
 
 const EditInvitation = () => {
   const user = useUser()
@@ -63,19 +63,17 @@ const EditInvitation = () => {
   // 폼 제출 핸들러
   async function onSubmit(values: z.infer<typeof invitationFormSchema>) {
     try {
-      // 콘텐츠 정보를 폼 값에 추가
+      form.setValue('contents', contentsInfo)
       form.setValue('id', currentInvitation?.id || '')
-      form.setValue('contents', [...contentsInfo])
 
       const transformedValues = {
         ...values,
-        contents: JSON.stringify(values.contents),
+        contents: JSON.stringify(contentsInfo),
       }
 
       const response = await axios.put('/api/invitation', transformedValues)
       const invitationId = response.data.id // 생성된 초대장 ID
       dispatch(setSelectedInvitation({ ...values, contents: [...contentsInfo] })) // 선택된 초대장으로 설정
-
       toast.success('🎉 초대장 저장에 성공했습니다 🎉')
       router.replace(`/invitation/${invitationId}/preview`) // 미리보기 페이지로 이동
       router.refresh()
@@ -109,7 +107,7 @@ const EditInvitation = () => {
                 contentsInfo={contentsInfo}
                 setContentsInfo={setContentsInfo}
                 setShowPreviewModal={setShowPreviewModal}
-                onClose={onClosePreviewModal}
+                // onClose={onClosePreviewModal}
               />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="background">
