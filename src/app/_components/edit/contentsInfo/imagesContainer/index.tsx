@@ -14,7 +14,7 @@ export default function ImageContainer({
   const [imageData, setImageData] = React.useState({
     type: 'image',
     layout: content.layout || 'vertical',
-    ratio: content.ratio || 3 / 4,
+    ratio: content.ratio || '3/4',
     urls: content.urls ? content.urls.split(',') : ([] as string[]), // 문자열을 배열로 변환
   })
 
