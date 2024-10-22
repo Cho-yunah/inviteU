@@ -13,7 +13,7 @@ export default function VideoContainer({
 }: ContentsContainerProps) {
   const [videoData, setVideoData] = React.useState({
     type: 'video',
-    ratio: content.ratio || 3 / 4,
+    ratio: content.ratio || '3/4',
     urls: content.urls ? content.urls.split(',') : ([] as string[]), // 문자열을 배열로 변환
   })
 

@@ -39,7 +39,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
       JSON.parse(jsonRequest.contents).map(async (item: ContentDataType) => {
         if (item.type === 'image') {
           const { isImageUrlsValid } = judgeImageAndVideoValid({
-            image_urls: item.urls,
+            urls: item.urls,
           })
           if (!isImageUrlsValid) {
             return NextResponse.json(
@@ -129,7 +129,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
             .from('text')
             .insert({
               text: item.text,
-              font_size: item.font_size,
+              font_size: Number(item.font_size),
               font_type: item.font_type,
               layout: item.layout,
             })
@@ -264,7 +264,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
     JSON.parse(jsonRequest.contents).map(async (item: any) => {
       if (item.type === 'image') {
         // const { isImageUrlsValid } = judgeImageAndVideoValid({
-        //   image_urls: item.urls,
+        //   urls: item.urls,
         // })
         // if (!isImageUrlsValid) {
         //   return NextResponse.json(
@@ -506,7 +506,13 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = { type: 'videos', ...videoData }
+            contentData = {
+              type: 'videos',
+              created_at: videoData?.created_at,
+              urls: videoData?.video_url ? [videoData?.video_url] : [],
+              id: videoData?.id,
+              ratio: videoData?.ratio,
+            }
             break
           case 'text':
             const { data: textData } = await supabase
