@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import Slider from '../../common/slider'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
@@ -17,8 +17,8 @@ const Background = ({
   setCheckedSlide,
 }: {
   form: any
-  checkedSlide: number
-  setCheckedSlide: Dispatch<SetStateAction<null>>
+  checkedSlide: string
+  setCheckedSlide: Dispatch<SetStateAction<string>>
 }) => {
   console.log(checkedSlide)
   return (
