@@ -129,7 +129,7 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
             .from('text')
             .insert({
               text: item.text,
-              font_size: item.font_size,
+              font_size: Number(item.font_size),
               font_type: item.font_type,
               layout: item.layout,
             })
