@@ -182,19 +182,19 @@ export type Database = {
           created_at: string
           id: string
           ratio: number | null
-          video_url: string | null
+          urls: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           ratio?: number | null
-          video_url?: string | null
+          urls?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           ratio?: number | null
-          video_url?: string | null
+          urls?: string | null
         }
         Relationships: []
       }
