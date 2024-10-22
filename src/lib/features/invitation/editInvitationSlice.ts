@@ -4,7 +4,7 @@ export type InvitationType = {
   id: string
   title: string
   custom_url: string
-  date: Date
+  date: string
   background_image: number
   primary_image: string
 }

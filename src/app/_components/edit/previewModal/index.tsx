@@ -66,10 +66,12 @@ const PreviewModal = ({
   form,
   isOpen,
   onClose,
+  contentsInfo,
 }: {
   form: any
   isOpen: boolean
   onClose: () => void
+  contentsInfo: ContentDataType[]
 }) => {
   const [contentsData, setContentsData] = useState<ContentDataType[]>([])
   const [background, setBackground] = useState(0)
@@ -78,7 +80,13 @@ const PreviewModal = ({
     let formData = form.getValues()
     setContentsData(formData?.contents)
     setBackground(Number(formData?.background_image) + 1)
-  }, [form.getValues()])
+  }, [])
+
+  useEffect(() => {
+    // setBackground(Number(contentsInfo?.background_image) + 1)
+    // setContentsData(contentsInfo)
+    console.log('contentsInfo', contentsInfo)
+  }, [])
 
   const renderContent = (content: ContentDataType, index: number) => {
     switch (content.type) {

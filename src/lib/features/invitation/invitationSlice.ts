@@ -1,9 +1,10 @@
 import { ContentDataType } from '@/lib/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { set } from 'lodash'
 
 // 초대장 항목의 타입 정의
 export type InvitationStateType = {
-  id: string
+  id?: string
   user_id: string
   custom_url: string
   date: string
