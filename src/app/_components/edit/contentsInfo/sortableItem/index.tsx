@@ -37,6 +37,7 @@ function SortableItem({ id, type, setComponents, content }: SortableItemProps) {
       {/* 드래그 핸들 버튼 */}
       <button
         {...listeners}
+        type="button"
         style={{
           position: 'absolute',
           top: '17px',

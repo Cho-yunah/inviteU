@@ -2,65 +2,16 @@
 
 import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
-import { ContentDataType, ImageType, IntervalType, MapType, TextType, VideoType } from '@/lib/types'
+import { ContentDataType } from '@/lib/types'
 import styles from './previewModal.module.scss'
 import { IoMdClose } from 'react-icons/io'
-import Map from './Map'
-
-// 이미지 컴포넌트
-const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
-  return (
-    <div className={`image-container ${layout} px-0 py-1`}>
-      {urls.split(',').map((url, index) => (
-        <img
-          key={index}
-          src={url}
-          alt="Content Image"
-          style={{ aspectRatio: ratio, objectFit: 'cover' }}
-        />
-      ))}
-    </div>
-  )
-}
-
-// 비디오 컴포넌트
-const VideoComponent = ({ ratio, urls }: VideoType) => (
-  <div className="video-container" style={{ aspectRatio: ratio }}>
-    <video controls>
-      <source src={urls} type="video/mp4" />
-    </video>
-  </div>
-)
-
-// 텍스트 컴포넌트
-const TextComponent = ({ font_size, font_type, layout, text }: TextType) => (
-  <div
-    className={`text-container text-${layout} text-[${font_size}px] font-${font_type} whitespace-pre-wrap overflow-wrap-break-word`}
-    style={{
-      wordBreak: 'keep-all', // 한글 단어가 중간에 끊기지 않도록 설정
-      wordWrap: 'break-word', // 단어가 긴 경우 자동 줄바꿈
-    }}
-  >
-    <p>{text}</p>
-  </div>
-)
-
-// 간격 컴포넌트
-const IntervalComponent = ({ size }: IntervalType) => (
-  <div className={`${styles.interval} ${styles[`interval-${size}`]}`} />
-)
-
-// 지도 컴포넌트
-const MapComponent = ({ main_address, detail_address }: MapType) => {
-  return (
-    <div className="text-xs text-slate-500">
-      <p>
-        {main_address}, {detail_address}
-      </p>
-      <Map address={main_address} />
-    </div>
-  )
-}
+import {
+  ImageComponent,
+  IntervalComponent,
+  MapComponent,
+  TextComponent,
+  VideoComponent,
+} from '@/app/_components/edit/previewModal/RenderContents'
 
 const PreviewModal = ({
   form,
@@ -78,15 +29,12 @@ const PreviewModal = ({
 
   useEffect(() => {
     let formData = form.getValues()
-    setContentsData(formData?.contents)
     setBackground(Number(formData?.background_image) + 1)
-  }, [])
+  }, [form.getValues()])
 
   useEffect(() => {
-    // setBackground(Number(contentsInfo?.background_image) + 1)
-    // setContentsData(contentsInfo)
-    console.log('contentsInfo', contentsInfo)
-  }, [])
+    setContentsData(contentsInfo)
+  }, [contentsInfo])
 
   const renderContent = (content: ContentDataType, index: number) => {
     switch (content.type) {
@@ -148,7 +96,7 @@ const PreviewModal = ({
       <div
         style={{
           backgroundImage: `url('/img/background_${background}.png')`,
-          paddingTop: background % 2 === 1 ? '9rem' : '0.5rem', // 홀수일 때 더 많은 마진
+          paddingTop: background % 2 === 1 ? '8rem' : '0.5rem', // 홀수일 때 더 많은 마진
           backgroundRepeat: background % 2 === 1 ? 'no-repeat' : 'repeat-y',
           backgroundAttachment: 'scroll', // background가 스크롤과 함께 움직이도록 설정
         }}

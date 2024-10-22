@@ -125,7 +125,7 @@ export default function ImageContainer({
           </div>
           <button
             onClick={(e) => onDelete && onDelete(id)}
-            className="relative bottom-0 left-[235px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2"
+            className="relative bottom-0 left-[220px] flex items-center justify-center border-[1px] border-gray-300 rounded-sm w-[65px] p-1 my-2"
           >
             <p>삭제</p>
             <RiDeleteBin6Line className="size-4 text-gray-600 ml-1" />
