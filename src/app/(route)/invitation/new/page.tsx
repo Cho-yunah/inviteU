@@ -60,6 +60,7 @@ const NewInvitation = () => {
 
         toast.success('🎉 초대장 저장에 성공했습니다 🎉')
         router.replace(`/invitation/${invitationId}/preview`) // 미리보기 페이지로 이동
+        router.refresh()
       } catch (error) {
         console.error('초대장 저장 실패', error)
         toast.error('초대장 저장 실패')
