@@ -18,10 +18,7 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
-import {
-  setCurrentContentsInfo,
-  setSelectedInvitation,
-} from '@/lib/features/invitation/invitationSlice'
+import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
 
 const NewInvitation = () => {
   const data = useUser()

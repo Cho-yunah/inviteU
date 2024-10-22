@@ -19,7 +19,10 @@ const PreviewPage = () => {
 
   return (
     <div className="w-[375px] h-full flex flex-col justify-center align-center items-center  p-3">
-      <div style={{ maxHeight: '80vh' }} className="border-[1px] rounded-xl shadow-md">
+      <div
+        style={{ maxHeight: '80vh', maxWidth: '300px' }}
+        className="border-[1px] rounded-xl shadow-md"
+      >
         <div
           style={{
             backgroundImage: `url('/img/background_${+(background_image ?? 0) + 1}.png')`,

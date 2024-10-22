@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Import Swiper styles
@@ -14,7 +14,7 @@ import { Navigation, Pagination } from 'swiper/modules'
 
 interface slideProps {
   slideArr?: Array<{ id: number; title: string; color: string; url: any }>
-  checkedSlide: number
+  checkedSlide: string
   setCheckedSlide: any
   field?: any
 }
@@ -43,7 +43,7 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
         <input
           type="checkbox"
           id="check"
-          checked={checkedSlide == activeSlide ? true : false}
+          checked={+checkedSlide == activeSlide ? true : false}
           onChange={checkHandler}
         />
         <label htmlFor="check" className="left-[300px]"></label>
@@ -56,7 +56,7 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
         {slideArr?.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
-              className={`p-0 m-0 flex justify-center w-full ${checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
+              className={`p-0 m-0 flex justify-center w-full ${+checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
             >
               <Image src={slide.url} alt={slide.title} width={300} height={550} />
             </div>

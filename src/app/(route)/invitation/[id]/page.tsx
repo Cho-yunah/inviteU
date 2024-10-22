@@ -19,8 +19,9 @@ import { RootState } from '@/lib/store'
 import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
+import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
 
-const Edit = () => {
+const EditInvitation = () => {
   const user = useUser()
   const router = useRouter()
   const dispatch = useDispatch()
@@ -61,7 +62,6 @@ const Edit = () => {
 
   // 폼 제출 핸들러
   async function onSubmit(values: z.infer<typeof invitationFormSchema>) {
-    console.log(form.getValues())
     try {
       // 콘텐츠 정보를 폼 값에 추가
       form.setValue('id', currentInvitation?.id || '')
@@ -74,8 +74,7 @@ const Edit = () => {
 
       const response = await axios.put('/api/invitation', transformedValues)
       const invitationId = response.data.id // 생성된 초대장 ID
-
-      // dispatch(setSelectedInvitation({ ...values, id: currentInvitation?.id || '' }))
+      dispatch(setSelectedInvitation({ ...values, contents: [...contentsInfo] })) // 선택된 초대장으로 설정
 
       toast.success('🎉 초대장 저장에 성공했습니다 🎉')
       router.replace(`/invitation/${invitationId}/preview`) // 미리보기 페이지로 이동
@@ -139,4 +138,4 @@ const Edit = () => {
   )
 }
 
-export default Edit
+export default EditInvitation
