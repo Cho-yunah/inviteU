@@ -29,9 +29,11 @@ export const invitationFormSchema = z.object({
     message: '이미지 URL을 넣어주세요.',
   }),
   background_image: z.string().min(1, { message: '배경 이미지를 선택해주세요.' }),
+  id: z.string().optional(),
   contents: z
     .array(
       z.object({
+        id: z.string().optional(),
         type: z.string().nonempty({ message: '콘텐츠 타입을 입력해주세요.' }), // 예: 'text', 'image'
         text: z.string().optional(), // text가 없는 경우 optional로 설정
         layout: z.string().optional(), // layout 정보가 필요할 경우

@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
 import { IoIosLink } from 'react-icons/io'
 import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
-import { setCurrentInvitation } from '@/lib/features/invitation/editInvitationSlice'
+import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
 
 interface ListItemProps {
   item: any
@@ -21,7 +21,7 @@ const ListItem = React.memo(({ item, onRemove }: ListItemProps) => {
 
   // 수정 페이지로 이동하는 핸들러
   const handleMoveEdit = useCallback(() => {
-    dispatch(setCurrentInvitation(item))
+    dispatch(setSelectedInvitation(item))
     router.push(`/invitation/${item.id}`)
   }, [dispatch, item, router])
 

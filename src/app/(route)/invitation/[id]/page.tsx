@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import styles from '../edit.module.scss'
 import { z } from 'zod'
+import styles from '../edit.module.scss'
 import BaseInfo from '@/app/_components/edit/basicInfo'
 import ContentsInfo from '@/app/_components/edit/contentsInfo'
 import Background from '@/app/_components/edit/background'
@@ -16,30 +16,20 @@ import axios from 'axios'
 import PreviewModal from '@/app/_components/edit/previewModal'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/lib/store'
-import dayjs from 'dayjs'
 import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
 import { toast } from 'react-toastify'
-
-interface AsyncDefaultValues {
-  user_id: string
-  title: string
-  custom_url: string
-  date: string
-  time: string
-  primary_image: string
-  background_image: string
-  contents: ContentDataType[]
-}
+import { useRouter } from 'next/navigation'
 
 const Edit = () => {
   const user = useUser()
+  const router = useRouter()
   const dispatch = useDispatch()
   const currentInvitation = useSelector((state: RootState) => state.invitation.selected)
 
   const [contentsInfo, setContentsInfo] = useState<ContentDataType[]>(
     currentInvitation?.contents || [],
   )
-  const [checkedSlide, setCheckedSlide] = useState<number>(0)
+  const [checkedSlide, setCheckedSlide] = useState(currentInvitation?.background_image || '')
   const [showPreviewModal, setShowPreviewModal] = useState(false)
 
   const onClosePreviewModal = () => setShowPreviewModal(false)
@@ -53,6 +43,7 @@ const Edit = () => {
   })
 
   useEffect(() => {
+    console.log(currentInvitation)
     if (currentInvitation) {
       form.reset({
         ...currentInvitation,
@@ -61,33 +52,37 @@ const Edit = () => {
     }
   }, [currentInvitation, form])
 
+  // 유저 ID를 폼에 설정
   useEffect(() => {
     if (user) {
       form.setValue('user_id', user.id)
     }
   }, [user, form])
 
+  // 폼 제출 핸들러
   async function onSubmit(values: z.infer<typeof invitationFormSchema>) {
-    // form.setValue('contents', [...contentsInfo])
-    //  dispatch(setInvitation(values))
+    console.log(form.getValues())
+    try {
+      // 콘텐츠 정보를 폼 값에 추가
+      form.setValue('id', currentInvitation?.id || '')
+      form.setValue('contents', [...contentsInfo])
 
-    const transformValues = {
-      ...values,
-      contents: JSON.stringify(values.contents),
+      const transformedValues = {
+        ...values,
+        contents: JSON.stringify(values.contents),
+      }
+
+      const response = await axios.put('/api/invitation', transformedValues)
+      const invitationId = response.data.id // 생성된 초대장 ID
+
+      // dispatch(setSelectedInvitation({ ...values, id: currentInvitation?.id || '' }))
+
+      toast.success('🎉 초대장 저장에 성공했습니다 🎉')
+      router.replace(`/invitation/${invitationId}/preview`) // 미리보기 페이지로 이동
+    } catch (error) {
+      console.error('초대장 저장 실패', error)
+      toast.error('초대장 저장 실패')
     }
-
-    //  if (transformValues) {
-    //    try {
-    //     //  const response = await axios.put('/api/invitation', transformValues)
-    //     //  const invitationId = response.data.id // 생성된 초대장의 ID
-
-    //      toast.success('🎉 초대장 저장에 성공했습니다 🎉')
-    //     //  router.replace(`/invitation/${invitationId}/preview`) // 미리보기 페이지로 이동
-    //    } catch (error) {
-    //      console.error('초대장 저장 실패', error)
-    //      toast.error('초대장 저장 실패')
-    //    }
-    //  }
   }
 
   return (
@@ -126,6 +121,7 @@ const Edit = () => {
             </TabsContent>
             <button
               type="submit"
+              id="saveButton"
               className="absolute top-[-9px] right-2 z-100 bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold"
             >
               저장함
@@ -133,8 +129,14 @@ const Edit = () => {
           </form>
         </Form>
       </Tabs>
-      <PreviewModal form={form} isOpen={showPreviewModal} onClose={onClosePreviewModal} />
+      <PreviewModal
+        form={form}
+        contentsInfo={contentsInfo}
+        isOpen={showPreviewModal}
+        onClose={onClosePreviewModal}
+      />
     </div>
   )
 }
+
 export default Edit
