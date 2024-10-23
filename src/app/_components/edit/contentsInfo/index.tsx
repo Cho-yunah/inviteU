@@ -14,12 +14,10 @@ export default function ContentsInfo({
   contentsInfo,
   setContentsInfo,
   setShowPreviewModal,
-  // onClose,
 }: {
   contentsInfo: ContentDataType[]
   setContentsInfo: (value: ContentDataType[]) => void
   setShowPreviewModal: (value: boolean) => void
-  // onClose: () => void
 }) {
   const [showDrawer, setShowDrawer] = useState(false)
   const [components, setComponents] = useState(initialComponents)

@@ -11,7 +11,12 @@ export const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
           key={index}
           src={url}
           alt="Content Image"
-          style={{ aspectRatio: ratio, objectFit: 'cover' }}
+          style={{
+            aspectRatio: ratio,
+            objectFit: 'contain',
+            maxWidth: '300px',
+            maxHeight: '400px',
+          }}
         />
       ))}
     </div>

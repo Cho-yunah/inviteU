@@ -80,7 +80,7 @@ const ListItem = React.memo(({ item, onRemove }: ListItemProps) => {
               <CiCalendar size={15} className="text-gray-400 mr-1" />
               <span className="mt-[2px] align-bottom">
                 {' '}
-                {dayjs(item.date).format('YYYY.MM.DD  ddd  HH:mm A')}
+                {dayjs(item.date).format('YYYY.MM.DD')}
               </span>
             </div>
           </div>
@@ -104,4 +104,5 @@ const ListItem = React.memo(({ item, onRemove }: ListItemProps) => {
   )
 })
 
+ListItem.displayName = 'ListItem'
 export default ListItem

@@ -100,7 +100,7 @@ const NewInvitation = () => {
                 contentsInfo={contentsInfo}
                 setContentsInfo={setContentsInfo}
                 setShowPreviewModal={setShowPreviewModal}
-                onClose={onClosePreviewModal}
+                // onClose={onClosePreviewModal}
               />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="background">

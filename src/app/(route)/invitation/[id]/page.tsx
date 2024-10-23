@@ -44,7 +44,7 @@ const EditInvitation = () => {
   })
 
   useEffect(() => {
-    console.log(currentInvitation)
+    console.log('수정페이지 currentInvitation', currentInvitation)
     if (currentInvitation) {
       form.reset({
         ...currentInvitation,

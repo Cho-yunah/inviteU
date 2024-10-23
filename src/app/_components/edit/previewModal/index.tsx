@@ -100,7 +100,7 @@ const PreviewModal = ({
           backgroundRepeat: background % 2 === 1 ? 'no-repeat' : 'repeat-y',
           backgroundAttachment: 'scroll', // background가 스크롤과 함께 움직이도록 설정
         }}
-        className={`bg-cover bg-white max-w-[330px] min-h-[560px] rounded-b-xl overflow-hidden`}
+        className={`bg-contain bg-white max-w-[330px] min-h-[560px] rounded-b-xl overflow-hidden`}
       >
         {/* 콘텐츠 렌더링 */}
         <div className={styles.scroll}>
