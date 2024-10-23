@@ -15,12 +15,17 @@ export default function ImageContainer({
     type: 'image',
     layout: content.layout || 'vertical',
     ratio: content.ratio || '3/4',
-    urls: content.urls ? content.urls.split(',') : ([] as string[]), // 문자열을 배열로 변환
+    urls: content.urls ? content.urls.split(',') : [],
+    // urls: content.image_url
+    //   ? content.image_url.split(',')
+    //   : content.urls
+    //     ? content.urls.split(',')
+    //     : [],
   })
 
-  const handleFileUpload = (files: any) => {
-    const fileUrls = Array.from(files).map((file: any) => file) // 파일 이름을 배열로 추가
-    setImageData({ ...imageData, urls: [...imageData.urls, ...fileUrls] }) // 기존 urls 배열에 파일 추가
+  const handleFileUpload = (newUrls: any) => {
+    const updatedUrls = [...imageData.urls, ...newUrls]
+    setImageData((prev) => ({ ...prev, urls: updatedUrls }))
   }
 
   const handleChange = (e: any) => {
@@ -38,6 +43,8 @@ export default function ImageContainer({
     handleUpdateContent(updatedContent) // 상위로 업데이트된 데이터를 전달
   }, [imageData])
 
+  useEffect(() => console.log('이미지 컴포넌트에 들어온 content 데이터', content), [])
+
   return (
     <Accordion>
       <Accordion.Header>{'이미지'}</Accordion.Header>
@@ -45,7 +52,7 @@ export default function ImageContainer({
         <Accordion.Content description="초대장에 넣고 싶은 이미지를 추가해보세요">
           <div className="mt-4 pb-1">
             <p className="font-bold text-sm text-[#333] pb-1">이미지 추가*</p>
-            <FileUpload onFileUpload={handleFileUpload} imageUrls={content.urls} />
+            <FileUpload onFileUpload={handleFileUpload} imageUrls={imageData.urls.join(',')} />
             <p className="font-bold text-sm text-[#333] pb-1">레이아웃*</p>
             <div className="flex gap-3 my-2">
               <div className="flex flex-1 items-center space-x-1 ">
@@ -84,9 +91,9 @@ export default function ImageContainer({
                   type="radio"
                   name={`ratio_${id}`}
                   id={`ratio_3/4_${id}`}
-                  value={3 / 4}
+                  value="3/4"
                   className={styles.radioItem}
-                  checked={imageData.ratio == 3 / 4}
+                  checked={imageData.ratio == '3/4'}
                   onChange={handleChange}
                 />
                 <label htmlFor={`ratio_3/4_${id}`} className={styles.label}>
@@ -98,9 +105,9 @@ export default function ImageContainer({
                   type="radio"
                   name={`ratio_${id}`}
                   id={`ratio_1/1_${id}`}
-                  value={1 / 1}
+                  value="1/1"
                   className={styles.radioItem}
-                  checked={imageData.ratio == 1 / 1}
+                  checked={imageData.ratio == '1/1'}
                   onChange={handleChange}
                 />
                 <label htmlFor={`ratio_1/1_${id}`} className={styles.label}>
@@ -112,9 +119,9 @@ export default function ImageContainer({
                   type="radio"
                   name={`ratio_${id}`}
                   id={`ratio_4/3_${id}`}
-                  value={4 / 3}
+                  value="4/3"
                   className={styles.radioItem}
-                  checked={imageData.ratio == 4 / 3}
+                  checked={imageData.ratio == '4/3'}
                   onChange={handleChange}
                 />
                 <label htmlFor={`ratio_4/3_${id}`} className={styles.label}>

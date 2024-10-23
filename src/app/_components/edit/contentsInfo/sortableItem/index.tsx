@@ -9,6 +9,11 @@ import MapContainer from '../mapContainer'
 import TextContainer from '../textContainer'
 import IntervalContainer from '../intervalContainer'
 
+const normalizeContent = (content: any) => {
+  let urls = content.urls || content.image_url || '' // 두 가지 중 하나라도 사용
+  return { ...content, urls }
+}
+
 function SortableItem({ id, type, setComponents, content }: SortableItemProps) {
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
   const style: React.CSSProperties = {
@@ -17,6 +22,7 @@ function SortableItem({ id, type, setComponents, content }: SortableItemProps) {
     position: 'relative',
     margin: '4px 0px',
   }
+  const normalizedContent = normalizeContent(content)
 
   const handleUpdateContent = (updatedContent: any) => {
     setComponents((prevComponents: SortableItemProps[]) =>
@@ -47,7 +53,7 @@ function SortableItem({ id, type, setComponents, content }: SortableItemProps) {
       >
         <Image src="/Drag.svg" alt="move button" width={24} height={24} />
       </button>
-      {switchComponent({ id, type, content, onDelete, handleUpdateContent })}
+      {switchComponent({ id, type, content: normalizedContent, onDelete, handleUpdateContent })}
     </div>
   )
 }

@@ -83,7 +83,8 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, imageUrls,
     })
   }
 
-  const handleDeletePreview = (index: number) => {
+  const handleDeletePreview = (e: any, index: number) => {
+    e.stopPropagation()
     const updatedPreviews = [...filePreviews]
     updatedPreviews.splice(index, 1)
     setFilePreviews(updatedPreviews)
@@ -156,9 +157,10 @@ export const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload, imageUrls,
             className="size-[110px] aspect-square object-cover rounded-sm"
           />
           <Button
+            type="button"
             color="danger"
             size="sm"
-            onClick={() => handleDeletePreview(index)}
+            onClick={(e) => handleDeletePreview(e, index)}
             className="absolute top-1 right-2 size-5 p-0 bg-slate-50"
           >
             <IoClose />

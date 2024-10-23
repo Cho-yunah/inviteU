@@ -60,7 +60,7 @@ const renderContent = (content: any, index: number) => {
           type="image"
           layout={content.layout}
           ratio={content.ratio}
-          urls={content.urls}
+          urls={content.urls || content.image_url}
         />
       )
     case 'video':

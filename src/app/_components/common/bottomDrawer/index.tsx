@@ -57,31 +57,56 @@ const BottomDrawer = ({ showDrawer, setShowDrawer, handleAddComponent }: BottomD
             </div>
           </div>
           <div className={styles.drawerContent}>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="image">
+            <button
+              id="image"
+              type="button"
+              className={styles.drawerItem}
+              onClick={handleClickDrawerItem}
+            >
               <div className={styles.icon}>
                 <FaRegImage className="size-8" />
               </div>
               <p>Image</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="video">
+            <button
+              id="video"
+              type="button"
+              className={styles.drawerItem}
+              onClick={handleClickDrawerItem}
+            >
               <div>
                 <FaRegFileVideo className="size-8" />
               </div>
               <p>Video</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="text">
+            <button
+              id="text"
+              type="button"
+              className={styles.drawerItem}
+              onClick={handleClickDrawerItem}
+            >
               <div>
                 <IoText className="size-8" />
               </div>
               <p>Text</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="interval">
+            <button
+              id="interval"
+              type="button"
+              className={styles.drawerItem}
+              onClick={handleClickDrawerItem}
+            >
               <div>
                 <RxTextAlignMiddle className="size-8" />
               </div>
               <p>Interval</p>
             </button>
-            <button className={styles.drawerItem} onClick={handleClickDrawerItem} id="map">
+            <button
+              id="map"
+              type="button"
+              className={styles.drawerItem}
+              onClick={handleClickDrawerItem}
+            >
               <div>
                 <FaMapLocationDot className="size-8" />
               </div>
