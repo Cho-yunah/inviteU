@@ -56,7 +56,7 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
                 {...field}
               />
             </FormControl>
-            {errors.title ? (
+            {errors.custom_url ? (
               <FormMessage className="text-xs text-red-400 p-1" />
             ) : (
               <span className="block">&nbsp;</span>
@@ -76,7 +76,7 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
             <FormControl>
               <DatePickerForm field={field} formSchema={formSchema} />
             </FormControl>
-            {errors.title ? (
+            {errors.date ? (
               <FormMessage className="text-xs text-red-400 p-1" />
             ) : (
               <span className="block">&nbsp;</span>
@@ -96,7 +96,7 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
             <FormControl>
               <TimePickerCustom field={field} formSchema={formSchema} />
             </FormControl>
-            {errors.title ? (
+            {errors.time ? (
               <FormMessage className="text-xs text-red-400 p-1" />
             ) : (
               <span className="block">&nbsp;</span>
