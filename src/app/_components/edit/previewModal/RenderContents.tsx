@@ -14,7 +14,7 @@ export const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
           style={{
             aspectRatio: ratio,
             objectFit: 'contain',
-            maxWidth: '300px',
+            maxWidth: '280px',
             maxHeight: '400px',
           }}
         />
