@@ -5,8 +5,8 @@ export const invitationFormSchema = z.object({
   user_id: z.string().min(10),
   title: z
     .string()
-    .min(7, {
-      message: '초대장 제목은 7자 이상 입력해주세요.',
+    .min(6, {
+      message: '초대장 제목은 6자 이상 입력해주세요.',
     })
     .max(60, {
       message: '초대장 제목은 60자 이하로 입력해주세요.',
@@ -19,9 +19,15 @@ export const invitationFormSchema = z.object({
     .refine((value) => /^[a-z-]+$/g.test(value), {
       message: '커스텀 주소는 영어 소문자로 입력해주세요.',
     }),
-  date: z.string().refine((value) => dayjs(value).isAfter(dayjs(), 'day'), {
-    message: '날짜는 오늘 이후로 선택해주세요.',
-  }),
+  date: z.string().refine(
+    (value) => {
+      const parsedDate = dayjs(value) // 문자열을 날짜로 파싱
+      return parsedDate.isValid() && parsedDate.isAfter(dayjs(), 'day') // 날짜 유효성 및 비교
+    },
+    {
+      message: '날짜는 오늘 이후로 선택해주세요.',
+    },
+  ),
   time: z.string().min(5, {
     message: '시간을 선택해주세요.',
   }),
