@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID, UUID } from 'crypto'
 import { judgeImageAndVideoValid, searchParamsToObject } from '@/lib/helper'
 import { ContentDataType } from '@/lib/types'
+import { cursorTo } from 'readline'
 
 type Data = {
   id?: string
@@ -459,9 +460,10 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
     limit: number
     user_id: string
     invitation_id: string
+    custom_url: string
   }>(searchParams)
 
-  const { start, limit, user_id, invitation_id } = query!
+  const { start, limit, user_id, invitation_id, custom_url } = query!
 
   let queryBuilder = supabase.from('invitation').select('*')
   //Limit이 있을 경우 페이지네이션 로직을 추가, 기본 값은 10
@@ -476,6 +478,15 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
   // userid가 있을 경우 해당 유저의 초대장 리스트를 조회
   if (user_id) {
     queryBuilder = queryBuilder.eq('user_id', user_id.toString())
+  }
+  // Custom URL이 있을 경우 해당 URL의 초대장을 조회
+  if (custom_url) {
+    const { data, error } = await queryBuilder.eq('custom_url', custom_url).single()
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 404 })
+    }
+    return NextResponse.json(data, { status: 200 })
   }
 
   const { data, error } = await queryBuilder.select('*')
