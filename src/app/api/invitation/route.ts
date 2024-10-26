@@ -453,7 +453,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
   return NextResponse.json({ id, message: 'Successfully updated' }, { status: 200 })
 }
 
-export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
+export const GET = async (req: NextRequest) => {
   const searchParams = req.nextUrl.searchParams
   const query = searchParamsToObject<{
     start: number
@@ -465,105 +465,109 @@ export const GET = async (req: NextRequest, res: NextApiResponse<Data>) => {
 
   const { start, limit, user_id, invitation_id, custom_url } = query!
 
+  // Supabase 쿼리 빌더 생성
   let queryBuilder = supabase.from('invitation').select('*')
-  //Limit이 있을 경우 페이지네이션 로직을 추가, 기본 값은 10
 
+  // Pagination 처리
   queryBuilder = queryBuilder.range(
     Number(start || 0),
     Number(start || 0) + Number(limit || 10) - 1,
   )
+
+  // 초대장 ID로 조회
   if (invitation_id) {
     queryBuilder = queryBuilder.eq('id', invitation_id)
   }
-  // userid가 있을 경우 해당 유저의 초대장 리스트를 조회
+
+  // 유저 ID로 리스트 조회
   if (user_id) {
     queryBuilder = queryBuilder.eq('user_id', user_id.toString())
   }
-  // Custom URL이 있을 경우 해당 URL의 초대장을 조회
+
+  // 특정 custom_url로 조회
   if (custom_url) {
     const { data, error } = await queryBuilder.eq('custom_url', custom_url).single()
+    if (error) return NextResponse.json({ error: error.message }, { status: 404 })
 
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 404 })
-    }
-    return NextResponse.json(data, { status: 200 })
+    const enrichedData = await enrichContents(data)
+    return NextResponse.json(enrichedData, { status: 200 })
   }
 
-  const { data, error } = await queryBuilder.select('*')
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 })
-  }
+  // 리스트 조회
+  const { data, error } = await queryBuilder
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  const response = []
+  // 각 초대장의 contents 데이터를 병렬로 처리
+  const enrichedResponses = await Promise.all(data.map(enrichContents))
+  return NextResponse.json(enrichedResponses, { status: 200 })
+}
 
-  for (const item of data) {
-    const contents = []
+// 콘텐츠를 비동기적으로 보강하는 함수
+async function enrichContents(item: any) {
+  const contents = await Promise.all(
+    (item.contents || []).map(async (content: { type: string; uuid: string }) => {
+      let contentData = { type: content.type }
 
-    if (item.contents && Array.isArray(item.contents)) {
-      for (const content of item.contents as RefinedContentsType[]) {
-        let contentData
-        switch (content?.type) {
+      try {
+        switch (content.type) {
           case 'images':
             const { data: imageData } = await supabase
               .from('images')
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = { type: 'images', ...imageData }
-            break
+            return { ...contentData, ...imageData, type: 'image' }
+
           case 'videos':
             const { data: videoData } = await supabase
               .from('videos')
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = {
-              type: 'videos',
+            return {
+              ...contentData,
+              type: 'video',
               created_at: videoData?.created_at,
               urls: videoData?.video_url ? [videoData?.video_url] : [],
-              id: videoData?.id,
               ratio: videoData?.ratio,
             }
-            break
+
           case 'text':
             const { data: textData } = await supabase
               .from('text')
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = { type: 'text', ...textData }
-            break
+            return { ...contentData, ...textData }
+
           case 'interval':
             const { data: intervalData } = await supabase
               .from('interval')
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = { type: 'interval', ...intervalData }
-            break
+            return { ...contentData, ...intervalData }
+
           case 'map':
             const { data: mapData } = await supabase
               .from('map')
               .select('*')
               .eq('id', content.uuid)
               .single()
-            contentData = { type: 'map', ...mapData }
-            break
+            return { ...contentData, ...mapData }
+
+          default:
+            console.warn(`Unknown content type: ${content.type}`)
+            return contentData
         }
-        if (contentData) {
-          contents.push(contentData)
-        }
+      } catch (error) {
+        console.error(`Error fetching content of type ${content.type}:`, error)
+        return null
       }
-    }
+    }),
+  )
 
-    response.push({ ...item, contents })
-  }
-
-  if (error) {
-    return NextResponse.json(error, { status: 500 })
-  }
-
-  return NextResponse.json(response, { status: 200 })
+  return { ...item, contents: contents.filter(Boolean) } // 유효한 콘텐츠만 반환
 }
 
 export const DELETE = async (req: NextRequest, res: NextResponse<Data>) => {

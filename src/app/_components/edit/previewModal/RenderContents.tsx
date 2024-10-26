@@ -5,21 +5,19 @@ import { getCoordinates } from '@/lib/geocode'
 
 // 이미지 컴포넌트
 export const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
+  console.log(urls)
   return (
     <div className={`image-container ${layout} px-0 py-1`}>
-      {urls.split(',').map((url, index) => (
-        <img
-          key={index}
-          src={url}
-          alt="Content Image"
-          style={{
-            aspectRatio: ratio,
-            objectFit: 'contain',
-            maxWidth: '300px',
-            maxHeight: '400px',
-          }}
-        />
-      ))}
+      {urls
+        ?.split(',')
+        ?.map((url, index) => (
+          <img
+            key={index}
+            src={url}
+            alt="Content Image"
+            className="w-auto h-auto rounded-xl border-2 border-opacity-40 border-gray-200 shadow-sm mb-6"
+          />
+        ))}
     </div>
   )
 }

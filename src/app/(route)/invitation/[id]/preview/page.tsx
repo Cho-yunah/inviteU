@@ -33,7 +33,7 @@ const PreviewPage = () => {
           }}
           className={`bg-cover min-w-[300px] min-h-[500px] rounded-xl overflow-hidden`}
         >
-          <div className={styles.scroll}>
+          <div className="scrollbar-hide">
             {contents &&
               contents.map((content, index) => {
                 return renderContent(content, index)
