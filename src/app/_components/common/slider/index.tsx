@@ -13,7 +13,7 @@ import Image from 'next/image'
 import { Navigation, Pagination } from 'swiper/modules'
 
 interface slideProps {
-  slideArr?: Array<{ id: number; title: string; color: string; url: any }>
+  slideArr?: Array<{ id: number; title: string; url: any }>
   checkedSlide: string
   setCheckedSlide: any
   field?: any
@@ -56,9 +56,9 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
         {slideArr?.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
-              className={`p-0 m-0 flex justify-center w-full ${+checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
+              className={`p-0 m-0 flex justify-center ${+checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
             >
-              <Image src={slide.url} alt={slide.title} width={300} height={550} />
+              <Image src={slide.url} alt={slide.title} width={300} height={470} />
             </div>
           </SwiperSlide>
         ))}
