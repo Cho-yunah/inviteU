@@ -1,18 +1,13 @@
 'use client'
 
 import { supabase } from '@/supabase/browser'
-// import type { Session } from '@supabase/auth-helpers-nextjs'
 import { useUser } from '@supabase/auth-helpers-react'
-// import { createBrowserClient } from '@supabase/ssr'
 import { useRouter } from 'next/navigation'
 import { createContext, useContext, useState, useEffect } from 'react'
+import { Session } from '@supabase/supabase-js' // Import the Session type from the Supabase library
 
 type SupabaseContext = {
-  supabase: any
-  session: null | {
-    access_token: string
-    refresh_token: string
-  }
+  session: Session | null
   isLoading: boolean
 }
 
@@ -24,19 +19,26 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
   const router = useRouter()
   const data = useUser()
   // const [supabase] = useState(() => createBrowserClient());
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<null | Session>(null)
   const [isLoading, setLoading] = useState(true)
 
-  // Hydrate user context and company data for a user
+  // Supabase 세션 상태 변경 핸들링
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event: any, session: any) => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log('Auth state changed:', event)
       if (event === 'SIGNED_OUT') {
         setSession(null)
       } else if (session) {
         setSession(session)
       }
+
+      setLoading(false) // 세션 설정 이후 로딩 종료
     })
-    setLoading(false)
+
+    // 컴포넌트 언마운트 시 이벤트 정리
+    return () => {
+      authListener?.subscription.unsubscribe() // access the subscription property before calling unsubscribe()
+    }
   }, [])
 
   // 새로고침 / 페이지로 이동되지 않도록 해야함
@@ -46,8 +48,9 @@ export default function SupabaseProvider({ children }: { children: React.ReactNo
   //     router.push('/')
   //   }
   // }, [data])
+
   return (
-    <Context.Provider value={{ supabase, session, isLoading }}>
+    <Context.Provider value={{ session, isLoading }}>
       <>{children}</>
     </Context.Provider>
   )

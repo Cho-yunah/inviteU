@@ -4,7 +4,6 @@ import './style.scss'
 import Image from 'next/image'
 import Logo from '/public/img/logo.png'
 import { IoMdClose } from 'react-icons/io'
-import { useUser } from '@supabase/auth-helpers-react'
 import { supabase } from '@/supabase/browser'
 
 const customStyles = {
@@ -24,22 +23,23 @@ const customStyles = {
 }
 
 const LoginModal = ({ isOpen, setIsOpen }: any) => {
-  // const data = useUser()
-
   const logInWithKakao = async () => {
     try {
       // OAuth 인증 시작
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
         options: {
-          redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://invite-u.vercel.app',
+          redirectTo:
+            'https://invite-u.vercel.app/auth/kakao/callback' ||
+            process.env.NEXT_PUBLIC_REDIRECT_URL,
         },
       })
-      console.log(data)
 
       if (error) throw new Error(error.message)
-      // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
-      // console.log(sessionData)
+      console.log('로그인 성공', data)
+      alert(data)
+      const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
+      console.log(sessionData)
 
       // 인증 완료 후 세션 정보를 가져오기
       // if (sessionError) throw new Error(sessionError.message);
@@ -60,8 +60,6 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
         style={customStyles}
         contentLabel="Example Modal"
         overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-10 "
-        // onAfterOpen={afterOpenModal}
-        // appElement={document.getElementById('root') as HTMLElement}
       >
         <div className="py-3 text-center">
           <div className="flex items-center justify-center p-2">
