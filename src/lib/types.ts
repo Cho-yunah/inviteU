@@ -1,8 +1,9 @@
 export type ImageType = {
+  image_url?: string
   type: 'image'
   layout: 'vertical' | 'horizontal'
   ratio: string
-  urls: string
+  urls?: string
 }
 export type VideoType = {
   type: 'video'
@@ -35,6 +36,8 @@ export const exampleContents: ContentDataType[] = [
     layout: 'vertical',
     ratio: '1.5',
     urls: 'https://hjjneamnafhopugmpfpu.supabase.co/storage/v1/object/public/inviteU/image/a9542077-f708-481b-b72f-7fec5ca4ff55/1727196501845.svg',
+    image_url:
+      'https://hjjneamnafhopugmpfpu.supabase.co/storage/v1/object/public/inviteU/image/a9542077-f708-481b-b72f-7fec5ca4ff55/1727196501845.svg',
   },
   {
     type: 'video',

@@ -1,24 +1,23 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-
-module.exports = {
+const nextConfig = {
   async rewrites() {
+    const destinationBaseUrl =
+      process.env.NODE_ENV === 'production'
+        ? 'https://invite-u.vercel.app'
+        : 'http://localhost:3000'
+
     return [
       {
         source: '/api/:path*',
-        destination: 'http://localhost:3000/api/:path*',
+        destination: `${destinationBaseUrl}/api/:path*`,
       },
     ]
-  }
+  },
+  env: {
+    NEXT_PUBLIC_INVITATION_BASE_URL:
+      process.env.NODE_ENV === 'production'
+        ? 'https://invite-u.vercel.app'
+        : 'http://localhost:3000',
+  },
 }
 
-
-// distDir: "_next",
-//   generateBuildId: async () => {
-//     if (process.env.BUILD_ID) {
-//       return process.env.BUILD_ID;
-//     } else {
-//       return `${new Date().getTime()}`;
-//     }
-//   },
+module.exports = nextConfig
