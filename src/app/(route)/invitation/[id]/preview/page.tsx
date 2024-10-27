@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import styles from '@/app/_components/edit/previewModal/previewModal.module.scss'
 import { RootState } from '@/lib/store'
 import { useSelector } from 'react-redux'
 import {
@@ -18,29 +17,30 @@ const PreviewPage = () => {
   const { background_image, contents } = currentInvitation ?? {}
 
   return (
-    <div className="w-[375px] h-full flex flex-col justify-center align-center items-center  p-3">
+    <div className="w-full h-full flex flex-col justify-center items-center p-3">
+      {/* 박스 내부 스크롤 영역 */}
       <div
-        style={{ maxHeight: '80vh', maxWidth: '300px' }}
-        className="border-[1px] rounded-xl shadow-md"
+        className="border-[1px] rounded-xl shadow-md overflow-y-scroll"
+        style={{ maxHeight: '65vh', maxWidth: '310px' }}
       >
         <div
+          className="bg-cover bg-center rounded-xl overflow-y-auto"
           style={{
             backgroundImage: `url('/img/background_${+(background_image ?? 0) + 1}.png')`,
-            paddingTop: background_image && +background_image % 2 == 1 ? '1rem' : '8rem', // 홀수일 때 더 많은 마진
+            maxHeight: '80vh', // 박스 내 최대 높이 설정
+            paddingTop: background_image && +background_image % 2 === 1 ? '1rem' : '8rem',
             backgroundRepeat:
               background_image && +background_image % 2 === 1 ? 'no-repeat' : 'repeat-y',
-            backgroundAttachment: 'scroll', // background가 스크롤과 함께 움직이도록 설정
+            backgroundAttachment: 'scroll',
           }}
-          className={`bg-cover min-w-[300px] min-h-[500px] rounded-xl overflow-hidden`}
         >
-          <div className="scrollbar-hide">
-            {contents &&
-              contents.map((content, index) => {
-                return renderContent(content, index)
-              })}
+
+          <div className="p-1">
+            {contents && contents.map((content, index) => renderContent(content, index))}
           </div>
         </div>
       </div>
+
       <button className="mt-4 w-10/12 rounded-md bg-gray-900 text-base text-white border-[1px] p-2">
         <Link href="/invitation">목록으로 돌아가기</Link>
       </button>
