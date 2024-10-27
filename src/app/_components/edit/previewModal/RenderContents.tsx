@@ -15,7 +15,7 @@ export const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
             key={index}
             src={url}
             alt="Content Image"
-            className="w-auto h-auto rounded-xl border-2 border-opacity-40 border-gray-200 shadow-sm mb-6"
+            className="w-auto h-auto rounded-xl shadow-md mb-6"
           />
         ))}
     </div>

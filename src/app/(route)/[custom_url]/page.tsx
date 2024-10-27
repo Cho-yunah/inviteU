@@ -6,6 +6,9 @@ import {
   VideoComponent,
 } from '@/app/_components/edit/previewModal/RenderContents'
 import { ContentDataType } from '@/lib/types'
+import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
+import { format } from 'date-fns'
+import { ko } from 'date-fns/locale'
 
 type InvitationData = {
   title: string
@@ -35,11 +38,30 @@ interface Props {
   params: { custom_url: string }
 }
 
+function formatDateTime(dateString: any, timeString: any) {
+  let [year, month, day] = dateString.split('-')
+  day = day.split('T')[0]
+  const [hour, minute] = timeString.split(':')
+  console.log(year, month, day, hour, minute)
+
+  // 병합된 Date 객체 생성
+  const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))
+
+  // 일정과 시간 문자열로 포맷팅
+  const formattedDate = format(date, 'yyyy년 M월 d일', { locale: ko })
+  const formattedTime = format(date, 'a h시 mm분', { locale: ko })
+
+  return `${formattedDate} \n ${formattedTime}`
+}
+
 export default async function InvitationPage({ params }: any) {
   const invitationData = await getInvitationData(params.custom_url)
 
   const background = invitationData ? Number(invitationData.background_image) : 0
   console.log(background)
+  const formattedDateTime = invitationData
+    ? formatDateTime(invitationData.date, invitationData.time)
+    : ''
 
   const renderContent = (content: ContentDataType, index: number) => {
     switch (content.type) {
@@ -94,60 +116,43 @@ export default async function InvitationPage({ params }: any) {
         className="absolute inset-0 bg-cover bg-center opacity-100 pt-1"
         style={{
           backgroundImage: `url('/img/background_${+(background ?? 0) + 1}.png')`,
-          // backgroundImage: `url('/img/background_12.png')`,
         }}
       />
 
       {/* 중앙 콘텐츠 */}
-      <div className="relative z-10 w-7/12 max-w-xl bg-opacity-100 rounded-xl mt-1 p-2 overflow-y-auto max-h-[52vh] scrollbar-hide smooth-scroll">
+      <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 overflow-y-auto max-h-[53vh] scrollbar-hide smooth-scroll">
         {/* 제목 */}
-        <h1 className="text-4xl font-semibold text-center mb-4">{invitationData.title}</h1>
+        <h1 className="text-4xl font-semibold text-center mb-4 font-batang">
+          {invitationData.title}
+        </h1>
 
         {/* 메인 이미지 */}
         <img
           src={invitationData.primary_image}
           alt="초대장 메인 이미지"
-          className="w-full h-auto rounded-xl border-2 border-opacity-40 border-gray-300 shadow-lg mb-6"
+          className="w-full h-auto rounded-xl shadow-lg mb-6"
         />
+        <p className="text-center text-base mb-4 font-batang font-semibold whitespace-pre">
+          {formattedDateTime}
+        </p>
 
         {/* 주소 */}
-        <p className="text-lg text-center mb-6">{invitationData.main_address}</p>
+        <p className="text-sm text-center mb-6">{invitationData.main_address}</p>
 
         {/* 콘텐츠 컴포넌트 렌더링 */}
         <div className="space-y-6">
           {invitationData.contents.map((content, index) => renderContent(content, index))}
         </div>
 
+        <KakaoShareButton
+          title={invitationData.title}
+          imageUrl={invitationData.primary_image}
+          date={invitationData.date}
+          time={invitationData.time}
+          invitationUrl={`${process.env.NEXT_PUBLIC_API_URL}/${params.custom_url}`}
+        />
         {/* 카카오톡 공유 버튼 */}
-        {/* <KakaoShareButton invitationUrl={`https://invite-u.vercel.app/${params.custom_url}`} /> */}
       </div>
     </div>
   )
 }
-
-// <button
-//   // onClick={() => {
-//   //   window.Kakao.Link.sendDefault({
-//   //     objectType: 'feed',
-//   //     content: {
-//   //       title: invitationData.title,
-//   //       imageUrl: invitationData.primary_image,
-//   //       link: {
-//   //         webUrl: `https://invite-u.vercel.app/${params.custom_url}`,
-//   //       },
-//   //     },
-//   //     buttons: [
-//   //       {
-//   //         title: '초대장 보기',
-//   //         link: {
-//   //           mobileWebUrl: `https://invite-u.vercel.app/${params.custom_url}`,
-//   //           webUrl: `https://invite-u.vercel.app/${params.custom_url}`,
-//   //         },
-//   //       },
-//   //     ],
-//   //   })
-//   // }}
-//   className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded"
-// >
-//   카카오톡으로 공유하기
-// </button>
