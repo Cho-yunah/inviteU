@@ -32,12 +32,14 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
           redirectTo:
             'https://invite-u.vercel.app/auth/kakao/callback' ||
             process.env.NEXT_PUBLIC_REDIRECT_URL,
+          skipBrowserRedirect: false, // 브라우저 리디렉션 유지
         },
       })
 
       if (error) throw new Error(error.message)
       console.log('로그인 성공', data)
-      alert(data)
+      // alert(data)
+
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
       console.log(sessionData)
 
