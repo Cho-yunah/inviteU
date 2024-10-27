@@ -103,7 +103,7 @@ const PreviewModal = ({
         className={`bg-contain bg-white max-w-[330px] min-h-[560px] rounded-b-xl overflow-hidden`}
       >
         {/* 콘텐츠 렌더링 */}
-        <div className={styles.scroll}>
+        <div className="scrollbar-hide">
           {contentsData.length > 0 &&
             contentsData.map((content: ContentDataType, index: number) =>
               renderContent(content, index),

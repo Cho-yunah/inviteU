@@ -1,12 +1,11 @@
 import React from 'react'
-import Modal from 'react-modal';
+import Modal from 'react-modal'
 import './style.scss'
-import Image from 'next/image';
+import Image from 'next/image'
 import Logo from '/public/img/logo.png'
-import { IoMdClose } from "react-icons/io";
-import { useUser } from '@supabase/auth-helpers-react';
+import { IoMdClose } from 'react-icons/io'
+import { useUser } from '@supabase/auth-helpers-react'
 import { supabase } from '@/supabase/browser'
-
 
 const customStyles = {
   content: {
@@ -17,14 +16,14 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-52%, -50%)',
     backgroundColor: '#fff',
-    padding:'20px',
-    borderRadius:'10px',
+    padding: '20px',
+    borderRadius: '10px',
     width: '55%',
-    maxWidth:'335px'
+    maxWidth: '335px',
   },
-};
+}
 
-const LoginModal = ({isOpen,setIsOpen}: any) => {
+const LoginModal = ({ isOpen, setIsOpen }: any) => {
   // const data = useUser()
 
   const logInWithKakao = async () => {
@@ -32,47 +31,49 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
       // OAuth 인증 시작
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
-      });
+        options: {
+          redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URL || 'https://invite-u.vercel.app',
+        },
+      })
       console.log(data)
-      
-      if (error) throw new Error(error.message);
+
+      if (error) throw new Error(error.message)
       // const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
       // console.log(sessionData)
-      
+
       // 인증 완료 후 세션 정보를 가져오기
       // if (sessionError) throw new Error(sessionError.message);
-    
     } catch (error) {
-      console.error('로그인 실패', error);
+      console.error('로그인 실패', error)
     }
-  };
+  }
 
   function closeModal() {
-    setIsOpen(false);
-  };
+    setIsOpen(false)
+  }
 
   return (
-    <div>   
+    <div>
       <Modal
         isOpen={isOpen}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
-        overlayClassName='fixed inset-0 bg-black bg-opacity-50 z-10 '
+        overlayClassName="fixed inset-0 bg-black bg-opacity-50 z-10 "
         // onAfterOpen={afterOpenModal}
         // appElement={document.getElementById('root') as HTMLElement}
       >
-        <div className='py-3 text-center'>
-          <div className='flex items-center justify-center p-2'>
-            <Image src={Logo} alt='logo' width='28' height='26' className='p-1'/>
-            <p className='p-1 font-semibold text-gray-600'>Invite U</p>
+        <div className="py-3 text-center">
+          <div className="flex items-center justify-center p-2">
+            <Image src={Logo} alt="logo" width="28" height="26" className="p-1" />
+            <p className="p-1 font-semibold text-gray-600">Invite U</p>
           </div>
-          <p className='text-sm text-gray-600'>간편한 카카오 로그인으로 시작해보세요!</p>
+          <p className="text-sm text-gray-600">간편한 카카오 로그인으로 시작해보세요!</p>
         </div>
-        <IoMdClose color='#4c4b4b' className='absolute right-3 top-3 size-5' onClick={closeModal}/>
+        <IoMdClose color="#4c4b4b" className="absolute right-3 top-3 size-5" onClick={closeModal} />
         <button
-        onClick={logInWithKakao}
-        className="my-1 flex h-[50px] w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500]"
+          onClick={logInWithKakao}
+          className="my-1 flex h-[50px] w-full items-center justify-center gap-2 rounded-lg bg-[#FEE500]"
         >
           <Image
             width={18}
@@ -84,8 +85,8 @@ const LoginModal = ({isOpen,setIsOpen}: any) => {
           <p className="text-sm font-semibold text-black">카카오로 바로 시작하기</p>
         </button>
       </Modal>
-  </div>
+    </div>
   )
 }
 
-export default LoginModal;
+export default LoginModal

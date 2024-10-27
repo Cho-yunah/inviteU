@@ -52,15 +52,3 @@
 .map-container {
   margin: 10px 0;
 }
-.scroll {
-  padding: 15px 10px;
-  // overflow-y: auto;
-  // max-height: 430px;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-
-  /* Webkit 기반 브라우저 (Chrome, Safari 등) */
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
