@@ -15,29 +15,22 @@ import {
 import { formatDateTime } from '@/lib/utils'
 
 const PreviewModal = ({
-  form,
   isOpen,
   onClose,
   contentsInfo,
-  currentInvitation,
+  previewData,
 }: {
-  form: any
   isOpen: boolean
   onClose: () => void
   contentsInfo: ContentDataType[]
-  currentInvitation: any
+  previewData?: any
 }) => {
   const [contentsData, setContentsData] = useState<ContentDataType[]>([])
-  const [background, setBackground] = useState(0)
+  const { title, primary_image, contents = [], background_image } = previewData
 
-  const formattedDateTime = currentInvitation
-    ? formatDateTime(currentInvitation.date, currentInvitation.time)
+  const formattedDateTime = previewData.date
+    ? formatDateTime(previewData.date, previewData.time)
     : ''
-
-  useEffect(() => {
-    let formData = form.getValues()
-    setBackground(Number(formData?.background_image))
-  }, [form.getValues()])
 
   useEffect(() => {
     setContentsData(contentsInfo)
@@ -105,23 +98,25 @@ const PreviewModal = ({
         <div
           className="absolute inset-0 bg-cover bg-center opacity-100 pt-1"
           style={{
-            backgroundImage: `url('/img/background_${+(background ?? 0) + 1}.png')`,
+            backgroundImage: `url('/img/background_${+(background_image ?? 0) + 1}.png')`,
           }}
         />
 
         {/* 중앙 콘텐츠 */}
-        <div className="relative z-10 w-9/12 max-w-xl rounded-xl p-1 mt-4 max-h-[43vh] overflow-y-auto scrollbar-hide smooth-scroll">
+        <div className="relative z-10 w-[72%] max-w-xl rounded-xl p-1 mt-3 max-h-[48vh] overflow-y-auto scrollbar-hide smooth-scroll">
           {/* 제목 */}
-          <h1 className="text-4xl font-semibold text-center mb-4 font-batang">
-            {currentInvitation && currentInvitation.title}
-          </h1>
+          <h2 className="text-2xl font-semibold text-center mb-4 font-batang whitespace-pre-wrap overflow-wrap-break-word">
+            {title}
+          </h2>
 
           {/* 메인 이미지 */}
-          <img
-            src={currentInvitation && currentInvitation.primary_image}
-            alt="초대장 메인 이미지"
-            className="w-full h-auto rounded-xl shadow-lg mb-6"
-          />
+          {primary_image && (
+            <img
+              src={primary_image}
+              alt="초대장 메인 이미지"
+              className="w-full h-auto rounded-xl shadow-lg mb-5"
+            />
+          )}
           <p className="text-center text-base mb-4 font-batang font-semibold whitespace-pre">
             {formattedDateTime}
           </p>

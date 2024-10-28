@@ -13,11 +13,13 @@ const initialComponents: ContentsComponentType[] = []
 export default function ContentsInfo({
   contentsInfo,
   setContentsInfo,
-  setShowPreviewModal,
+  // setShowPreviewModal,
+  onOpenPreview,
 }: {
   contentsInfo: ContentDataType[]
   setContentsInfo: (value: ContentDataType[]) => void
-  setShowPreviewModal: (value: boolean) => void
+  // setShowPreviewModal: (value: boolean) => void
+  onOpenPreview: () => void
 }) {
   const [showDrawer, setShowDrawer] = useState(false)
   const [components, setComponents] = useState(initialComponents)
@@ -45,10 +47,6 @@ export default function ContentsInfo({
       content: {},
     }
     setComponents((prevComponents) => [...prevComponents, newComponent])
-  }
-
-  const handlePreview = () => {
-    setShowPreviewModal(true)
   }
 
   // components가 변경될 때 contentsInfo를 업데이트
@@ -86,7 +84,7 @@ export default function ContentsInfo({
         </button>
         <button
           type="button"
-          onClick={handlePreview}
+          onClick={onOpenPreview}
           className="mt-3 bg-white w-full rounded-md text-base text-black border-[1px] p-2"
         >
           <span>미리보기</span>
