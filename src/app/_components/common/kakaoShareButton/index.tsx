@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
-// import dayjs from 'dayjs'
+import { CiShare2 } from 'react-icons/ci'
 
 interface KakaoShareButtonProps {
   invitationUrl: string
@@ -11,13 +11,14 @@ interface KakaoShareButtonProps {
   date: string
   time: string
   imageUrl: string
+  buttonStyle?: 'text' | 'icon' // 버튼 타입을 정의
+  buttonId: string // 고유한 버튼 ID
 }
 
 function formatDateTime(dateString: any, timeString: any) {
   let [year, month, day] = dateString.split('-')
   day = day.split('T')[0]
   const [hour, minute] = timeString.split(':')
-  console.log(year, month, day, hour, minute)
 
   // 병합된 Date 객체 생성
   const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))
@@ -35,6 +36,8 @@ export default function KakaoShareButton({
   date,
   time,
   imageUrl,
+  buttonStyle,
+  buttonId,
 }: KakaoShareButtonProps) {
   const [isKakaoLoaded, setIsKakaoLoaded] = useState(false)
 
@@ -49,7 +52,6 @@ export default function KakaoShareButton({
     script.onload = () => {
       if (window.Kakao && !window.Kakao.isInitialized()) {
         window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY)
-        console.log('Kakao SDK initialized')
       }
       setIsKakaoLoaded(true)
     }
@@ -61,14 +63,16 @@ export default function KakaoShareButton({
     }
   }, [])
 
-  const handleShare = () => {
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation() // 이벤트 전파 차단
+
     if (!window.Kakao) {
       console.error('Kakao SDK가 로드되지 않았습니다.')
       return
     }
 
     window.Kakao.Share.createDefaultButton({
-      container: '#kakaotalk-sharing-btn',
+      container: `#${buttonId}`,
       objectType: 'feed',
       content: {
         title,
@@ -94,14 +98,24 @@ export default function KakaoShareButton({
   if (!isKakaoLoaded) return <p>Loading..</p>
 
   return (
-    <div className="flex  justify-center">
-      <button
-        id="kakaotalk-sharing-btn"
-        onClick={handleShare}
-        className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg shadow-md"
-      >
-        카카오톡으로 공유하기
-      </button>
+    <div className="flex justify-center">
+      {buttonStyle === 'text' ? (
+        <button
+          id={buttonId}
+          onClick={handleShare}
+          className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg shadow-md"
+        >
+          카카오톡으로 공유하기
+        </button>
+      ) : (
+        <button
+          id={buttonId}
+          onClick={handleShare}
+          className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white p-1 rounded-full shadow-sm"
+        >
+          <CiShare2 size={16} />
+        </button>
+      )}
     </div>
   )
 }

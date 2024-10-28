@@ -113,12 +113,12 @@ const PreviewModal = ({
         <div className="relative z-10 w-9/12 max-w-xl rounded-xl p-1 mt-4 max-h-[43vh] overflow-y-auto scrollbar-hide smooth-scroll">
           {/* 제목 */}
           <h1 className="text-4xl font-semibold text-center mb-4 font-batang">
-            {currentInvitation.title}
+            {currentInvitation && currentInvitation.title}
           </h1>
 
           {/* 메인 이미지 */}
           <img
-            src={currentInvitation.primary_image}
+            src={currentInvitation && currentInvitation.primary_image}
             alt="초대장 메인 이미지"
             className="w-full h-auto rounded-xl shadow-lg mb-6"
           />

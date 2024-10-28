@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { IoIosLink } from 'react-icons/io'
 import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
 import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
+import KakaoShareButton from '../common/kakaoShareButton'
 
 interface ListItemProps {
   item: any
@@ -85,17 +86,20 @@ const ListItem = React.memo(({ item, onRemove }: ListItemProps) => {
             </div>
           </div>
           <div className="m-1 flex w-14 items-end justify-between">
-            <button
-              onClick={handleClickShare}
-              className="flex size-6 items-center justify-center rounded-[50%] bg-gray-200 shadow-sm"
-            >
-              <CiShare2 size="15" />
-            </button>
+            <KakaoShareButton
+              buttonStyle="icon"
+              title={item.title}
+              imageUrl={item.primary_image}
+              date={item.date}
+              time={item.time}
+              invitationUrl={`${process.env.NEXT_PUBLIC_API_URL}/${item.custom_url}`}
+              buttonId={`kakao-share-btn-${item.id}`} // 고유한 ID 전달
+            />
             <button
               onClick={handleClickDelete}
-              className="flex size-6 items-center justify-center rounded-[50%] bg-gray-200 shadow-sm"
+              className="flex size-6 items-center justify-center rounded-[50%] bg-red-300 shadow-sm"
             >
-              <CiTrash size="15" />
+              <CiTrash size="15" color="white" />
             </button>
           </div>
         </div>

@@ -127,6 +127,7 @@ export default async function InvitationPage({ params }: any) {
         </div>
 
         <KakaoShareButton
+          buttonStyle="text"
           title={invitationData.title}
           imageUrl={invitationData.primary_image}
           date={invitationData.date}
