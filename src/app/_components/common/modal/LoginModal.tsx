@@ -25,29 +25,17 @@ const customStyles = {
 const LoginModal = ({ isOpen, setIsOpen }: any) => {
   const logInWithKakao = async () => {
     try {
-      // OAuth 인증 시작
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
         options: {
-          redirectTo:
-            'https://invite-u.vercel.app/auth/kakao/callback' ||
-            process.env.NEXT_PUBLIC_REDIRECT_URL,
-          skipBrowserRedirect: false, // 브라우저 리디렉션 유지
+          redirectTo: 'http://localhost:3000/auth/kakao/callback', // 콜백 페이지 경로
         },
       })
 
       if (error) throw new Error(error.message)
-      console.log('로그인 성공', data)
-
-      const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
-      console.log(sessionData)
-      if (sessionData?.session) {
-        window.location.href = '/' // 원하는 경로로 리디렉션
-      }
-
-      // 인증 완료 후 세션 정보를 가져오기
+      console.log('로그인 성공:', data)
     } catch (error) {
-      console.error('로그인 실패', error)
+      console.error('로그인 실패:', error)
     }
   }
 
