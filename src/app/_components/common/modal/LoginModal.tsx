@@ -41,6 +41,9 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
 
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
       console.log(sessionData)
+      if (sessionData?.session) {
+        window.location.href = '/' // 원하는 경로로 리디렉션
+      }
 
       // 인증 완료 후 세션 정보를 가져오기
     } catch (error) {
