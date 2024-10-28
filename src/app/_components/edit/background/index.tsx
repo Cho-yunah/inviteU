@@ -3,12 +3,20 @@ import Slider from '../../common/slider'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
 const slideArr = [
-  { id: 1, title: 'Slide 1', color: 'bg-blue-100', url: '/img/background_1.png' },
-  { id: 2, title: 'Slide 2', color: 'bg-green-100', url: '/img/background_2.png' },
-  { id: 3, title: 'Slide 3', color: 'bg-red-100', url: '/img/background_3.png' },
-  { id: 4, title: 'Slide 4', color: 'bg-yellow-100', url: '/img/background_4.png' },
-  { id: 5, title: 'Slide 5', color: 'bg-yellow-100', url: '/img/background_5.png' },
-  { id: 6, title: 'Slide 6', color: 'bg-yellow-100', url: '/img/background_6.png' },
+  { id: 1, title: 'Slide 1', url: '/img/background_1.png' },
+  { id: 2, title: 'Slide 2', url: '/img/background_2.png' },
+  { id: 3, title: 'Slide 3', url: '/img/background_3.png' },
+  { id: 4, title: 'Slide 4', url: '/img/background_4.png' },
+  { id: 5, title: 'Slide 5', url: '/img/background_5.png' },
+  { id: 6, title: 'Slide 6', url: '/img/background_6.png' },
+  { id: 7, title: 'Slide 7', url: '/img/background_7.png' },
+  { id: 8, title: 'Slide 8', url: '/img/background_8.png' },
+  { id: 9, title: 'Slide 9', url: '/img/background_9.png' },
+  { id: 10, title: 'Slide 10', url: '/img/background_10.png' },
+  { id: 11, title: 'Slide 11', url: '/img/background_11.png' },
+  { id: 12, title: 'Slide 12', url: '/img/background_12.png' },
+  // { id: 13, title: 'Slide 13', url: '/img/background_13.png' },
+  // { id: 14, title: 'Slide 14', url: '/img/background_14.png' },
 ]
 
 const Background = ({

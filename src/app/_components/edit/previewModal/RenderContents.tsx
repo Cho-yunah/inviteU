@@ -1,24 +1,23 @@
 import { ImageType, IntervalType, MapType, TextType, VideoType } from '@/lib/types'
 import styles from './previewModal.module.scss'
 import Map from './Map'
+import { getCoordinates } from '@/lib/geocode'
 
 // 이미지 컴포넌트
 export const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
+  console.log(urls)
   return (
     <div className={`image-container ${layout} px-0 py-1`}>
-      {urls.split(',').map((url, index) => (
-        <img
-          key={index}
-          src={url}
-          alt="Content Image"
-          style={{
-            aspectRatio: ratio,
-            objectFit: 'contain',
-            maxWidth: '300px',
-            maxHeight: '400px',
-          }}
-        />
-      ))}
+      {urls
+        ?.split(',')
+        ?.map((url, index) => (
+          <img
+            key={index}
+            src={url}
+            alt="Content Image"
+            className="w-auto h-auto rounded-xl shadow-md mb-6"
+          />
+        ))}
     </div>
   )
 }
@@ -51,13 +50,15 @@ export const IntervalComponent = ({ size }: IntervalType) => (
 )
 
 // 지도 컴포넌트
-export const MapComponent = ({ main_address, detail_address }: MapType) => {
+export const MapComponent = async ({ main_address, detail_address }: MapType) => {
+  const coordinates = await getCoordinates(main_address)
+
   return (
     <div className="text-xs text-slate-500">
       <p>
         {main_address}, {detail_address}
       </p>
-      <Map address={main_address} />
+      <Map address={main_address} coordinates={coordinates} />
     </div>
   )
 }
