@@ -38,13 +38,11 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
 
       if (error) throw new Error(error.message)
       console.log('로그인 성공', data)
-      // alert(data)
 
       const { data: sessionData, error: sessionError } = await supabase.auth.getSession()
       console.log(sessionData)
 
       // 인증 완료 후 세션 정보를 가져오기
-      // if (sessionError) throw new Error(sessionError.message);
     } catch (error) {
       console.error('로그인 실패', error)
     }

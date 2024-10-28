@@ -132,6 +132,7 @@ const EditInvitation = () => {
         contentsInfo={contentsInfo}
         isOpen={showPreviewModal}
         onClose={onClosePreviewModal}
+        currentInvitation={currentInvitation}
       />
     </div>
   )
