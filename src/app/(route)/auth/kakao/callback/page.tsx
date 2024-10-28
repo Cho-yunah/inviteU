@@ -24,7 +24,12 @@ const KakaoCallback = () => {
     fetchSession()
   }, [router])
 
-  return <p>로그인 처리 중...</p>
+  return (
+    <div className="w-full flex justify-center items-center mt-20">
+      {/* <Loader /> */}
+      <iframe src="https://lottie.host/embed/c546dc9a-c34e-4061-ba9e-7740c28e4e95/UP68lLvxaN.json"></iframe>
+    </div>
+  )
 }
 
 export default KakaoCallback

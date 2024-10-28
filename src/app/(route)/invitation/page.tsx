@@ -9,7 +9,8 @@ import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
 import Link from 'next/link'
 import axios from 'axios'
 import styles from '../../page.module.scss'
-import Loader from '@/app/_components/common/Loader'
+import { Loader, LottieLoder } from '@/app/_components/common/Loader'
+// import Loader from '@/app/_components/common/Loader'
 
 const List = () => {
   const dispatch = useDispatch()
@@ -46,8 +47,9 @@ const List = () => {
         </button>
       </div>
       {loading ? (
-        <div className="my-6">
-          <Loader />
+        <div className="my-7 flex items-center justify-center">
+          {/* <Loader /> */}
+          <iframe src="https://lottie.host/embed/c546dc9a-c34e-4061-ba9e-7740c28e4e95/UP68lLvxaN.json"></iframe>
         </div>
       ) : invitationList.length === 0 ? (
         <div className="m-5 p-10 flex flex-col items-center justify-center bg-gray-100 rounded-xl">
