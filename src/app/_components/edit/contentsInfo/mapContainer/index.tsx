@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/accordion'
 import SearchPostCode from './SearchPostcode'
@@ -13,7 +13,8 @@ const MapContainer = ({ id, content, onDelete, handleUpdateContent }: ContentsCo
     post_number: content.post_number || '',
   })
 
-  const handleInputClick = () => {
+  const handleInputClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
     setShowModal(true)
   }
 
@@ -45,7 +46,9 @@ const MapContainer = ({ id, content, onDelete, handleUpdateContent }: ContentsCo
                 onChange={handleChange}
                 value={mapData.main_address}
               />
-              <button className="bg-black text-white p-2 rounded-r-md w-2/12">검색</button>
+              <button type="button" className="bg-black text-white p-2 rounded-r-md w-2/12">
+                검색
+              </button>
             </div>
             <input
               className="border-[1px] border-gray-300 rounded-md py-2 px-4 w-full mt-3"
