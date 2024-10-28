@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     shortcut: '/img/logo.png', // 브라우저의 즐겨찾기 아이콘
   },
+  viewport: 'width=device-width, initial-scale=1.0',
   openGraph: {
     title: 'Invite U',
     description: 'Create personalized invitations with ease.',
