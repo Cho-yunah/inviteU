@@ -37,7 +37,9 @@ export const POST = async (req: NextRequest, res: NextApiResponse<Data>) => {
     }[] = []
 
     await Promise.all(
-      JSON.parse(jsonRequest.contents).map(async (item: ContentDataType) => {
+      JSON.parse(jsonRequest.contents).map(async (item: ContentDataType, index: number) => {
+        let contentData = { index }
+
         if (item.type === 'image') {
           const { isImageUrlsValid } = judgeImageAndVideoValid({
             urls: item.urls,
