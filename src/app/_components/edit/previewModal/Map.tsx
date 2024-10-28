@@ -1,50 +1,42 @@
+'use client'
 import React, { useEffect, useState } from 'react'
-import { FaMapMarkerAlt } from 'react-icons/fa'
 
 interface StaticMapProps {
   address: string
-  coordinates: { lat: number; lng: number }
   width?: number
   height?: number
   level?: number
 }
 
-const Map: React.FC<StaticMapProps> = ({
-  address,
-  coordinates,
-  width = 310,
-  height = 200,
-  level = 12,
-}) => {
+const Map: React.FC<StaticMapProps> = ({ address, width = 225, height = 150, level = 13 }) => {
   const API_KEY = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
-  // const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
+  const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
 
-  // useEffect(() => {
-  //   const fetchCoordinates = async () => {
-  //     try {
-  //       const res = await fetch(`/api/geocode?query=${address}`)
-  //       const data = await res.json()
+  useEffect(() => {
+    const fetchCoordinates = async () => {
+      try {
+        const res = await fetch(`/api/geocode?query=${address}`)
+        const data = await res.json()
 
-  //       if (data.addresses.length > 0) {
-  //         const { y, x } = data.addresses[0] // 위도와 경도
-  //         setCoordinates({ lat: parseFloat(y), lng: parseFloat(x) })
-  //       } else {
-  //         console.error('해당 주소를 찾을 수 없습니다.')
-  //       }
-  //     } catch (error) {
-  //       console.error('Geocoding API 호출 오류:', error)
-  //     }
-  //   }
+        if (data.addresses.length > 0) {
+          const { y, x } = data.addresses[0] // 위도와 경도
+          setCoordinates({ lat: parseFloat(y), lng: parseFloat(x) })
+        } else {
+          console.error('해당 주소를 찾을 수 없습니다.')
+        }
+      } catch (error) {
+        console.error('Geocoding API 호출 오류:', error)
+      }
+    }
 
-  //   fetchCoordinates()
-  // }, [address]) // 주소가 변경될 때마다 호출
+    fetchCoordinates()
+  }, [address]) // 주소가 변경될 때마다 호출
 
   const markerParam = `type:d|size:small|color:red|pos:${coordinates.lng}%20${coordinates.lat}`
-
   const mapSrc = `https://naveropenapi.apigw.ntruss.com/map-static/v2/raster-cors?w=${width}&h=${height}&center=${coordinates?.lng},${coordinates?.lat}&scale=2&level=${level}&markers=${markerParam}&X-NCP-APIGW-API-KEY-ID=${API_KEY}`
 
   return (
-    <div style={{ width, height, overflow: 'hidden' }}>
+    <div style={{ width, height, overflow: 'hidden', borderRadius: '10px' }}>
       <img
         src={mapSrc}
         alt="지도"

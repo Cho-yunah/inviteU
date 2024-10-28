@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 // Import Swiper styles
@@ -52,13 +52,14 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
         pagination={{ clickable: true }}
         modules={[Pagination, Navigation]}
         onSlideChange={onSlideChange}
+        initialSlide={+checkedSlide} // 초기 슬라이드 설정
       >
         {slideArr?.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div
               className={`p-0 m-0 flex justify-center ${+checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
             >
-              <Image src={slide.url} alt={slide.title} width={300} height={470} />
+              <Image src={slide.url} alt={slide.title} width={310} height={460} />
             </div>
           </SwiperSlide>
         ))}

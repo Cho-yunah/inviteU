@@ -12,25 +12,25 @@ import {
   TextComponent,
   VideoComponent,
 } from '@/app/_components/edit/previewModal/RenderContents'
+import { formatDateTime } from '@/lib/utils'
 
 const PreviewModal = ({
-  form,
   isOpen,
   onClose,
   contentsInfo,
+  previewData,
 }: {
-  form: any
   isOpen: boolean
   onClose: () => void
   contentsInfo: ContentDataType[]
+  previewData?: any
 }) => {
   const [contentsData, setContentsData] = useState<ContentDataType[]>([])
-  const [background, setBackground] = useState(0)
+  const { title, primary_image, contents = [], background_image } = previewData
 
-  useEffect(() => {
-    let formData = form.getValues()
-    setBackground(Number(formData?.background_image) + 1)
-  }, [form.getValues()])
+  const formattedDateTime = previewData.date
+    ? formatDateTime(previewData.date, previewData.time)
+    : ''
 
   useEffect(() => {
     setContentsData(contentsInfo)
@@ -93,21 +93,38 @@ const PreviewModal = ({
         <h2 className="text-center">미리보기</h2>
       </div>
 
-      <div
-        style={{
-          backgroundImage: `url('/img/background_${background}.png')`,
-          paddingTop: background % 2 === 1 ? '8rem' : '0.5rem', // 홀수일 때 더 많은 마진
-          backgroundRepeat: background % 2 === 1 ? 'no-repeat' : 'repeat-y',
-          backgroundAttachment: 'scroll', // background가 스크롤과 함께 움직이도록 설정
-        }}
-        className={`bg-contain bg-white max-w-[330px] min-h-[560px] rounded-b-xl overflow-hidden`}
-      >
-        {/* 콘텐츠 렌더링 */}
-        <div className="scrollbar-hide">
-          {contentsData.length > 0 &&
-            contentsData.map((content: ContentDataType, index: number) =>
-              renderContent(content, index),
-            )}
+      <div className="relative min-h-[78vh] bg-gray-50 flex items-center justify-center">
+        {/* 페이지 중앙 배경 */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-100 pt-1"
+          style={{
+            backgroundImage: `url('/img/background_${+(background_image ?? 0) + 1}.png')`,
+          }}
+        />
+
+        {/* 중앙 콘텐츠 */}
+        <div className="relative z-10 w-[72%] max-w-xl rounded-xl p-1 mt-3 max-h-[48vh] overflow-y-auto scrollbar-hide smooth-scroll">
+          {/* 제목 */}
+          <h2 className="text-2xl font-semibold text-center mb-4 font-batang whitespace-pre-wrap overflow-wrap-break-word">
+            {title}
+          </h2>
+
+          {/* 메인 이미지 */}
+          {primary_image && (
+            <img
+              src={primary_image}
+              alt="초대장 메인 이미지"
+              className="w-full h-auto rounded-xl shadow-lg mb-5"
+            />
+          )}
+          <p className="text-center text-base mb-4 font-batang font-semibold whitespace-pre">
+            {formattedDateTime}
+          </p>
+
+          {/* 콘텐츠 컴포넌트 렌더링 */}
+          <div className="space-y-6">
+            {contentsData.map((content, index) => renderContent(content, index))}
+          </div>
         </div>
       </div>
     </Modal>

@@ -10,40 +10,69 @@ import {
   TextComponent,
   VideoComponent,
 } from '@/app/_components/edit/previewModal/RenderContents'
+import { formatDateTime } from '@/lib/utils'
+import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
 
 const PreviewPage = () => {
   const currentInvitation = useSelector((state: RootState) => state.invitation.selected)
 
   const { background_image, contents } = currentInvitation ?? {}
+  const formattedDateTime = currentInvitation
+    ? formatDateTime(currentInvitation.date, currentInvitation.time)
+    : ''
 
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center p-3">
+    <div className="w-full h-full flex flex-col justify-center items-center py-1">
       {/* 박스 내부 스크롤 영역 */}
-      <div
-        className="border-[1px] rounded-xl shadow-md overflow-y-scroll"
-        style={{ maxHeight: '65vh', maxWidth: '310px' }}
-      >
+      <div className="relative min-h-[78vh] bg-gray-50 flex items-center justify-center">
+        {/* 페이지 중앙 배경 */}
         <div
-          className="bg-cover bg-center rounded-xl overflow-y-auto"
+          className="absolute inset-0 bg-cover bg-center opacity-100 pt-1"
           style={{
             backgroundImage: `url('/img/background_${+(background_image ?? 0) + 1}.png')`,
-            maxHeight: '80vh', // 박스 내 최대 높이 설정
-            paddingTop: background_image && +background_image % 2 === 1 ? '1rem' : '8rem',
-            backgroundRepeat:
-              background_image && +background_image % 2 === 1 ? 'no-repeat' : 'repeat-y',
-            backgroundAttachment: 'scroll',
           }}
-        >
+        />
 
-          <div className="p-1">
+        {/* 중앙 콘텐츠 */}
+        <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 mt-4 max-h-[52vh] overflow-y-auto scrollbar-hide smooth-scroll">
+          {/* 제목 */}
+          <h2 className="text-[28px] font-semibold text-center mb-4 font-batang">
+            {currentInvitation && currentInvitation.title}
+          </h2>
+
+          {/* 메인 이미지 */}
+          <img
+            src={currentInvitation?.primary_image ?? ''}
+            alt="초대장 메인 이미지"
+            className="w-full h-auto rounded-xl shadow-lg mb-6"
+          />
+          <p className="text-center text-base mb-4 font-batang font-semibold whitespace-pre">
+            {formattedDateTime}
+          </p>
+
+          {/* 콘텐츠 컴포넌트 렌더링 */}
+          <div className="space-y-6">
             {contents && contents.map((content, index) => renderContent(content, index))}
           </div>
         </div>
       </div>
 
-      <button className="mt-4 w-10/12 rounded-md bg-gray-900 text-base text-white border-[1px] p-2">
-        <Link href="/invitation">목록으로 돌아가기</Link>
-      </button>
+      <div className="flex gap-3">
+        <button className="w-[146px] mt-6 bg-sky-700 hover:bg-sky-900 text-white font-bold py-2 px-4 rounded-lg shadow-md">
+          <Link href="/invitation">목록으로 돌아가기</Link>
+        </button>
+        {currentInvitation && (
+          <KakaoShareButton
+            buttonStyle="text"
+            title={currentInvitation.title}
+            imageUrl={currentInvitation.primary_image}
+            date={currentInvitation.date}
+            time={currentInvitation.time}
+            invitationUrl={`${process.env.NEXT_PUBLIC_API_URL}/${currentInvitation.custom_url}`}
+            buttonId={`kakao-share-btn-${currentInvitation.id}`} // 고유한 ID 전달
+          />
+        )}
+      </div>
     </div>
   )
 }
@@ -51,7 +80,6 @@ const PreviewPage = () => {
 export default PreviewPage
 
 const renderContent = (content: any, index: number) => {
-  console.log('content', content)
   switch (content.type) {
     case 'image':
       return (

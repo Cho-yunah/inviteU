@@ -8,6 +8,7 @@ import { toast } from 'react-toastify'
 import { IoIosLink } from 'react-icons/io'
 import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
 import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
+import KakaoShareButton from '../common/kakaoShareButton'
 
 interface ListItemProps {
   item: any
@@ -65,37 +66,44 @@ const ListItem = React.memo(({ item, onRemove }: ListItemProps) => {
   return (
     <div
       onClick={handleMoveEdit}
-      className="relative m-5 rounded-md bg-gray-50 shadow-md cursor-pointer"
+      className="relative m-5 rounded-xl bg-white shadow-md cursor-pointer transition-all duration-300 border-t-[1px] border-gray-100 hover:border-gray-100 hover:shadow-lg hover:scale-105"
     >
-      <p className="absolute h-full w-2 rounded-l-md bg-red-400"></p>
-      <div className="p-3 pl-5">
-        <p className="text-sm py-1 font-bold text-gray-800">{item.title}</p>
-        <div className="flex justify-between mt-1">
-          <div className="">
-            <div className="flex items-center text-xs text-gray-700 ">
-              <IoIosLink size={15} className="text-gray-400 mr-1" />
-              <span> {item.custom_url}</span>
+      {/* 왼쪽 레드 포인트 바 */}
+      <p className="absolute h-full w-2 rounded-l-md bg-gradient-to-b from-rose-400 to-red-400"></p>
+
+      {/* 리스트 본문 */}
+      <div className="p-4 pl-6">
+        <p className="text-sm font-bold text-gray-800">{item.title}</p>
+        {/* URL과 날짜 */}
+        <div className="flex justify-between mt-2">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center text-xs text-gray-600">
+              <IoIosLink size={15} className="text-gray-400 mr-2" />
+              <span>{item.custom_url}</span>
             </div>
-            <div className="flex items-center justify-center text-xs text-gray-700 ">
-              <CiCalendar size={15} className="text-gray-400 mr-1" />
-              <span className="mt-[2px] align-bottom">
-                {' '}
-                {dayjs(item.date).format('YYYY.MM.DD')}
+            <div className="flex items-center text-xs text-gray-600">
+              <CiCalendar size={15} className="text-gray-400 mr-2" />
+              <span>
+                {dayjs(item.date).format('YYYY.MM.DD')} {item.time}
               </span>
             </div>
           </div>
-          <div className="m-1 flex w-14 items-end justify-between">
-            <button
-              onClick={handleClickShare}
-              className="flex size-6 items-center justify-center rounded-[50%] bg-gray-200 shadow-sm"
-            >
-              <CiShare2 size="15" />
-            </button>
+          {/* 공유 및 삭제 버튼 */}
+          <div className="flex items-center gap-4">
+            <KakaoShareButton
+              buttonStyle="icon"
+              title={item.title}
+              imageUrl={item.primary_image}
+              date={item.date}
+              time={item.time}
+              invitationUrl={`${process.env.NEXT_PUBLIC_API_URL}/${item.custom_url}`}
+              buttonId={`kakao-share-btn-${item.id}`} // 고유한 ID 전달
+            />
             <button
               onClick={handleClickDelete}
-              className="flex size-6 items-center justify-center rounded-[50%] bg-gray-200 shadow-sm"
+              className="p-2 bg-red-400 hover:bg-red-500 text-white rounded-full shadow-md transition-all duration-300"
             >
-              <CiTrash size="15" />
+              <CiTrash size={16} />
             </button>
           </div>
         </div>

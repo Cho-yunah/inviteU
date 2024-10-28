@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
@@ -17,7 +17,10 @@ import ContentsInfo from '@/app/_components/edit/contentsInfo'
 import PreviewModal from '@/app/_components/edit/previewModal'
 import Background from '@/app/_components/edit/background'
 import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
-import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
+import {
+  InvitationStateType,
+  setSelectedInvitation,
+} from '@/lib/features/invitation/invitationSlice'
 import { RootState } from '@/lib/store'
 import { ContentDataType } from '@/lib/types'
 
@@ -32,6 +35,15 @@ const EditInvitation = () => {
   )
   const [checkedSlide, setCheckedSlide] = useState(currentInvitation?.background_image || '')
   const [showPreviewModal, setShowPreviewModal] = useState(false)
+  const [previewData, setPreviewData] = useState<InvitationStateType>({
+    user_id: '',
+    custom_url: '',
+    date: '',
+    time: '',
+    title: '',
+    background_image: '',
+    primary_image: '',
+  })
 
   const onClosePreviewModal = () => setShowPreviewModal(false)
 
@@ -43,22 +55,11 @@ const EditInvitation = () => {
     },
   })
 
-  useEffect(() => {
-    console.log('수정페이지 currentInvitation', currentInvitation)
-    if (currentInvitation) {
-      form.reset({
-        ...currentInvitation,
-        contents: currentInvitation.contents || [],
-      })
-    }
-  }, [currentInvitation, form])
-
-  // 유저 ID를 폼에 설정
-  useEffect(() => {
-    if (user) {
-      form.setValue('user_id', user.id)
-    }
-  }, [user, form])
+  const handleOpenPreview = useCallback(() => {
+    const formData = form.getValues()
+    setPreviewData({ ...formData, contents: contentsInfo })
+    setShowPreviewModal(true)
+  }, [form, contentsInfo])
 
   // 폼 제출 핸들러
   async function onSubmit(values: z.infer<typeof invitationFormSchema>) {
@@ -83,6 +84,23 @@ const EditInvitation = () => {
     }
   }
 
+  useEffect(() => {
+    if (currentInvitation) {
+      form.reset({
+        ...currentInvitation,
+        contents: currentInvitation.contents || [],
+      })
+      setPreviewData(currentInvitation)
+    }
+  }, [currentInvitation, form])
+
+  // 유저 ID를 폼에 설정
+  useEffect(() => {
+    if (user) {
+      form.setValue('user_id', user.id)
+    }
+  }, [user, form])
+
   return (
     <div className="w-[375px] min-h-[375px] overflow-hidden">
       <Tabs defaultValue="basic" className="w-full">
@@ -106,8 +124,7 @@ const EditInvitation = () => {
               <ContentsInfo
                 contentsInfo={contentsInfo}
                 setContentsInfo={setContentsInfo}
-                setShowPreviewModal={setShowPreviewModal}
-                // onClose={onClosePreviewModal}
+                onOpenPreview={handleOpenPreview}
               />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="background">
@@ -128,13 +145,13 @@ const EditInvitation = () => {
         </Form>
       </Tabs>
       <PreviewModal
-        form={form}
         contentsInfo={contentsInfo}
         isOpen={showPreviewModal}
         onClose={onClosePreviewModal}
+        previewData={previewData}
       />
     </div>
   )
 }
 
-export default EditInvitation
+export default React.memo(EditInvitation)

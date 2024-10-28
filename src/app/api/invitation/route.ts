@@ -287,7 +287,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
           .select('id')
           .single()
 
-        console.log('imageData.id', imageError)
+        // console.log('imageData.id', imageError)
         if (imageError) {
           return NextResponse.json(
             {
@@ -353,7 +353,7 @@ export const PUT = async (req: NextRequest, res: NextResponse<Data>) => {
           })
           .select('id')
           .single()
-        console.log(item, 'textData.id', textError)
+        // console.log(item, 'textData.id', textError)
 
         if (textError) {
           return NextResponse.json(

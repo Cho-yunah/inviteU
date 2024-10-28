@@ -43,7 +43,7 @@ export default function ImageContainer({
     handleUpdateContent(updatedContent) // 상위로 업데이트된 데이터를 전달
   }, [imageData])
 
-  useEffect(() => console.log('이미지 컴포넌트에 들어온 content 데이터', content), [])
+  // useEffect(() => console.log('이미지 컴포넌트에 들어온 content 데이터', content), [])
 
   return (
     <Accordion>

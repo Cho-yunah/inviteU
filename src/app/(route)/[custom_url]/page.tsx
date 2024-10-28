@@ -7,10 +7,10 @@ import {
 } from '@/app/_components/edit/previewModal/RenderContents'
 import { ContentDataType } from '@/lib/types'
 import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
-import { format } from 'date-fns'
-import { ko } from 'date-fns/locale'
+import { formatDateTime } from '@/lib/utils'
 
 type InvitationData = {
+  id?: string
   title: string
   primary_image: string
   custom_url: string
@@ -38,27 +38,10 @@ interface Props {
   params: { custom_url: string }
 }
 
-function formatDateTime(dateString: any, timeString: any) {
-  let [year, month, day] = dateString.split('-')
-  day = day.split('T')[0]
-  const [hour, minute] = timeString.split(':')
-  console.log(year, month, day, hour, minute)
-
-  // 병합된 Date 객체 생성
-  const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))
-
-  // 일정과 시간 문자열로 포맷팅
-  const formattedDate = format(date, 'yyyy년 M월 d일', { locale: ko })
-  const formattedTime = format(date, 'a h시 mm분', { locale: ko })
-
-  return `${formattedDate} \n ${formattedTime}`
-}
-
 export default async function InvitationPage({ params }: any) {
   const invitationData = await getInvitationData(params.custom_url)
 
   const background = invitationData ? Number(invitationData.background_image) : 0
-  console.log(background)
   const formattedDateTime = invitationData
     ? formatDateTime(invitationData.date, invitationData.time)
     : ''
@@ -120,9 +103,9 @@ export default async function InvitationPage({ params }: any) {
       />
 
       {/* 중앙 콘텐츠 */}
-      <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 overflow-y-auto max-h-[53vh] scrollbar-hide smooth-scroll">
+      <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 overflow-y-auto max-h-[56vh] scrollbar-hide smooth-scroll">
         {/* 제목 */}
-        <h1 className="text-4xl font-semibold text-center mb-4 font-batang">
+        <h1 className="text-[28px] font-semibold text-center mb-4 font-batang">
           {invitationData.title}
         </h1>
 
@@ -145,11 +128,13 @@ export default async function InvitationPage({ params }: any) {
         </div>
 
         <KakaoShareButton
+          buttonStyle="text"
           title={invitationData.title}
           imageUrl={invitationData.primary_image}
           date={invitationData.date}
           time={invitationData.time}
           invitationUrl={`${process.env.NEXT_PUBLIC_API_URL}/${params.custom_url}`}
+          buttonId={`kakao-share-btn-${invitationData.id}`} // 고유한 ID 전달
         />
         {/* 카카오톡 공유 버튼 */}
       </div>

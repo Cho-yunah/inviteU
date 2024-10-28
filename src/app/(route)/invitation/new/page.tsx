@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import styles from '../edit.module.scss'
 import { z } from 'zod'
@@ -18,7 +18,10 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
-import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
+import {
+  InvitationStateType,
+  setSelectedInvitation,
+} from '@/lib/features/invitation/invitationSlice'
 
 const NewInvitation = () => {
   const data = useUser()
@@ -28,6 +31,15 @@ const NewInvitation = () => {
   const [contentsInfo, setContentsInfo] = useState<ContentDataType[] | []>([])
   const [checkedSlide, setCheckedSlide] = useState<string>('')
   const [showPreviewModal, setShowPreviewModal] = useState(false)
+  const [previewData, setPreviewData] = useState<InvitationStateType>({
+    user_id: '',
+    custom_url: '',
+    date: '',
+    time: '',
+    title: '',
+    background_image: '',
+    primary_image: '',
+  })
 
   const onClosePreviewModal = () => setShowPreviewModal(false)
 
@@ -44,6 +56,13 @@ const NewInvitation = () => {
       contents: [] as ContentDataType[],
     },
   })
+
+  const handleOpenPreview = useCallback(() => {
+    const formData = form.getValues()
+    console.log('모달이 열림', formData)
+    setPreviewData({ ...formData, contents: contentsInfo })
+    setShowPreviewModal(true)
+  }, [form, contentsInfo])
 
   async function onSubmit(values: z.infer<typeof invitationFormSchema>) {
     form.setValue('contents', [...contentsInfo])
@@ -99,8 +118,7 @@ const NewInvitation = () => {
               <ContentsInfo
                 contentsInfo={contentsInfo}
                 setContentsInfo={setContentsInfo}
-                setShowPreviewModal={setShowPreviewModal}
-                // onClose={onClosePreviewModal}
+                onOpenPreview={handleOpenPreview}
               />
             </TabsContent>
             <TabsContent className="px-6 py-2" value="background">
@@ -121,10 +139,10 @@ const NewInvitation = () => {
         </Form>
       </Tabs>
       <PreviewModal
-        form={form}
         contentsInfo={contentsInfo}
         isOpen={showPreviewModal}
         onClose={onClosePreviewModal}
+        previewData={previewData}
       />
     </div>
   )

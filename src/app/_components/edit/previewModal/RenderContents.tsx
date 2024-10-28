@@ -5,7 +5,6 @@ import { getCoordinates } from '@/lib/geocode'
 
 // 이미지 컴포넌트
 export const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
-  console.log(urls)
   return (
     <div className={`image-container ${layout} px-0 py-1`}>
       {urls
@@ -50,15 +49,43 @@ export const IntervalComponent = ({ size }: IntervalType) => (
 )
 
 // 지도 컴포넌트
-export const MapComponent = async ({ main_address, detail_address }: MapType) => {
+export const MapComponent = ({ main_address, detail_address }: MapType) => {
+  return (
+    <div className="text-xs text-slate-500">
+      <p>
+        {main_address}, {detail_address}
+      </p>
+      <Map address={main_address} />
+    </div>
+  )
+}
+
+export const ServerMapComponent = async ({ main_address, detail_address }: MapType) => {
+  const API_KEY = process.env.NEXT_PUBLIC_NAVER_MAP_CLIENT_ID
   const coordinates = await getCoordinates(main_address)
+
+  const width = 310
+  const height = 200
+  const level = 12
+  console.log('coordinates:', coordinates)
+
+  const markerParam = `type:d|size:small|color:red|pos:${coordinates.lng}%20${coordinates.lat}`
+  const mapSrc = `https://naveropenapi.apigw.ntruss.com/map-static/v2/raster-cors?w=${width}&h=${height}&center=${coordinates?.lng},${coordinates?.lat}&scale=2&level=${level}&markers=${markerParam}&X-NCP-APIGW-API-KEY-ID=${API_KEY}`
 
   return (
     <div className="text-xs text-slate-500">
       <p>
         {main_address}, {detail_address}
       </p>
-      <Map address={main_address} coordinates={coordinates} />
+      <div style={{ width, height, overflow: 'hidden' }}>
+        <img
+          src={mapSrc}
+          alt="지도"
+          style={{ width: '100%', height: '100%' }}
+          onError={() => console.error('지도 로드에 실패했습니다.')}
+        />
+      </div>
+      {/* <Map address={main_address} coordinates={coordinates} /> */}
     </div>
   )
 }
