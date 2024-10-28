@@ -57,7 +57,6 @@ const EditInvitation = () => {
 
   const handleOpenPreview = useCallback(() => {
     const formData = form.getValues()
-    console.log('모달이 열림', formData)
     setPreviewData({ ...formData, contents: contentsInfo })
     setShowPreviewModal(true)
   }, [form, contentsInfo])

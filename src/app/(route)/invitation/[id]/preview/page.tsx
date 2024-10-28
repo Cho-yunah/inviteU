@@ -11,6 +11,7 @@ import {
   VideoComponent,
 } from '@/app/_components/edit/previewModal/RenderContents'
 import { formatDateTime } from '@/lib/utils'
+import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
 
 const PreviewPage = () => {
   const currentInvitation = useSelector((state: RootState) => state.invitation.selected)
@@ -33,9 +34,9 @@ const PreviewPage = () => {
         />
 
         {/* 중앙 콘텐츠 */}
-        <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 mt-4 max-h-[48vh] overflow-y-auto scrollbar-hide smooth-scroll">
+        <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 mt-4 max-h-[52vh] overflow-y-auto scrollbar-hide smooth-scroll">
           {/* 제목 */}
-          <h2 className="text-3xl font-semibold text-center mb-4 font-batang">
+          <h2 className="text-[28px] font-semibold text-center mb-4 font-batang">
             {currentInvitation && currentInvitation.title}
           </h2>
 
@@ -56,9 +57,22 @@ const PreviewPage = () => {
         </div>
       </div>
 
-      <button className="mt-4 w-10/12 rounded-md bg-gray-900 text-base text-white border-[1px] p-2">
-        <Link href="/invitation">목록으로 돌아가기</Link>
-      </button>
+      <div className="flex gap-3">
+        <button className="w-[146px] mt-6 bg-sky-700 hover:bg-sky-900 text-white font-bold py-2 px-4 rounded-lg shadow-md">
+          <Link href="/invitation">목록으로 돌아가기</Link>
+        </button>
+        {currentInvitation && (
+          <KakaoShareButton
+            buttonStyle="text"
+            title={currentInvitation.title}
+            imageUrl={currentInvitation.primary_image}
+            date={currentInvitation.date}
+            time={currentInvitation.time}
+            invitationUrl={`${process.env.NEXT_PUBLIC_API_URL}/${currentInvitation.custom_url}`}
+            buttonId={`kakao-share-btn-${currentInvitation.id}`} // 고유한 ID 전달
+          />
+        )}
+      </div>
     </div>
   )
 }

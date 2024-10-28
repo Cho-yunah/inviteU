@@ -10,6 +10,7 @@ import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
 import { formatDateTime } from '@/lib/utils'
 
 type InvitationData = {
+  id?: string
   title: string
   primary_image: string
   custom_url: string
@@ -102,9 +103,9 @@ export default async function InvitationPage({ params }: any) {
       />
 
       {/* 중앙 콘텐츠 */}
-      <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 overflow-y-auto max-h-[53vh] scrollbar-hide smooth-scroll">
+      <div className="relative z-10 w-8/12 max-w-xl rounded-xl p-1 overflow-y-auto max-h-[56vh] scrollbar-hide smooth-scroll">
         {/* 제목 */}
-        <h1 className="text-4xl font-semibold text-center mb-4 font-batang">
+        <h1 className="text-[28px] font-semibold text-center mb-4 font-batang">
           {invitationData.title}
         </h1>
 
@@ -133,6 +134,7 @@ export default async function InvitationPage({ params }: any) {
           date={invitationData.date}
           time={invitationData.time}
           invitationUrl={`${process.env.NEXT_PUBLIC_API_URL}/${params.custom_url}`}
+          buttonId={`kakao-share-btn-${invitationData.id}`} // 고유한 ID 전달
         />
         {/* 카카오톡 공유 버튼 */}
       </div>
