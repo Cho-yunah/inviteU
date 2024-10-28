@@ -111,7 +111,7 @@ export default function KakaoShareButton({
         <button
           id={buttonId}
           onClick={handleShare}
-          className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white p-1 rounded-full shadow-sm"
+          className="p-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full shadow-md transition-all duration-300"
         >
           <CiShare2 size={16} />
         </button>
