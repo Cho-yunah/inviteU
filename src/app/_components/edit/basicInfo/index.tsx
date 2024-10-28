@@ -7,7 +7,7 @@ import FileInput from './FileInput'
 
 export default function BaseInfo({ form, formSchema }: { form: any; formSchema: any }) {
   const handleFileUpload = (files: any) => {
-    console.log('Uploaded files:', files)
+    // console.log('Uploaded files:', files)
   }
 
   return (
@@ -120,7 +120,6 @@ export default function BaseInfo({ form, formSchema }: { form: any; formSchema: 
           </FormItem>
         )}
       />
-      {/* <button type="submit"  className='absolute top-[-5px] right-2 z-1000' >저장</button> */}
     </div>
   )
 }

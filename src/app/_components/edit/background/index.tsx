@@ -28,7 +28,6 @@ const Background = ({
   checkedSlide: string
   setCheckedSlide: Dispatch<SetStateAction<string>>
 }) => {
-  console.log(checkedSlide)
   return (
     <FormField
       control={form.control}

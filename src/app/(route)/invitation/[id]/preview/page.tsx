@@ -34,7 +34,6 @@ const PreviewPage = () => {
             backgroundAttachment: 'scroll',
           }}
         >
-
           <div className="p-1">
             {contents && contents.map((content, index) => renderContent(content, index))}
           </div>
@@ -51,7 +50,6 @@ const PreviewPage = () => {
 export default PreviewPage
 
 const renderContent = (content: any, index: number) => {
-  console.log('content', content)
   switch (content.type) {
     case 'image':
       return (

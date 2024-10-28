@@ -5,7 +5,6 @@ import { getCoordinates } from '@/lib/geocode'
 
 // 이미지 컴포넌트
 export const ImageComponent = ({ layout, ratio, urls }: ImageType) => {
-  console.log(urls)
   return (
     <div className={`image-container ${layout} px-0 py-1`}>
       {urls
