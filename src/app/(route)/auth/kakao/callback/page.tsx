@@ -1,4 +1,5 @@
 'use client'
+
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/supabase/browser'
@@ -8,16 +9,25 @@ const KakaoCallback = () => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      const { data: sessionData, error } = await supabase.auth.getSession()
+      const codeVerifier = localStorage.getItem('code_verifier') // 꺼내기
+
+      if (!codeVerifier) {
+        console.error('Code verifier가 없습니다.')
+        return
+      }
+      const { data, error } = await supabase.auth.getSession()
+
       if (error) {
         console.error('세션 가져오기 실패:', error.message)
         return
       }
-      console.log('세션 데이터:', sessionData)
 
-      // 세션이 있으면 메인 페이지로 이동
-      if (sessionData?.session) {
-        router.push('/')
+      console.log('세션 데이터:', data)
+
+      if (data?.session) {
+        router.push('/') // 로그인 성공 후 리디렉션
+      } else {
+        console.error('세션이 없습니다.')
       }
     }
 

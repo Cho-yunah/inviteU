@@ -25,7 +25,11 @@ const customStyles = {
 const LoginModal = ({ isOpen, setIsOpen }: any) => {
   const logInWithKakao = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      // PKCE를 위한 code_verifier 생성
+      const codeVerifier = Math.random().toString(36).substring(2, 15)
+      localStorage.setItem('code_verifier', codeVerifier) // 저장
+
+      const { data, error }: { data: any; error: any } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
         options: {
           redirectTo: process.env.NEXT_PUBLIC_REDIRECT_URL,
@@ -34,6 +38,9 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
 
       if (error) throw new Error(error.message)
       console.log('로그인 성공:', data)
+      if (data.session) {
+        localStorage.setItem('supabase-session', JSON.stringify(data.session))
+      }
     } catch (error) {
       console.error('로그인 실패:', error)
     }
