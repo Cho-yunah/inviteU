@@ -28,9 +28,9 @@ const LoginModal = ({ isOpen, setIsOpen }: any) => {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'kakao',
         options: {
-          redirectTo:
-            process.env.NEXT_PUBLIC_REDIRECT_URL ||
-            'https://invite-u.vercel.app/auth/kakao/callback', // 콜백 페이지 경로
+          redirectTo: 'https://invite-u.vercel.app/auth/kakao/callback',
+          // process.env.NEXT_PUBLIC_REDIRECT_URL ||
+          // 'https://hjjneamnafhopugmpfpu.supabase.co/auth/v1/callback', // 콜백 페이지 경로
         },
       })
 
