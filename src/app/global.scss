@@ -9,14 +9,6 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 250, 240, 245;
 
-  --primary-glow: conic-gradient(
-    from 180deg at 50% 50%,
-    #16abff33 0deg,
-    #0885ff33 55deg,
-    #54d6ff33 120deg,
-    #0071ff33 160deg,
-    transparent 360deg
-  );
   --secondary-glow: radial-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
 
   --tile-start-rgb: 239, 245, 249;
@@ -31,15 +23,12 @@
     #00000080
   );
 
-  --callout-rgb: 238, 240, 241;
-  --callout-border-rgb: 172, 175, 176;
-  --card-rgb: 180, 185, 188;
-  --card-border-rgb: 131, 134, 135;
-
-  --primary: rgba(255, 127, 166, 0.9);
-  --primary-transparent: rgba(250, 148, 148, 0.6);
-  --secondary: rgba(31, 209, 253, 0.4);
-  --tertiary: rgba(31, 209, 253, 0.6);
+  --primary-color: #f8a1b5; /* 핑크 (메인 컬러) */
+  --secondary-color: #a8bdf0; /* 진한 파랑 */
+  --background-color: #cfefff; /* 하늘색 */
+  // --highlight-color: #c8a6e8; /* 보라색 */
+  --highlight-color: #f3c8d3; /* 보라색 */
+  --badge-color: #d4a1e9; /* 연보라 */
 }
 
 @media (prefers-color-scheme: dark) {
@@ -113,6 +102,50 @@ body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
     rgb(var(--background-start-rgb));
+}
+
+button.base {
+  border-radius: 1.5rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  font-weight: 600;
+}
+
+button.primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  // padding: 0.75rem;
+  font-weight: 600;
+}
+
+button.primary:hover {
+  background-color: #eda1b3;
+  transition: all 0.3s ease;
+}
+
+button.secondary {
+  background-color: white;
+  border: 1px solid rgb(226 232 240);
+  color: rgb(9, 8, 8);
+  border-radius: 1.5rem;
+  cursor: pointer;
+  // padding: 0.75rem;
+  font-weight: 600;
+}
+
+button.secondary:hover {
+  background-color: var(--primary-color);
+  transition: all 0.3s ease;
+  color: white;
+  border-color: var(--primary-color);
+}
+
+button.highlight {
+  background-color: var(--highlight-color);
+  color: white;
 }
 
 .container {
