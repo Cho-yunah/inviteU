@@ -21,7 +21,7 @@ const List = ({ initialData }: ListProps) => {
   return (
     <div className="p-2">
       <div className="mt-6 w-full text-center">
-        <button className={[styles.mainButton, 'rounded-[10px]', 'text-sm', 'shadow-sm'].join(' ')}>
+        <button className="primary rounded-[10px] text-sm shadow-sm">
           <Link href="/invitation/new">+ 초대장 만들기</Link>
         </button>
       </div>

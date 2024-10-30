@@ -27,7 +27,7 @@ function formatDateTime(dateString: any, timeString: any) {
   const formattedDate = format(date, 'yyyy년 M월 d일', { locale: ko })
   const formattedTime = format(date, 'a h시 mm분', { locale: ko })
 
-  return `💛 일정 : ${formattedDate}\n💛 시간 : ${formattedTime}`
+  return `🩷 일정 : ${formattedDate}\n🩷 시간 : ${formattedTime}`
 }
 
 export default function KakaoShareButton({
@@ -39,29 +39,7 @@ export default function KakaoShareButton({
   buttonStyle,
   buttonId,
 }: KakaoShareButtonProps) {
-  const [isKakaoLoaded, setIsKakaoLoaded] = useState(false)
-
   const formattedDateTime = formatDateTime(date, time)
-
-  // Kakao SDK 로드 및 초기화
-  useEffect(() => {
-    const script = document.createElement('script')
-    script.src = 'https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js'
-    script.integrity = 'sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4'
-    script.crossOrigin = 'anonymous'
-    script.onload = () => {
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JS_KEY)
-      }
-      setIsKakaoLoaded(true)
-    }
-    script.onerror = () => console.error('Kakao SDK 로드 실패')
-    document.head.appendChild(script)
-
-    return () => {
-      document.head.removeChild(script)
-    }
-  }, [])
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation() // 이벤트 전파 차단
@@ -95,7 +73,7 @@ export default function KakaoShareButton({
     })
   }
 
-  if (!isKakaoLoaded) return <p>Loading..</p>
+  if (!window.Kakao) return <p>Loading..</p>
 
   return (
     <div className="flex justify-center">
@@ -103,7 +81,7 @@ export default function KakaoShareButton({
         <button
           id={buttonId}
           onClick={handleShare}
-          className="mt-6 bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg shadow-md"
+          className="mt-6 bg-amber-300 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg shadow-md"
         >
           카카오톡으로 공유하기
         </button>
@@ -111,7 +89,7 @@ export default function KakaoShareButton({
         <button
           id={buttonId}
           onClick={handleShare}
-          className="p-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-full shadow-md transition-all duration-300"
+          className="p-2 bg-stone-300 hover:bg-stone-400 text-white rounded-full shadow-md transition-all duration-300"
         >
           <CiShare2 size={16} />
         </button>

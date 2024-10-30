@@ -8,8 +8,6 @@ import ListItem from '@/app/_components/list/ListItem'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
 import Link from 'next/link'
 import axios from 'axios'
-import styles from '../../page.module.scss'
-// import Loader from '@/app/_components/common/Loader'
 
 const List = () => {
   const dispatch = useDispatch()
@@ -40,8 +38,8 @@ const List = () => {
 
   return (
     <div className="p-2">
-      <div className="mt-6 w-full text-center">
-        <button className={[styles.mainButton, 'rounded-[10px]', 'text-sm', 'shadow-sm'].join(' ')}>
+      <div className="mt-6 px-5 py-2 text-center">
+        <button className="secondary p-3 shadow-sm mt-0 w-full">
           <Link href="/invitation/new">+ 초대장 만들기</Link>
         </button>
       </div>

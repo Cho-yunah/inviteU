@@ -34,11 +34,11 @@ export default function Home() {
           <img src="/img/weddingIntro.png" width={350} height={350} className="py-4" />
         </div>
       </div>
-      <button className="m-4 rounded-3xl border-2 p-3 shadow-sm">
+      <button className="m-4 base border-[1px] border-slate-200 p-3">
         <Link href="/invitation/new">초대장 만들기</Link>
       </button>
       {session?.access_token && (
-        <button className="m-4 mt-0 rounded-3xl border-2 border-slate-800 bg-slate-800 p-3 text-white">
+        <button className="m-4 mt-0  primary p-3">
           <Link href="/invitation">내 초대장 {invitationCount}</Link>
         </button>
       )}
