@@ -10,6 +10,7 @@ import AuthContext from './_components/common/AuthContext'
 import { Slide, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import ErrorBoundary from '@/app/_components/common/errorBoundary'
+import KakaoInitializer from './_components/common/kakao/KakaoInitializer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,6 +36,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
 }
+
 export const viewport = {
   width: 'device-width',
   initialScale: 1.0,
@@ -68,6 +70,7 @@ export default async function RootLayout({
                   transition={Slide}
                 />
               </div>
+              <KakaoInitializer />
             </AuthContext>
           </SupabaseProvider>
         </ErrorBoundary>

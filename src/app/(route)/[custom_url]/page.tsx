@@ -1,3 +1,4 @@
+import KakaoShareButton from '@/app/_components/common/kakao/KakaoShareButton'
 import {
   ImageComponent,
   IntervalComponent,
@@ -6,7 +7,6 @@ import {
   VideoComponent,
 } from '@/app/_components/edit/previewModal/RenderContents'
 import { ContentDataType } from '@/lib/types'
-import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
 import { formatDateTime } from '@/lib/utils'
 
 type InvitationData = {

@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import { IoIosLink } from 'react-icons/io'
 import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
 import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
-import KakaoShareButton from '../common/kakaoShareButton'
+import KakaoShareButton from '@/app/_components/common/kakao/KakaoShareButton'
 
 interface ListItemProps {
   item: any
@@ -69,7 +69,7 @@ const ListItem = React.memo(({ item, onRemove }: ListItemProps) => {
       className="relative m-5 rounded-xl bg-white shadow-md cursor-pointer transition-all duration-300 border-t-[1px] border-gray-100 hover:border-gray-100 hover:shadow-lg hover:scale-105"
     >
       {/* 왼쪽 레드 포인트 바 */}
-      <p className="absolute h-full w-2 rounded-l-md bg-gradient-to-b from-rose-400 to-red-400"></p>
+      <p className="absolute h-full w-2 rounded-l-md bg-[#f8a1b5]"></p>
 
       {/* 리스트 본문 */}
       <div className="p-4 pl-6">

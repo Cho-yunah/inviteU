@@ -11,7 +11,7 @@ import {
   VideoComponent,
 } from '@/app/_components/edit/previewModal/RenderContents'
 import { formatDateTime } from '@/lib/utils'
-import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
+import KakaoShareButton from '@/app/_components/common/kakao/KakaoShareButton'
 
 const PreviewPage = () => {
   const currentInvitation = useSelector((state: RootState) => state.invitation.selected)
