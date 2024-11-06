@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useUser } from '@supabase/auth-helpers-react'
-import styles from '../edit.module.scss'
+import styles from '@/styles/page.module.scss'
 import { Form } from '@/components/ui/form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BaseInfo from '@/app/_components/edit/basicInfo'
@@ -21,7 +21,7 @@ import {
   InvitationStateType,
   setSelectedInvitation,
 } from '@/lib/store/features/invitation/invitationSlice'
-import { RootState } from '@/lib/store'
+import { RootState } from '@/lib/store/store'
 import { ContentDataType } from '@/types/types'
 
 const EditInvitation = () => {

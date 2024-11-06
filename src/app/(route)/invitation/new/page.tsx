@@ -1,32 +1,21 @@
 'use client'
 
 import React, { useCallback, useEffect, useState } from 'react'
+import { useUser } from '@supabase/auth-helpers-react'
+import styles from '@/styles/page.module.scss'
+import { Form } from '@/components/ui/form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import styles from '../edit.module.scss'
-import { z } from 'zod'
 import BaseInfo from '@/app/_components/edit/basicInfo'
 import ContentsInfo from '@/app/_components/edit/contentsInfo'
 import Background from '@/app/_components/edit/background'
-import { Form } from '@/components/ui/form'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useUser } from '@supabase/auth-helpers-react'
-import { ContentDataType } from '@/types/types'
-import axios from 'axios'
 import PreviewModal from '@/app/_components/edit/previewModal'
-import { toast } from 'react-toastify'
-import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
+import { ContentDataType } from '@/types/types'
 import { invitationFormSchema } from '@/types/invitationFormSchema'
-import {
-  InvitationStateType,
-  setSelectedInvitation,
-} from '@/lib/store/features/invitation/invitationSlice'
+import { InvitationStateType } from '@/lib/store/features/invitation/invitationSlice'
+import { useInvitationForm } from '@/hooks/useInvitationForm'
 
 const NewInvitation = () => {
   const data = useUser()
-  const router = useRouter()
-  const dispatch = useDispatch()
 
   const [contentsInfo, setContentsInfo] = useState<ContentDataType[] | []>([])
   const [checkedSlide, setCheckedSlide] = useState<string>('')
@@ -41,51 +30,15 @@ const NewInvitation = () => {
     primary_image: '',
   })
 
-  const onClosePreviewModal = () => setShowPreviewModal(false)
+  const { form, onSubmit } = useInvitationForm({ initialData: contentsInfo, apiMethod: 'POST' })
 
-  const form = useForm<z.infer<typeof invitationFormSchema>>({
-    resolver: zodResolver(invitationFormSchema),
-    defaultValues: {
-      user_id: '',
-      title: '',
-      custom_url: '',
-      date: '',
-      time: '',
-      primary_image: '',
-      background_image: '',
-      contents: [] as ContentDataType[],
-    },
-  })
+  const onClosePreviewModal = () => setShowPreviewModal(false)
 
   const handleOpenPreview = useCallback(() => {
     const formData = form.getValues()
-    console.log('모달이 열림', formData)
     setPreviewData({ ...formData, contents: contentsInfo })
     setShowPreviewModal(true)
   }, [form, contentsInfo])
-
-  async function onSubmit(values: z.infer<typeof invitationFormSchema>) {
-    form.setValue('contents', [...contentsInfo])
-
-    const transformValues = {
-      ...values,
-      contents: JSON.stringify(values.contents),
-    }
-    if (transformValues) {
-      try {
-        const response = await axios.post('/api/invitation', transformValues)
-        const invitationId = response.data.id // 생성된 초대장의 ID
-        dispatch(setSelectedInvitation({ ...values, contents: [...contentsInfo] })) // 선택된 초대장으로 설정
-
-        toast.success('🎉 초대장 저장에 성공했습니다 🎉')
-        router.replace(`/invitation/${invitationId}/preview`) // 미리보기 페이지로 이동
-        router.refresh()
-      } catch (error) {
-        console.error('초대장 저장 실패', error)
-        toast.error('초대장 저장 실패')
-      }
-    }
-  }
 
   useEffect(() => {
     form.setValue('contents', [...contentsInfo])
@@ -96,9 +49,9 @@ const NewInvitation = () => {
   }, [data && data.id])
 
   return (
-    <div className="w-[375px] min-h-[375px] overflow-hidden">
-      <Tabs defaultValue="basic" className="w-full">
-        <TabsList className="grid w-full grid-cols-3 bg-gray-100 p-0">
+    <div className="w-full min-h-[375px] overflow-hidden">
+      <Tabs defaultValue="basic">
+        <TabsList className="grid grid-cols-3 bg-gray-100 p-0">
           <TabsTrigger className={styles.tabTrigger} value="basic">
             기본 정보
           </TabsTrigger>
@@ -110,18 +63,18 @@ const NewInvitation = () => {
           </TabsTrigger>
         </TabsList>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <TabsContent className="px-6 py-2" value="basic">
+          <form onSubmit={onSubmit} className="px-5 py-3">
+            <TabsContent value="basic">
               <BaseInfo form={form} formSchema={invitationFormSchema} />
             </TabsContent>
-            <TabsContent className="px-6 py-2" value="contents">
+            <TabsContent value="contents">
               <ContentsInfo
                 contentsInfo={contentsInfo}
                 setContentsInfo={setContentsInfo}
                 onOpenPreview={handleOpenPreview}
               />
             </TabsContent>
-            <TabsContent className="px-6 py-2" value="background">
+            <TabsContent value="background">
               <Background
                 form={form}
                 checkedSlide={checkedSlide}
@@ -131,7 +84,7 @@ const NewInvitation = () => {
             <button
               type="submit"
               id="saveButton"
-              className="bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold absolute top-[-8px] right-2 z-100"
+              className="bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold absolute top-1 right-2 z-100"
             >
               저장
             </button>

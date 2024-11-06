@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/lib/store'
+import { RootState } from '@/lib/store/store'
 import { setInvitationList } from '@/lib/store/features/invitation/invitationSlice'
 import ListItem from '@/app/_components/list/ListItem'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
