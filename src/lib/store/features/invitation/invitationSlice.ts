@@ -1,4 +1,4 @@
-import { ContentDataType } from '@/lib/types'
+import { ContentDataType } from '@/types/types'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { set } from 'lodash'
 

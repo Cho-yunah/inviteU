@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
 import { IoIosLink } from 'react-icons/io'
 import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
-import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
+import { setSelectedInvitation } from '@/lib/store/features/invitation/invitationSlice'
 import KakaoShareButton from '../common/kakaoShareButton'
 
 interface ListItemProps {

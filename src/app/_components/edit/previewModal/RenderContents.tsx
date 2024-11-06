@@ -1,4 +1,4 @@
-import { ImageType, IntervalType, MapType, TextType, VideoType } from '@/lib/types'
+import { ImageType, IntervalType, MapType, TextType, VideoType } from '@/types/types'
 import styles from './previewModal.module.scss'
 import Map from './Map'
 import { getCoordinates } from '@/lib/geocode'

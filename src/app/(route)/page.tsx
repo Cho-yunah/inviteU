@@ -1,8 +1,8 @@
 'use client'
 import { useEffect, useState } from 'react'
-// import Slider from './_components/main/slider'
 import { useUser } from '@supabase/auth-helpers-react'
-import { useAuthState } from './_components/common/AuthContext'
+import { useAuthState } from '../_components/common/AuthContext'
+// import Slider from './_components/main/slider'
 import Link from 'next/link'
 
 export default function Home() {

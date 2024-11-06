@@ -3,10 +3,10 @@ import { v4 as uuidv4 } from 'uuid'
 import { DndContext, closestCenter } from '@dnd-kit/core'
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers'
-import { ContentsComponentType } from '@/app/_types/contentsInfoTypes'
+import { ContentsComponentType } from '@/types/contentsInfoTypes'
 import SortableItem from '@/app/_components/edit/contentsInfo/sortableItem'
 import BottomDrawer from '@/app/_components/common/bottomDrawer'
-import { ContentDataType } from '@/lib/types'
+import { ContentDataType } from '@/types/types'
 
 const initialComponents: ContentsComponentType[] = []
 

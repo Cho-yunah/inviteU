@@ -5,7 +5,7 @@ import {
   TextComponent,
   VideoComponent,
 } from '@/app/_components/edit/previewModal/RenderContents'
-import { ContentDataType } from '@/lib/types'
+import { ContentDataType } from '@/types/types'
 import KakaoShareButton from '@/app/_components/common/kakaoShareButton'
 import { formatDateTime } from '@/lib/utils'
 

@@ -16,13 +16,13 @@ import BaseInfo from '@/app/_components/edit/basicInfo'
 import ContentsInfo from '@/app/_components/edit/contentsInfo'
 import PreviewModal from '@/app/_components/edit/previewModal'
 import Background from '@/app/_components/edit/background'
-import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
+import { invitationFormSchema } from '@/types/invitationFormSchema'
 import {
   InvitationStateType,
   setSelectedInvitation,
-} from '@/lib/features/invitation/invitationSlice'
+} from '@/lib/store/features/invitation/invitationSlice'
 import { RootState } from '@/lib/store'
-import { ContentDataType } from '@/lib/types'
+import { ContentDataType } from '@/types/types'
 
 const EditInvitation = () => {
   const user = useUser()

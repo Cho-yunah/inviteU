@@ -1,6 +1,6 @@
 'use client'
 
-import { exampleContents } from '@/lib/types'
+import { exampleContents } from '@/types/types'
 import axios from 'axios'
 import { useState } from 'react'
 

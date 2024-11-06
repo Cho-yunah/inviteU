@@ -11,17 +11,17 @@ import { Form } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useUser } from '@supabase/auth-helpers-react'
-import { ContentDataType } from '@/lib/types'
+import { ContentDataType } from '@/types/types'
 import axios from 'axios'
 import PreviewModal from '@/app/_components/edit/previewModal'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
-import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
+import { invitationFormSchema } from '@/types/invitationFormSchema'
 import {
   InvitationStateType,
   setSelectedInvitation,
-} from '@/lib/features/invitation/invitationSlice'
+} from '@/lib/store/features/invitation/invitationSlice'
 
 const NewInvitation = () => {
   const data = useUser()

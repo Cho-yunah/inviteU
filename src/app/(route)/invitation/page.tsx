@@ -3,13 +3,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '@/lib/store'
-import { setInvitationList } from '@/lib/features/invitation/invitationSlice'
+import { setInvitationList } from '@/lib/store/features/invitation/invitationSlice'
 import ListItem from '@/app/_components/list/ListItem'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
 import Link from 'next/link'
 import axios from 'axios'
-import styles from '../../page.module.scss'
-// import Loader from '@/app/_components/common/Loader'
+import styles from '@/styles/page.module.scss'
 
 const List = () => {
   const dispatch = useDispatch()
