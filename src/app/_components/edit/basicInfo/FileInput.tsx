@@ -101,7 +101,7 @@ export default function FileInput({ field, onFileUpload, ...props }: FileUploadP
       onDrop={handleDrop}
     >
       {imageFile?.url ? (
-        <div className="relative flex flex-wrap justify-center border-[1px] rounded-md border-gray-300 min-w-[300px] min-h-[150px]">
+        <div className="relative flex flex-wrap justify-center overflow-hidden border-[1px] rounded-md border-gray-300 min-w-[300px] min-h-[150px]">
           <img
             src={imageFile.url}
             alt={`File Preview`}
@@ -111,7 +111,7 @@ export default function FileInput({ field, onFileUpload, ...props }: FileUploadP
             color="danger"
             size="sm"
             onClick={handleDeletePreview}
-            className="absolute top-1 right-2 size-6 p-0 bg-slate-50"
+            className="absolute top-1 right-2 size-6 p-0 bg-slate-200 hover:bg-slate-300"
           >
             <IoClose />
           </Button>
