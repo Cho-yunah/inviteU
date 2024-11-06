@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styles from './drawer.module.scss'
-import { FaRegImage, FaRegFileVideo, FaMapLocationDot } from 'react-icons/fa6'
-import { IoText, IoClose } from 'react-icons/io5'
-import { RxTextAlignMiddle } from 'react-icons/rx'
+import { IoClose } from 'react-icons/io5'
+import DrawerItem from './DrawerItem'
+import { DrawerItemArray } from './drawerItemsArray'
 
 interface BottomDrawerProps {
   showDrawer: boolean
@@ -12,29 +12,28 @@ interface BottomDrawerProps {
 
 const BottomDrawer = ({ showDrawer, setShowDrawer, handleAddComponent }: BottomDrawerProps) => {
   const [isVisible, setIsVisible] = useState(showDrawer)
-  const [isClosing, setIsClosing] = useState(false)
+  const [isAnimating, setIsAnimating] = useState(false) // 애니메이션 상태
 
   useEffect(() => {
     if (showDrawer) {
       setIsVisible(true)
-      setIsClosing(false)
+      setTimeout(() => setIsAnimating(true), 0)
     } else {
-      setIsClosing(true)
-      handleAnimationEnd()
+      setIsAnimating(false)
     }
   }, [showDrawer])
 
   const handleClickCloseButton = () => {
-    setIsClosing(true)
     setShowDrawer(false)
   }
 
-  const handleClickDrawerItem = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    handleAddComponent(e.currentTarget.id)
-    setIsClosing(true)
-    setShowDrawer(false)
-  }
+  const handleClickDrawerItem = useCallback(
+    (name: string) => {
+      handleAddComponent(name)
+      setShowDrawer(false)
+    },
+    [handleAddComponent],
+  )
 
   const handleAnimationEnd = () => {
     setTimeout(() => {
@@ -42,11 +41,15 @@ const BottomDrawer = ({ showDrawer, setShowDrawer, handleAddComponent }: BottomD
     }, 600)
   }
 
-  if (!showDrawer && !isVisible) return null
+  if (!isVisible) return null
 
   return (
     <div>
-      <div className={`${styles.drawerContainer} ${isClosing ? styles.close : styles.open}`}>
+      <div
+        className={`${styles.drawerContainer} ${isAnimating ? styles.open : styles.close}`}
+        onAnimationEnd={handleAnimationEnd}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className={styles.drawerBody}>
           <div className={styles.drawerHeader}>
             <h2 className="text-base font-semibold">콘텐츠 종류</h2>
@@ -57,61 +60,13 @@ const BottomDrawer = ({ showDrawer, setShowDrawer, handleAddComponent }: BottomD
             </div>
           </div>
           <div className={styles.drawerContent}>
-            <button
-              id="image"
-              type="button"
-              className={styles.drawerItem}
-              onClick={handleClickDrawerItem}
-            >
-              <div className={styles.icon}>
-                <FaRegImage className="size-8" />
-              </div>
-              <p>Image</p>
-            </button>
-            <button
-              id="video"
-              type="button"
-              className={styles.drawerItem}
-              onClick={handleClickDrawerItem}
-            >
-              <div>
-                <FaRegFileVideo className="size-8" />
-              </div>
-              <p>Video</p>
-            </button>
-            <button
-              id="text"
-              type="button"
-              className={styles.drawerItem}
-              onClick={handleClickDrawerItem}
-            >
-              <div>
-                <IoText className="size-8" />
-              </div>
-              <p>Text</p>
-            </button>
-            <button
-              id="interval"
-              type="button"
-              className={styles.drawerItem}
-              onClick={handleClickDrawerItem}
-            >
-              <div>
-                <RxTextAlignMiddle className="size-8" />
-              </div>
-              <p>Interval</p>
-            </button>
-            <button
-              id="map"
-              type="button"
-              className={styles.drawerItem}
-              onClick={handleClickDrawerItem}
-            >
-              <div>
-                <FaMapLocationDot className="size-8" />
-              </div>
-              <p>Map</p>
-            </button>
+            {DrawerItemArray.map((item, index) => (
+              <DrawerItem
+                key={item.name + index}
+                {...item}
+                onClickItem={() => handleClickDrawerItem(item.name)}
+              />
+            ))}
           </div>
         </div>
       </div>
@@ -119,4 +74,4 @@ const BottomDrawer = ({ showDrawer, setShowDrawer, handleAddComponent }: BottomD
   )
 }
 
-export default BottomDrawer
+export default React.memo(BottomDrawer)
