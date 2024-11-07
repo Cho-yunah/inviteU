@@ -93,7 +93,7 @@ export default async function InvitationPage({ params }: any) {
   }
 
   return (
-    <div className="relative min-h-full bg-gray-50 flex items-center justify-center">
+    <div className="relative min-h-full max-w-[380px] bg-gray-50 flex items-center justify-center">
       {/* 페이지 중앙 배경 */}
       <div
         className="absolute inset-0 bg-cover bg-center opacity-100 pt-1"

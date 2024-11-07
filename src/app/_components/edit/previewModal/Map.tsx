@@ -13,6 +13,7 @@ const Map: React.FC<StaticMapProps> = ({ address, width = 225, height = 150, lev
   const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 })
 
   useEffect(() => {
+    console.log('address:', address)
     const fetchCoordinates = async () => {
       try {
         const res = await fetch(`/api/geocode?query=${address}`)
