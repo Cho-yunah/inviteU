@@ -40,7 +40,7 @@ export default function Home() {
       </button>
       {session?.access_token && (
         <button className="m-4 mt-0  primary p-3">
-          <Link href="/invitation">내 초대장 {invitationCount}</Link>
+          <Link href="/invitation">내 초대장</Link>
         </button>
       )}
       {/* <div className="mt-10 h-[400px] bg-slate-100">
