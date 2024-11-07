@@ -92,11 +92,8 @@
   margin-top: 1rem;
   color: #fff;
   border-radius: var(--border-radius);
-  background: rgba(var(--card-rgb), 0.1);
+  background: rgba(var(--primary), 0.1);
   border: 1px solid rgba(var(--card-border-rgb), 0.15);
-  transition:
-    background 200ms,
-    border 200ms;
 }
 
 .mainButton {
@@ -114,6 +111,14 @@
   border: 1px solid var(--primary-transparent);
   color: #fff;
   transition: all 0.5s ease;
+}
+
+.tabTrigger[data-state='active'] {
+  background: #fff;
+  padding: 10px 0;
+  border: none;
+  box-shadow: none;
+  font-weight: 700;
 }
 
 @media (prefers-reduced-motion) {

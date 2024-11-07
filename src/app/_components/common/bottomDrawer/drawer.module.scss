@@ -1,9 +1,9 @@
 .drawerContainer {
   position: fixed; /* 화면에 고정 */
-  bottom: 10px; /* 화면 하단에 위치 */
+  bottom: 0px; /* 화면 하단에 위치 */
   // left: translateX(-50%);
   transform: translateX(-48%);
-  padding: 0;
+
   overflow: hidden;
   width: 100%;
   max-width: 336px;
@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #fef9f9;
+  background-color: #f9f9fa;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
@@ -20,6 +20,7 @@
 
 .open {
   transform: translateY(0); /* 드로어가 올라오는 상태 */
+  margin-bottom: 10px;
 }
 
 .close {
@@ -45,7 +46,7 @@
 
 .drawerItem {
   padding: 10px;
-  border: 1.5px solid #e3e3e3;
+  border: 1.5px solid #cecece;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -53,7 +54,7 @@
   align-items: center;
   width: 140px;
   height: 110px;
-  // box-shadow: 0px 0px 4px rgba(58, 22, 22, 0.1);
+  // box-shadow: 0px 0px 3px rgba(58, 22, 22, 0.1);
 }
 
 @keyframes slideOut {

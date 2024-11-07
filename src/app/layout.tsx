@@ -45,7 +45,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Providers>
           {/* 루트 레이아웃 - 모바일 사이즈 레이아웃 */}
-          <div className="relative max-w-[375px] shadow-sm bg-white">
+          <div className="relative shadow-sm bg-white">
             <Header />
             <main className={styles.main}>
               <div className={styles.description}>{children}</div>

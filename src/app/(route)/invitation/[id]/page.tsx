@@ -139,7 +139,7 @@ const EditInvitation = () => {
               id="saveButton"
               className="absolute top-[-9px] right-2 z-100 bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold"
             >
-              저장함
+              저장
             </button>
           </form>
         </Form>
