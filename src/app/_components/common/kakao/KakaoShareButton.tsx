@@ -1,7 +1,6 @@
 'use client'
 
-import { format } from 'date-fns'
-import { ko } from 'date-fns/locale'
+import { formatDateTime } from '@/lib/utils'
 import { CiShare2 } from 'react-icons/ci'
 
 interface KakaoShareButtonProps {
@@ -12,21 +11,6 @@ interface KakaoShareButtonProps {
   imageUrl: string
   buttonStyle?: 'text' | 'icon' // 버튼 타입을 정의
   buttonId: string // 고유한 버튼 ID
-}
-
-function formatDateTime(dateString: any, timeString: any) {
-  let [year, month, day] = dateString.split('-')
-  day = day.split('T')[0]
-  const [hour, minute] = timeString.split(':')
-
-  // 병합된 Date 객체 생성
-  const date = new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute))
-
-  // 일정과 시간 문자열로 포맷팅
-  const formattedDate = format(date, 'yyyy년 M월 d일', { locale: ko })
-  const formattedTime = format(date, 'a h시 mm분', { locale: ko })
-
-  return `🩷 일정 : ${formattedDate}\n🩷 시간 : ${formattedTime}`
 }
 
 export default function KakaoShareButton({
@@ -41,12 +25,12 @@ export default function KakaoShareButton({
   const formattedDateTime = formatDateTime(date, time)
 
   const handleShare = (e: React.MouseEvent) => {
-    e.stopPropagation() // 이벤트 전파 차단
-
     if (!window.Kakao) {
       console.error('Kakao SDK가 로드되지 않았습니다.')
       return
     }
+
+    e.stopPropagation() // 이벤트 전파 차단
 
     window.Kakao.Share.createDefaultButton({
       container: `#${buttonId}`,
@@ -71,8 +55,6 @@ export default function KakaoShareButton({
       ],
     })
   }
-
-  // if (!window.Kakao) return <p>Loading..</p>
 
   return (
     <div className="flex justify-center">
