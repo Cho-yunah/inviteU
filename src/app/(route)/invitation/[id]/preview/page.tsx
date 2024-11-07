@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { RootState } from '@/lib/store'
+import { RootState } from '@/lib/store/store'
 import { useSelector } from 'react-redux'
 import {
   ImageComponent,
