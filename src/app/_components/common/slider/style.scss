@@ -1,5 +1,6 @@
 .swiper {
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  min-height: 564px;
 }
 
 .swiper-slide {
@@ -13,6 +14,14 @@
 .swiper-slide img {
   display: block;
   object-fit: contain;
+}
+.swiper-pagination {
+  position: absolute;
+  bottom: 6px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
 }
 
 input[type='checkbox'] {
