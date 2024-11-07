@@ -15,8 +15,6 @@ const slideArr = [
   { id: 10, title: 'Slide 10', url: '/img/background_10.png' },
   { id: 11, title: 'Slide 11', url: '/img/background_11.png' },
   { id: 12, title: 'Slide 12', url: '/img/background_12.png' },
-  // { id: 13, title: 'Slide 13', url: '/img/background_13.png' },
-  // { id: 14, title: 'Slide 14', url: '/img/background_14.png' },
 ]
 
 const Background = ({

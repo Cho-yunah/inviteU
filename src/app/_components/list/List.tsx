@@ -4,7 +4,6 @@ import React, { useState } from 'react'
 import ListItem from './ListItem'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
 import Link from 'next/link'
-import styles from '../../page.module.scss'
 
 interface ListProps {
   initialData: any[]

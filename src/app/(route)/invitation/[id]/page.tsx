@@ -9,20 +9,20 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useUser } from '@supabase/auth-helpers-react'
-import styles from '../edit.module.scss'
+import styles from '@/styles/page.module.scss'
 import { Form } from '@/components/ui/form'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import BaseInfo from '@/app/_components/edit/basicInfo'
 import ContentsInfo from '@/app/_components/edit/contentsInfo'
 import PreviewModal from '@/app/_components/edit/previewModal'
 import Background from '@/app/_components/edit/background'
-import { invitationFormSchema } from '@/app/_types/invitationFormSchema'
+import { invitationFormSchema } from '@/types/invitationFormSchema'
 import {
   InvitationStateType,
   setSelectedInvitation,
-} from '@/lib/features/invitation/invitationSlice'
-import { RootState } from '@/lib/store'
-import { ContentDataType } from '@/lib/types'
+} from '@/lib/store/features/invitation/invitationSlice'
+import { RootState } from '@/lib/store/store'
+import { ContentDataType } from '@/types/types'
 
 const EditInvitation = () => {
   const user = useUser()
@@ -139,7 +139,7 @@ const EditInvitation = () => {
               id="saveButton"
               className="absolute top-[-9px] right-2 z-100 bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold"
             >
-              저장함
+              저장
             </button>
           </form>
         </Form>

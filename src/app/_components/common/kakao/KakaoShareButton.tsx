@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { CiShare2 } from 'react-icons/ci'
@@ -73,7 +72,7 @@ export default function KakaoShareButton({
     })
   }
 
-  if (!window.Kakao) return <p>Loading..</p>
+  // if (!window.Kakao) return <p>Loading..</p>
 
   return (
     <div className="flex justify-center">

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import styles from '../../edit.module.scss'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import { FileUpload } from './FileUpload'
-import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
+import { ContentsContainerProps } from '@/types/contentsInfoTypes'
 import Accordion from '@/app/_components/common/accordion'
 
 export default function ImageContainer({

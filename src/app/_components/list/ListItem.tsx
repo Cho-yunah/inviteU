@@ -6,9 +6,9 @@ import axios from 'axios'
 import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
 import { IoIosLink } from 'react-icons/io'
-import { CiCalendar, CiShare2, CiTrash } from 'react-icons/ci'
-import { setSelectedInvitation } from '@/lib/features/invitation/invitationSlice'
+import { CiCalendar, CiTrash } from 'react-icons/ci'
 import KakaoShareButton from '@/app/_components/common/kakao/KakaoShareButton'
+import { setSelectedInvitation } from '@/lib/store/features/invitation/invitationSlice'
 
 interface ListItemProps {
   item: any

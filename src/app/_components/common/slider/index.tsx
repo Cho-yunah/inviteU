@@ -20,7 +20,7 @@ interface slideProps {
 }
 
 export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field }: slideProps) {
-  const [checked, setChecked] = useState(false)
+  // const [checked, setChecked] = useState(false)
   const [activeSlide, setActiveSlide] = useState(0)
 
   const onSlideChange = (swiper: any) => {
@@ -30,15 +30,19 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
   const checkHandler = (e: any) => {
     if (e.target.checked) {
       setCheckedSlide(activeSlide)
-      setChecked(true)
+      // setChecked(true)
     } else {
       setCheckedSlide(null)
     }
     field.onChange(`${activeSlide}`)
   }
 
+  useEffect(() => {
+    field.onChange(`${activeSlide}`)
+  }, [])
+
   return (
-    <div className="mt-1">
+    <div className="mt-1 max-w-[370px]">
       <div className="absolute top-0 right-1 z-50">
         <input
           type="checkbox"
@@ -56,11 +60,7 @@ export default function Slider({ slideArr, checkedSlide, setCheckedSlide, field 
       >
         {slideArr?.map((slide) => (
           <SwiperSlide key={slide.id}>
-            <div
-              className={`p-0 m-0 flex justify-center ${+checkedSlide == slide.id && 'shadow-[0_2px_3px_5px_rgba(135,211,248,0.5)]'}`}
-            >
-              <Image src={slide.url} alt={slide.title} width={310} height={460} />
-            </div>
+            <Image src={slide.url} alt={slide.title} width={300} height={430} />
           </SwiperSlide>
         ))}
       </Swiper>

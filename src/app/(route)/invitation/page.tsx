@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '@/lib/store'
-import { setInvitationList } from '@/lib/features/invitation/invitationSlice'
+import { RootState } from '@/lib/store/store'
+import { setInvitationList } from '@/lib/store/features/invitation/invitationSlice'
 import ListItem from '@/app/_components/list/ListItem'
 import { HiOutlineArchiveBoxXMark } from 'react-icons/hi2'
 import Link from 'next/link'

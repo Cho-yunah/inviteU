@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID, UUID } from 'crypto'
 import { judgeImageAndVideoValid, searchParamsToObject } from '@/lib/helper'
-import { ContentDataType } from '@/lib/types'
+import { ContentDataType } from '@/types/types'
 import { cursorTo } from 'readline'
 
 type Data = {

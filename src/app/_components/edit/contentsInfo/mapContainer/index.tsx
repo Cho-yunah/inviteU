@@ -2,7 +2,7 @@ import React, { ReactNode, useEffect, useState } from 'react'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import Accordion from '@/app/_components/common/accordion'
 import SearchPostCode from './SearchPostcode'
-import { ContentsContainerProps } from '@/app/_types/contentsInfoTypes'
+import { ContentsContainerProps } from '@/types/contentsInfoTypes'
 
 const MapContainer = ({ id, content, onDelete, handleUpdateContent }: ContentsContainerProps) => {
   const [showModal, setShowModal] = useState<boolean>(false)

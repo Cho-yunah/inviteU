@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Modal from 'react-modal'
-import { ContentDataType } from '@/lib/types'
+import { ContentDataType } from '@/types/types'
 import styles from './previewModal.module.scss'
 import { IoMdClose } from 'react-icons/io'
 import {

@@ -1,17 +1,17 @@
 .drawerContainer {
   position: fixed; /* 화면에 고정 */
-  bottom: 0; /* 화면 하단에 위치 */
+  bottom: 0px; /* 화면 하단에 위치 */
   // left: translateX(-50%);
   transform: translateX(-48%);
-  padding: 0;
+
   overflow: hidden;
   width: 100%;
-  max-width: 331px;
-  height: 87%; /* 전체 화면 높이의 절반으로 설정 */
+  max-width: 336px;
+  height: 68%; /* 전체 화면 높이의 절반으로 설정 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: #fbfafa;
+  background-color: #f9f9fa;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.1);
@@ -19,16 +19,42 @@
 }
 
 .open {
-  transform: translateY(12%); /* 드로어를 열 때 최종 위치 */
+  transform: translateY(0); /* 드로어가 올라오는 상태 */
+  margin-bottom: 10px;
 }
 
 .close {
-  transform: translateY(110%); /* 드로어를 닫을 때 화면 아래로 사라지도록 */
-  // display: none;
+  transform: translateY(100%); /* 드로어가 내려가는 상태 */
 }
 
-.hidden {
-  display: none;
+.drawerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.drawerContent {
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  // overflow-y: auto; /* 콘텐츠가 초과할 경우 스크롤 가능 */
+  max-height: calc(85vh - 60px); /* 헤더 제외한 높이 설정 */
+}
+
+.drawerItem {
+  padding: 10px;
+  border: 1.5px solid #cecece;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 140px;
+  height: 110px;
+  // box-shadow: 0px 0px 3px rgba(58, 22, 22, 0.1);
 }
 
 @keyframes slideOut {
@@ -46,37 +72,4 @@
   100% {
     transform: translateY(0);
   }
-}
-
-.drawerBody {
-  padding: 10px;
-  overflow-y: auto;
-  // height: 100%;
-}
-
-.drawerHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.drawerContent {
-  margin-top: 5px;
-  padding: 10px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-.drawerItem {
-  padding: 10px;
-  border: 1px solid #d4d3d3;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  width: 145px;
-  height: 140px;
 }
