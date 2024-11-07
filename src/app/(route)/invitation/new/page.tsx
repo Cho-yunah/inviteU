@@ -13,6 +13,7 @@ import { ContentDataType } from '@/types/types'
 import { invitationFormSchema } from '@/types/invitationFormSchema'
 import { InvitationStateType } from '@/lib/store/features/invitation/invitationSlice'
 import { useInvitationForm } from '@/hooks/useInvitationForm'
+import SaveButton from '@/app/_components/common/buttons/SaveButton'
 
 const NewInvitation = () => {
   const data = useUser()
@@ -81,13 +82,14 @@ const NewInvitation = () => {
                 setCheckedSlide={setCheckedSlide}
               />
             </TabsContent>
-            <button
+            {/* <button
               type="submit"
               id="saveButton"
               className="bg-gray-700 px-[14px] py-2 rounded-md text-white font-semibold absolute top-1 right-2 z-100"
             >
               저장
-            </button>
+            </button> */}
+            <SaveButton onSave={onSubmit} />
           </form>
         </Form>
       </Tabs>

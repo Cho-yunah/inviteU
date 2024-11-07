@@ -48,6 +48,7 @@ const Header = () => {
     myPage: () => router.push('/mypage'),
     back: () => router.back(),
     showLoginModal: () => setIsModalOpen(true),
+    closeLoginModal: () => setIsModalOpen(false),
   }
 
   const headerName = useMemo(() => setHeaderName(pathName), [pathName])
@@ -88,7 +89,7 @@ const Header = () => {
           </div>
         )}
       </header>
-      <LoginModal isOpen={isModalsOpen} setIsOpen={setIsModalOpen} />
+      <LoginModal isOpen={isModalsOpen} onClose={handleNavigation.closeLoginModal} />
     </>
   )
 }
