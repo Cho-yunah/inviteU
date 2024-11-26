@@ -22,21 +22,21 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
 
   // Check if invitation_id exists in invitation table
 
-  const { data: userData, error: userError } = await supabase
-    .from('userinfo')
-    .select('id')
-    .eq('id', user_uuid)
-    .single()
+  // const { data: userData, error: userError } = await supabase
+  //   .from('userinfo')
+  //   .select('id')
+  //   .eq('id', user_uuid)
+  //   .single()
 
-  if (userError || !userData) {
-    return NextResponse.json(
-      {
-        success: false,
-        error: 'Invitation ID not found',
-      },
-      { status: 400 },
-    )
-  }
+  // if (userError || !userData) {
+  //   return NextResponse.json(
+  //     {
+  //       success: false,
+  //       error: 'Invitation ID not found',
+  //     },
+  //     { status: 400 },
+  //   )
+  // }
 
   const formData = await req.formData()
 
@@ -70,7 +70,7 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     }
 
     const fileExtension = file.name.split('.').pop()
-    const filePath = `${fileType}/${user_uuid}/${Date.now()}.${fileExtension}`
+    const filePath = `${fileType}/${user_uuid || 'anonymous'}/${Date.now()}.${fileExtension}`
 
     const uploadParams = {
       Bucket: BUCKET_NAME, // Supabase Storage에서 사용 중인 버킷 이름
