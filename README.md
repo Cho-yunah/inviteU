@@ -6,11 +6,7 @@
 <div style="display: grid; grid-template-columns: repeat(4, 2fr); gap: 10px;">
 <img src='./public/img/main_image.png' width='230px' />
 <img src='./public/img/kakao_login.png' width='230px' />
-<img src='./public/img/invite_list.png' width='230px' />
-<img src='./public/img/contents_menu.png' width='220px' />
-<img src='./public/img/create_contents.png' width='210px' />
-<img src='./public/img/kakao_share.png' width='240px' />
-<img src="./public/videos/Invite-u.gif" alt="Demo GIF" style="width: 320px; height: auto;">
+<img src="./public/videos/Invite-u.gif" alt="Demo GIF" style="width: 310px; height: auto;">
 </div>
 
 ## 프로젝트 배경
@@ -179,3 +175,10 @@ export default KakaoInitializer
 
 <strong>주요 사항</strong><br/>
 Tailwind CSS를 사용하여 모바일 환경에 최적화된 디자인을 구현했습니다.
+
+<div style="display: grid; grid-template-columns: repeat(4, 2fr); gap: 10px;">
+<img src='./public/img/invite_list.png' width='230px' />
+<img src='./public/img/contents_menu.png' width='220px' />
+<img src='./public/img/create_contents.png' width='210px' />
+<img src='./public/img/kakao_share.png' width='240px' />
+</div>
