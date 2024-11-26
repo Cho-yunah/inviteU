@@ -3,9 +3,13 @@
 청첩장(초대장) 웹사이트를 셀프로 만들어 링크로 전달할 수 있게 하는 프로젝트 입니다.
 
 <br/>
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-<img src='./public/img/main_image.png' width='250px' />
-<img src='./public/img/kakao_login.png' width='250px' />
+<div style="display: grid; grid-template-columns: repeat(4, 2fr); gap: 10px;">
+<img src='./public/img/main_image.png' width='230px' />
+<img src='./public/img/kakao_login.png' width='230px' />
+<img src='./public/img/invite_list.png' width='230px' />
+<img src='./public/img/contents_menu.png' width='220px' />
+<img src='./public/img/create_contents.png' width='210px' />
+<img src='./public/img/kakao_share.png' width='240px' />
 <img src="./public/videos/Invite-u.gif" alt="Demo GIF" style="width: 320px; height: auto;">
 </div>
 
@@ -61,14 +65,24 @@ $ npm run dev
 
 ## 고민과 해결 과정
 
-### 1. Supabase를 활용한 데이터 관리
+### 1. Nextjs 프레임워크 선택과 Vercel 배포
 
-<strong>문제 상황</strong><br/>
-팀원을 짧은 기간동안 모집을 하다보니, 백엔드 개발자의 부재가 있었고, 프론트엔드 개발자 2명이서 서버를 간단하게 만드는 법을 고민했습니다.
+<strong>고민 상황</strong><br/>
+초대장 페이지를 공유하였을 때 초기 로딩속도와 SEO 에 유리하게 만드려면 어떤 프레임워크를 선택하는 것이 좋을지 고려하게 되었고, 선택한 프레임워크와 함께 어울리게 쓸수 있는 배포 플랫폼이 무엇인지 고민하였습니다.
 
 <strong>해결 방법</strong><br/>
-- **Supabase** 라는 오픈 소스를 사용함으로, 데이터 베이스와 API를 구축하는데 필요한 복잡한 설정들과 관리를 최소화 하여서 백엔드를 구축했습니다. 
-프론트엔드 개발자가 접근하는데에 비교적 진입 장벽이 낮다는 점과 더불어 기본적인 데이터베이스 작업 뿐만 아니라 인증, 보안, 실시간 업데이트 등의 기능을 제공한다고 하여 supabase를 선택하였습니다.
+
+- Next.js의 **서버 사이드 렌더링(SSR)** 과 **정적 사이트 생성(SSG)** 을 활용해 초대장 페이지의 SEO와 로딩 속도를 유리하게 가져갈 수 있다고 판단하였습니다. 더불어 Nextjs 와 Vercel과의 조합이 좋기도 하고, **GitHub와 연동된 CI/CD 의 자동화**를 통해 깃에 커밋을 Push 및 PR 하면 자동으로 빌드 및 배포가 되게 하여 간편한 관리를 가능하게 했습니다.
+
+### 2. Supabase를 활용한 데이터 관리
+
+<strong>문제 상황</strong><br/>
+팀원을 짧은 기간동안 모집을 하다보니, 백엔드 개발자의 부재가 있었고, 프론트엔드 개발자 2명이서 서버를 구현하는 것과 배포 방법을 고민하게 되었습니다.
+
+<strong>해결 방법</strong><br/>
+
+- **Supabase** 라는 오픈 소스를 사용함으로, 데이터 베이스와 API를 구축하는데 필요한 복잡한 설정들과 관리를 최소화 하여서 백엔드를 구축했습니다.
+  프론트엔드 개발자가 접근하는데에 비교적 진입 장벽이 낮다는 점과 더불어 기본적인 데이터베이스 작업 뿐만 아니라 인증, 보안, 실시간 업데이트 등의 기능을 제공한다고 하여 supabase를 선택하였습니다.
 
 <strong>주요 구현 사항</strong><br/>
 
@@ -89,7 +103,7 @@ useEffect(() => {
 
 <br/>
 
-### 2. 초대장 생성 및 관리
+### 3. 초대장 생성 및 관리
 
 <strong>문제 상황</strong><br/>
 초대장 컨텐츠인 텍스트, 이미지, 비디오, 지도를 컨텐츠를 자유롭게 변경 가능하게 하면서도, 사용자가 Drag-and-Drop으로 콘텐츠를 부드럽게 배치할 수 있도록 하는 컴포넌트를 어떻게 만들지 고민이 되었습니다.
@@ -114,7 +128,7 @@ useEffect(() => {
 
 <br/>
 
-### 3. 소셜 로그인 및 공유
+### 4. 소셜 로그인 및 공유
 
 <strong>문제 상황</strong><br/>
 
@@ -159,7 +173,9 @@ export default KakaoInitializer
 
 <br/>
 
-### 4. 모바일 최적화
+### 5. 재사용 컴포넌트 구현
+
+### 6. 모바일 최적화
 
 <strong>주요 사항</strong><br/>
 Tailwind CSS를 사용하여 모바일 환경에 최적화된 디자인을 구현했습니다.
