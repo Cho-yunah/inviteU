@@ -4,9 +4,9 @@
 
 <br/>
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-<img src='./public/img/main_image.png' />
-<img src='./public/img/kakao_login.png' />
-<img src="./public/videos/Invite-u.gif" alt="Demo GIF" style="width: 100%; height: auto;">
+<img src='./public/img/main_image.png' width='250px' />
+<img src='./public/img/kakao_login.png' width='250px' />
+<img src="./public/videos/Invite-u.gif" alt="Demo GIF" style="width: 320px; height: auto;">
 </div>
 
 ## 프로젝트 배경
